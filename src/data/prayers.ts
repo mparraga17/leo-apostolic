@@ -178,6 +178,71 @@ Por Jesucristo nuestro Señor.
 Amén.`,
     description: 'Oración breve para rezar diariamente por el Papa.',
   },
+  {
+    id: 'pry_012',
+    title: 'Oración del Papa Francisco por los jóvenes',
+    category: PrayerCategory.PorElPapa,
+    text: `Señor Jesús,
+tu Iglesia dirige su mirada a todos los jóvenes del mundo.
+Te rezamos para que con coraje
+tomen sus vidas en sus manos,
+apunten a las cosas más bellas y más profundas
+y siempre mantengan un corazón libre.
+
+Que acompañados por guías sabios y generosos,
+sean ayudados a responder a la llamada
+que diriges a cada uno de ellos,
+para realizar su propio proyecto de vida
+y alcanzar la felicidad.
+
+Mantén sus corazones abiertos a grandes sueños
+y hazlos atentos al bien de los hermanos.
+
+Como el Discípulo amado,
+ellos también estén bajo la Cruz
+para dar la bienvenida a tu Madre,
+recibiéndola como un regalo tuyo.
+
+Sean testigos de tu Resurrección
+y sepan reconocerte vivo junto a ellos
+anunciando con alegría que Tú eres el Señor.
+Amén.`,
+    description: 'Oración del Papa Francisco por los jóvenes del mundo.',
+  },
+  {
+    id: 'pry_013',
+    title: 'Oración por la juventud',
+    category: PrayerCategory.PorElPapa,
+    text: `¡Padre Santo! te pedimos por los jóvenes,
+que son la esperanza del mundo.
+
+No te pedimos que los saques de la corrupción
+sino que los preserves de ella.
+
+¡Padre! No permitas que se dejen llevar
+por ideologías mezquinas.
+
+Que descubran que lo más importante
+no es ser más, tener más, poder más,
+sino servir más a los demás.
+
+¡Padre! Enséñales la verdad que libera,
+que rompe las cadenas de la injusticia,
+que hace hombres y forja santos.
+
+Pon en cada uno de ellos un corazón universal
+que hable el mismo idioma,
+que no vea el color de la piel,
+sino el amor que hay dentro de cada uno.
+
+Un corazón que a cada hombre le llame hermano,
+y que crea en la ciudad que no conoce las fronteras,
+porque su nombre es universo, amistad, amor, Dios.
+
+¡Padre Santo! Cuida a nuestros jóvenes.
+Amén.`,
+    description: 'Oración por la juventud, esperanza del mundo.',
+  },
 
   // EUCARÍSTICAS
   {
