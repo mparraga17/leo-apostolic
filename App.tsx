@@ -22,9 +22,9 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<TabId>('today');
   const [showSplash, setShowSplash] = useState(true);
 
-  // Splash screen durante 1500ms
+  // Splash screen durante 2000ms
   useEffect(() => {
-    const timer = setTimeout(() => setShowSplash(false), 1500);
+    const timer = setTimeout(() => setShowSplash(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 

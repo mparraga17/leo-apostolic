@@ -1,7 +1,7 @@
 // ============================================================
 // SplashScreen.tsx — PANTALLA DE BIENVENIDA
 // ============================================================
-// Se muestra durante 1.5s al abrir la app, dando tiempo a que
+// Se muestra durante 2s al abrir la app, dando tiempo a que
 // se carguen los datos y suavizando la transición.
 // ============================================================
 
