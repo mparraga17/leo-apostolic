@@ -46,11 +46,11 @@ function getVisitStatus(now: Date = new Date()): VisitStatus {
 }
 
 export default function TodayScreen() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const today = useMemo(() => new Date(), []);
   const saint = useMemo(() => getSaintOfTheDay(today), [today]);
   const prayerOfTheDay = useMemo(() => pickByDayOfYear(prayers, today), [today]);
-  const popeQuote = useMemo(() => getQuoteOfTheDay(today), [today]);
+  const popeQuote = useMemo(() => getQuoteOfTheDay(today, locale), [today, locale]);
 
   const [visitStatus, setVisitStatus] = useState<VisitStatus>(() => getVisitStatus());
 
