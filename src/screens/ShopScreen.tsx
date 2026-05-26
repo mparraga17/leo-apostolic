@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { products, amazonSearches, buildAmazonUrl, buildAmazonSearchUrl } from '../data/products';
 import { Product, ProductCategory } from '../models/types';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
+import { useI18n } from '../i18n';
 
 function groupByCategory(items: Product[]) {
   const groups: Record<string, Product[]> = {};
@@ -20,7 +21,54 @@ function groupByCategory(items: Product[]) {
   return Object.entries(groups) as [ProductCategory, Product[]][];
 }
 
+function categoryIcon(category: ProductCategory): keyof typeof Ionicons.glyphMap {
+  switch (category) {
+    case ProductCategory.Libros: return 'book-outline';
+    case ProductCategory.Souvenirs: return 'gift-outline';
+    case ProductCategory.Ninos: return 'happy-outline';
+    case ProductCategory.Religiosos: return 'flower-outline';
+    default: return 'pricetag-outline';
+  }
+}
+
+/**
+ * Devuelve los productos featured intercalando categorías,
+ * de forma que dos productos de la misma categoría no aparezcan
+ * seguidos en el carrusel de destacados.
+ */
+function buildFeaturedRotation(items: Product[]): Product[] {
+  // Agrupar featured por categoría preservando orden original
+  const buckets: Record<string, Product[]> = {};
+  items.forEach(p => {
+    if (!p.featured) return;
+    if (!buckets[p.category]) buckets[p.category] = [];
+    buckets[p.category].push(p);
+  });
+
+  const categoryQueues = Object.values(buckets);
+  const result: Product[] = [];
+  let lastCategory: string | null = null;
+
+  // Round-robin con bloqueo: en cada paso elige la cola más larga
+  // cuya categoría sea distinta de la última añadida.
+  while (categoryQueues.some(q => q.length > 0)) {
+    // Ordenar las colas por longitud descendente
+    const sorted = [...categoryQueues]
+      .filter(q => q.length > 0)
+      .sort((a, b) => b.length - a.length);
+
+    // Buscar la primera cola cuya categoría sea distinta de lastCategory
+    const next = sorted.find(q => q[0].category !== lastCategory) ?? sorted[0];
+    const product = next.shift()!;
+    result.push(product);
+    lastCategory = product.category;
+  }
+
+  return result;
+}
+
 export default function ShopScreen() {
+  const { t } = useI18n();
   const grouped = groupByCategory(products);
   const featured = products.filter(p => p.featured);
 
@@ -38,13 +86,13 @@ export default function ShopScreen() {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.headerSubtitle}>Libros y artículos religiosos</Text>
-          <Text style={styles.headerTitle}>Tienda</Text>
+          <Text style={styles.headerSubtitle}>{t('shop.headerSubtitle')}</Text>
+          <Text style={styles.headerTitle}>{t('shop.headerTitle')}</Text>
         </View>
 
         {/* Destacados horizontales */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>DESTACADOS</Text>
+          <Text style={styles.sectionLabel}>{t('shop.featuredSection')}</Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -57,8 +105,11 @@ export default function ShopScreen() {
                 onPress={() => openProduct(product.amazonAsin)}
                 activeOpacity={0.85}
               >
-                <View style={styles.featuredImage}>
-                  <Ionicons name="book" size={32} color={colors.primary} />
+                <View style={styles.featuredHeader}>
+                  <Ionicons name={categoryIcon(product.category)} size={14} color={colors.primary} />
+                  <Text style={styles.featuredCategory} numberOfLines={1}>
+                    {product.category}
+                  </Text>
                 </View>
                 <Text style={styles.featuredName} numberOfLines={2}>{product.title}</Text>
                 {product.author && (
@@ -105,7 +156,7 @@ export default function ShopScreen() {
 
         {/* Búsquedas */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>EXPLORAR EN AMAZON</Text>
+          <Text style={styles.sectionLabel}>{t('shop.exploreSection')}</Text>
           <View style={styles.list}>
             {amazonSearches.map((s, i) => (
               <TouchableOpacity
@@ -124,7 +175,7 @@ export default function ShopScreen() {
         </View>
 
         <Text style={styles.disclaimer}>
-          Como afiliado de Amazon, esta app puede obtener comisiones por compras realizadas a través de los enlaces. Esto no afecta al precio que pagas.
+          {t('shop.affiliateDisclaimer')}
         </Text>
       </ScrollView>
     </View>

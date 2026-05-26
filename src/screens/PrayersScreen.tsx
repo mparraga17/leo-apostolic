@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { prayers } from '../data/prayers';
 import { Prayer, PrayerCategory } from '../models/types';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
+import { useI18n } from '../i18n';
 
 function groupByCategory(items: Prayer[]) {
   const groups: Record<string, Prayer[]> = {};
@@ -21,6 +22,7 @@ function groupByCategory(items: Prayer[]) {
 }
 
 export default function PrayersScreen() {
+  const { t } = useI18n();
   const [selected, setSelected] = useState<Prayer | null>(null);
   const [showLatin, setShowLatin] = useState(false);
   const grouped = groupByCategory(prayers);
@@ -33,8 +35,8 @@ export default function PrayersScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
-          <Text style={styles.headerSubtitle}>Las oraciones de siempre</Text>
-          <Text style={styles.headerTitle}>Oraciones</Text>
+          <Text style={styles.headerSubtitle}>{t('prayers.headerSubtitle')}</Text>
+          <Text style={styles.headerTitle}>{t('prayers.headerTitle')}</Text>
         </View>
 
         {grouped.map(([category, items]) => (

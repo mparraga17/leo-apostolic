@@ -74,7 +74,7 @@ export function getTimeWindowAfter(event: PapalEvent): EventTimeWindow {
 }
 
 // Devuelve los lugares culturales más cercanos a un evento
-export function getNearbyPlaces(event: PapalEvent, maxKm: number = 2, limit: number = 4): CulturalPlace[] {
+export function getNearbyPlaces(event: PapalEvent, maxKm: number = 3, limit: number = 4): CulturalPlace[] {
   return places
     .map(place => ({
       place,

@@ -11,7 +11,9 @@ import { getSaintOfTheDay } from '../data/saints';
 import { prayers } from '../data/prayers';
 import { getQuoteOfTheDay } from '../data/popeQuotes';
 import PapalLocationCard from '../components/PapalLocationCard';
+import LanguageToggle from '../components/LanguageToggle';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
+import { useI18n } from '../i18n';
 
 const VISIT_START = new Date('2026-06-06T10:30:00');
 const VISIT_END = new Date('2026-06-09T11:10:00');
@@ -21,13 +23,6 @@ function pickByDayOfYear<T>(items: T[], date: Date = new Date()): T {
   const diff = date.getTime() - start.getTime();
   const dayOfYear = Math.floor(diff / 86400000);
   return items[dayOfYear % items.length];
-}
-
-function formatLongDate(date: Date): string {
-  const days = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
-  const months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-                  'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
-  return `${days[date.getDay()]}, ${date.getDate()} de ${months[date.getMonth()]}`;
 }
 
 type VisitStatus =
@@ -51,6 +46,7 @@ function getVisitStatus(now: Date = new Date()): VisitStatus {
 }
 
 export default function TodayScreen() {
+  const { t } = useI18n();
   const today = useMemo(() => new Date(), []);
   const saint = useMemo(() => getSaintOfTheDay(today), [today]);
   const prayerOfTheDay = useMemo(() => pickByDayOfYear(prayers, today), [today]);
@@ -71,25 +67,25 @@ export default function TodayScreen() {
     >
       {/* Header — estilo iOS, no banner colorido */}
       <View style={styles.header}>
-        <Text style={styles.dateLabel}>{formatLongDate(today)}</Text>
         <Text style={styles.appTitle}>Leo Apostolic</Text>
+        <LanguageToggle />
       </View>
 
       {/* Cuenta atrás — card oscura premium */}
       {visitStatus.phase === 'before' && (
         <View style={styles.countdownCard}>
-          <Text style={styles.countdownLabel}>VISITA APOSTÓLICA · MADRID</Text>
+          <Text style={styles.countdownLabel}>{t('today.countdownLabel')}</Text>
           <View style={styles.countdownRow}>
-            <CountdownBlock value={visitStatus.days} unit="días" />
+            <CountdownBlock value={visitStatus.days} unit={t('today.days')} />
             <Divider />
-            <CountdownBlock value={visitStatus.hours} unit="horas" pad />
+            <CountdownBlock value={visitStatus.hours} unit={t('today.hours')} pad />
             <Divider />
-            <CountdownBlock value={visitStatus.minutes} unit="min" pad />
+            <CountdownBlock value={visitStatus.minutes} unit={t('today.minutes')} pad />
             <Divider />
-            <CountdownBlock value={visitStatus.seconds} unit="seg" pad />
+            <CountdownBlock value={visitStatus.seconds} unit={t('today.seconds')} pad />
           </View>
           <Text style={styles.countdownSubtext}>
-            6 — 9 de junio de 2026
+            {t('today.countdownDates')}
           </Text>
         </View>
       )}
@@ -98,12 +94,12 @@ export default function TodayScreen() {
 
       {/* Santo del día */}
       <View style={styles.section}>
-        <Text style={styles.sectionLabel}>SANTO DEL DÍA</Text>
+        <Text style={styles.sectionLabel}>{t('today.saintOfTheDay')}</Text>
         <View style={styles.card}>
           {saint.isFeast && (
             <View style={styles.feastBadge}>
               <Ionicons name="star" size={11} color={colors.primary} />
-              <Text style={styles.feastBadgeText}>SOLEMNIDAD</Text>
+              <Text style={styles.feastBadgeText}>{t('today.feastBadge')}</Text>
             </View>
           )}
           <Text style={styles.saintName}>{saint.name}</Text>
@@ -113,7 +109,7 @@ export default function TodayScreen() {
 
       {/* Frase del Papa */}
       <View style={styles.section}>
-        <Text style={styles.sectionLabel}>PALABRAS DEL SANTO PADRE</Text>
+        <Text style={styles.sectionLabel}>{t('today.popeQuote')}</Text>
         <View style={[styles.card, styles.cardQuote]}>
           <Ionicons name="chatbubble-outline" size={22} color={colors.primary} style={{ marginBottom: spacing.sm }} />
           <Text style={styles.quoteText} numberOfLines={8}>{popeQuote.text}</Text>
@@ -123,7 +119,7 @@ export default function TodayScreen() {
 
       {/* Oración del día */}
       <View style={styles.section}>
-        <Text style={styles.sectionLabel}>ORACIÓN DEL DÍA</Text>
+        <Text style={styles.sectionLabel}>{t('today.prayerOfTheDay')}</Text>
         <View style={styles.card}>
           <Text style={styles.prayerTitle}>{prayerOfTheDay.title}</Text>
           <Text style={styles.prayerText} numberOfLines={6}>{prayerOfTheDay.text}</Text>
@@ -170,12 +166,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.lg,
     paddingBottom: spacing.base,
-  },
-  dateLabel: {
-    ...typography.subhead,
-    color: colors.textSecondary,
-    textTransform: 'capitalize',
-    marginBottom: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   appTitle: {
     ...typography.display,

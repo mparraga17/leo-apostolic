@@ -30,6 +30,10 @@ export interface PapalEvent {
   category: EventCategory;
   isPublic: boolean;      // Si el público puede asistir
   highlight: boolean;     // Si es uno de los actos principales
+  // Si requiere inscripción previa, info de cómo hacerlo
+  registrationRequired?: boolean;
+  registrationUrl?: string;
+  registrationNote?: string;
 }
 
 // ---- ORACIONES ----

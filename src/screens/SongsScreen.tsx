@@ -11,6 +11,7 @@ import { songs } from '../data/songs';
 import { Song, SongCategory } from '../models/types';
 import { modernSongs, playlists, musicSearches } from '../data/modernMusic';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
+import { useI18n } from '../i18n';
 
 type Tab = 'traditional' | 'modern';
 
@@ -24,6 +25,7 @@ function groupByCategory(items: Song[]) {
 }
 
 export default function SongsScreen() {
+  const { t } = useI18n();
   const [tab, setTab] = useState<Tab>('traditional');
   const [selected, setSelected] = useState<Song | null>(null);
   const [showLatin, setShowLatin] = useState(true);
@@ -33,21 +35,21 @@ export default function SongsScreen() {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.headerSubtitle}>Tradicionales y modernos</Text>
-          <Text style={styles.headerTitle}>Cantos</Text>
+          <Text style={styles.headerSubtitle}>{t('songs.headerSubtitle')}</Text>
+          <Text style={styles.headerTitle}>{t('songs.headerTitle')}</Text>
         </View>
 
         {/* Segmented control */}
         <View style={styles.segmented}>
-          {(['traditional', 'modern'] as Tab[]).map(t => (
+          {(['traditional', 'modern'] as Tab[]).map(tabId => (
             <TouchableOpacity
-              key={t}
-              style={[styles.segment, tab === t && styles.segmentActive]}
-              onPress={() => setTab(t)}
+              key={tabId}
+              style={[styles.segment, tab === tabId && styles.segmentActive]}
+              onPress={() => setTab(tabId)}
               activeOpacity={0.7}
             >
-              <Text style={[styles.segmentText, tab === t && styles.segmentTextActive]}>
-                {t === 'traditional' ? 'Tradicionales' : 'Modernos'}
+              <Text style={[styles.segmentText, tab === tabId && styles.segmentTextActive]}>
+                {tabId === 'traditional' ? t('songs.tabTraditional') : t('songs.tabModern')}
               </Text>
             </TouchableOpacity>
           ))}

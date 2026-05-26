@@ -11,6 +11,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing } from '../theme/theme';
+import { useI18n } from '../i18n';
 
 export type TabId = 'today' | 'prayers' | 'songs' | 'agenda' | 'places' | 'shop';
 
@@ -20,21 +21,22 @@ interface Props {
 }
 
 // Iconos de Ionicons — equivalentes muy cercanos a SF Symbols
-const tabs: {
+const tabsConfig: {
   id: TabId;
-  label: string;
+  labelKey: string;
   icon: keyof typeof Ionicons.glyphMap;
   iconActive: keyof typeof Ionicons.glyphMap;
 }[] = [
-  { id: 'today',    label: 'Hoy',       icon: 'sunny-outline',         iconActive: 'sunny' },
-  { id: 'prayers',  label: 'Oraciones', icon: 'book-outline',          iconActive: 'book' },
-  { id: 'songs',    label: 'Cantos',    icon: 'musical-notes-outline', iconActive: 'musical-notes' },
-  { id: 'agenda',   label: 'Eventos',   icon: 'calendar-outline',      iconActive: 'calendar' },
-  { id: 'places',   label: 'Lugares',   icon: 'location-outline',      iconActive: 'location' },
-  { id: 'shop',     label: 'Tienda',    icon: 'bag-outline',           iconActive: 'bag' },
+  { id: 'today',    labelKey: 'tabs.today',    icon: 'sunny-outline',         iconActive: 'sunny' },
+  { id: 'agenda',   labelKey: 'tabs.agenda',   icon: 'calendar-outline',      iconActive: 'calendar' },
+  { id: 'places',   labelKey: 'tabs.places',   icon: 'location-outline',      iconActive: 'location' },
+  { id: 'prayers',  labelKey: 'tabs.prayers',  icon: 'book-outline',          iconActive: 'book' },
+  { id: 'songs',    labelKey: 'tabs.songs',    icon: 'musical-notes-outline', iconActive: 'musical-notes' },
+  { id: 'shop',     labelKey: 'tabs.shop',     icon: 'bag-outline',           iconActive: 'bag' },
 ];
 
 export default function TabBar({ activeTab, onTabChange }: Props) {
+  const { t } = useI18n();
   const Container: any = Platform.OS === 'ios' ? BlurView : View;
   const containerProps = Platform.OS === 'ios'
     ? { intensity: 90, tint: 'light' as const }
@@ -43,8 +45,9 @@ export default function TabBar({ activeTab, onTabChange }: Props) {
   return (
     <Container {...containerProps} style={styles.container}>
       <View style={styles.row}>
-        {tabs.map(tab => {
+        {tabsConfig.map(tab => {
           const isActive = activeTab === tab.id;
+          const label = t(tab.labelKey);
           return (
             <TouchableOpacity
               key={tab.id}
@@ -52,7 +55,7 @@ export default function TabBar({ activeTab, onTabChange }: Props) {
               onPress={() => onTabChange(tab.id)}
               activeOpacity={0.6}
               accessibilityRole="tab"
-              accessibilityLabel={tab.label}
+              accessibilityLabel={label}
               accessibilityState={{ selected: isActive }}
             >
               <Ionicons
@@ -61,7 +64,7 @@ export default function TabBar({ activeTab, onTabChange }: Props) {
                 color={isActive ? colors.primary : colors.textTertiary}
               />
               <Text style={[styles.label, isActive && styles.labelActive]}>
-                {tab.label}
+                {label}
               </Text>
             </TouchableOpacity>
           );

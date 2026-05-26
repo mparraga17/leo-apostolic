@@ -9,6 +9,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { places, PlaceCategory, CulturalPlace } from '../data/places';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
+import { useI18n } from '../i18n';
 
 function groupByCategory(items: CulturalPlace[]) {
   const groups: Record<string, CulturalPlace[]> = {};
@@ -29,6 +30,7 @@ function categoryIcon(category: PlaceCategory): keyof typeof Ionicons.glyphMap {
 }
 
 export default function PlacesScreen() {
+  const { t } = useI18n();
   const [selected, setSelected] = useState<CulturalPlace | null>(null);
   const grouped = groupByCategory(places);
   const featured = places.filter(p => p.highlight);
@@ -42,13 +44,13 @@ export default function PlacesScreen() {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.headerSubtitle}>Madrid cultural y devocional</Text>
-          <Text style={styles.headerTitle}>Lugares</Text>
+          <Text style={styles.headerSubtitle}>{t('places.headerSubtitle')}</Text>
+          <Text style={styles.headerTitle}>{t('places.headerTitle')}</Text>
         </View>
 
         {/* Imprescindibles */}
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>IMPRESCINDIBLES</Text>
+          <Text style={styles.sectionLabel}>{t('places.featuredSection')}</Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -61,8 +63,11 @@ export default function PlacesScreen() {
                 onPress={() => setSelected(place)}
                 activeOpacity={0.85}
               >
-                <View style={styles.featuredImage}>
-                  <Ionicons name={categoryIcon(place.category)} size={32} color={colors.primary} />
+                <View style={styles.featuredHeader}>
+                  <Ionicons name={categoryIcon(place.category)} size={14} color={colors.primary} />
+                  <Text style={styles.featuredCategory} numberOfLines={1}>
+                    {place.category}
+                  </Text>
                 </View>
                 <Text style={styles.featuredName} numberOfLines={2}>{place.name}</Text>
                 <Text style={styles.featuredHood} numberOfLines={1}>{place.neighborhood}</Text>
@@ -136,14 +141,40 @@ export default function PlacesScreen() {
 
               <Text style={styles.detailDescription}>{selected.description}</Text>
 
+              {selected.massSchedule && selected.massSchedule.length > 0 && (
+                <View style={styles.scheduleCard}>
+                  <View style={styles.scheduleHeader}>
+                    <Ionicons name="book-outline" size={16} color={colors.primary} />
+                    <Text style={styles.scheduleTitle}>{t('places.massScheduleTitle')}</Text>
+                  </View>
+                  {selected.massSchedule.map((line, i) => (
+                    <Text key={i} style={styles.scheduleLine}>{line}</Text>
+                  ))}
+                </View>
+              )}
+
+              {selected.confessionSchedule && (
+                <View style={styles.scheduleCard}>
+                  <View style={styles.scheduleHeader}>
+                    <Ionicons name="hand-left-outline" size={16} color={colors.primary} />
+                    <Text style={styles.scheduleTitle}>{t('places.confessionsTitle')}</Text>
+                  </View>
+                  <Text style={styles.scheduleLine}>{selected.confessionSchedule}</Text>
+                </View>
+              )}
+
+              <Text style={styles.scheduleDisclaimer}>
+                {t('places.scheduleDisclaimer')}
+              </Text>
+
               <TouchableOpacity
                 style={styles.directionsBtn}
                 onPress={() => openInMaps(selected)}
-                accessibilityLabel="Cómo llegar"
+                accessibilityLabel={t('places.directionsButton')}
                 activeOpacity={0.8}
               >
                 <Ionicons name="navigate" size={18} color={colors.textInverse} />
-                <Text style={styles.directionsBtnText}>Cómo llegar</Text>
+                <Text style={styles.directionsBtnText}>{t('places.directionsButton')}</Text>
               </TouchableOpacity>
 
               {selected.website && (
@@ -153,7 +184,7 @@ export default function PlacesScreen() {
                   activeOpacity={0.7}
                 >
                   <Ionicons name="globe-outline" size={18} color={colors.primary} />
-                  <Text style={styles.websiteBtnText}>Web oficial</Text>
+                  <Text style={styles.websiteBtnText}>{t('places.websiteButton')}</Text>
                 </TouchableOpacity>
               )}
             </ScrollView>
@@ -186,20 +217,26 @@ const styles = StyleSheet.create({
 
   horizontalList: { paddingHorizontal: spacing.base },
   featuredCard: {
-    width: 160,
+    width: 180,
     backgroundColor: colors.backgroundElevated,
     borderRadius: radius.lg,
     padding: spacing.md,
     marginRight: spacing.md,
     ...shadows.card,
   },
-  featuredImage: {
-    height: 100,
-    backgroundColor: colors.primaryMuted,
-    borderRadius: radius.md,
+  featuredHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    gap: 6,
     marginBottom: spacing.sm,
+  },
+  featuredCategory: {
+    ...typography.caption,
+    color: colors.primary,
+    fontWeight: '600',
+    letterSpacing: 0.3,
+    textTransform: 'uppercase',
+    fontSize: 11,
   },
   featuredName: { ...typography.subhead, fontWeight: '600', color: colors.text, minHeight: 38 },
   featuredHood: { ...typography.caption, color: colors.textSecondary, marginTop: 4 },
@@ -263,6 +300,39 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     marginBottom: spacing.lg,
     lineHeight: 22,
+  },
+
+  scheduleCard: {
+    marginBottom: spacing.md,
+    padding: spacing.md,
+    backgroundColor: colors.backgroundElevated,
+    borderRadius: radius.md,
+    borderLeftWidth: 3,
+    borderLeftColor: colors.primary,
+  },
+  scheduleHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: spacing.sm,
+  },
+  scheduleTitle: {
+    ...typography.caption,
+    color: colors.primary,
+    fontWeight: '700',
+    letterSpacing: 0.6,
+  },
+  scheduleLine: {
+    ...typography.footnote,
+    color: colors.text,
+    lineHeight: 22,
+  },
+  scheduleDisclaimer: {
+    ...typography.caption,
+    color: colors.textTertiary,
+    fontStyle: 'italic',
+    marginBottom: spacing.lg,
+    lineHeight: 16,
   },
 
   directionsBtn: {
