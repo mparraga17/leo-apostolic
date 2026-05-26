@@ -49,3 +49,7 @@ AGENTS.md
 CLAUDE.md
 .claude/
 data/
+
+# Source design files (large originals not needed in repo)
+ChatGPT Image*.png
+*_Nero_AI_*.png
