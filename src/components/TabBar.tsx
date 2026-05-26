@@ -10,6 +10,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 import { colors, typography, spacing } from '../theme/theme';
 import { useI18n } from '../i18n';
 
@@ -52,7 +53,12 @@ export default function TabBar({ activeTab, onTabChange }: Props) {
             <TouchableOpacity
               key={tab.id}
               style={styles.tab}
-              onPress={() => onTabChange(tab.id)}
+              onPress={() => {
+                if (!isActive) {
+                  Haptics.selectionAsync().catch(() => {});
+                }
+                onTabChange(tab.id);
+              }}
               activeOpacity={0.6}
               accessibilityRole="tab"
               accessibilityLabel={label}

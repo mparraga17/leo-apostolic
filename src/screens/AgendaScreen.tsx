@@ -14,6 +14,7 @@ import { getPapalLocationStatus } from '../utils/papalLocation';
 import { getTimeWindowAfter, getNearbyPlaces } from '../utils/eventSuggestions';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
 import { useI18n } from '../i18n';
+import { shareText } from '../utils/share';
 
 function groupEventsByDate(events: PapalEvent[]) {
   const groups: Record<string, PapalEvent[]> = {};
@@ -253,15 +254,32 @@ export default function AgendaScreen({ initialEventId }: { initialEventId?: stri
                 </View>
               )}
 
-              <TouchableOpacity
-                style={styles.directionsBtn}
-                onPress={() => openInMaps(selectedEvent)}
-                accessibilityLabel={t('agenda.directionsButton')}
-                activeOpacity={0.8}
-              >
-                <Ionicons name="navigate" size={18} color={colors.textInverse} />
-                <Text style={styles.directionsBtnText}>{t('agenda.directionsButton')}</Text>
-              </TouchableOpacity>
+              <View style={styles.modalActionsRow}>
+                <TouchableOpacity
+                  style={[styles.directionsBtn, styles.actionFlex]}
+                  onPress={() => openInMaps(selectedEvent)}
+                  accessibilityLabel={t('agenda.directionsButton')}
+                  activeOpacity={0.8}
+                >
+                  <Ionicons name="navigate" size={18} color={colors.textInverse} />
+                  <Text style={styles.directionsBtnText}>{t('agenda.directionsButton')}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.shareIconBtn}
+                  onPress={() => {
+                    const localized = localizeEvent(selectedEvent, locale);
+                    const dateLine = `${selectedEvent.date} · ${selectedEvent.startTime}`;
+                    shareText({
+                      title: localized.title,
+                      message: `${localized.title}\n${dateLine}\n${localized.location}\n\n${localized.description}`,
+                    });
+                  }}
+                  accessibilityLabel={t('common.share')}
+                  activeOpacity={0.7}
+                >
+                  <Ionicons name="share-outline" size={20} color={colors.text} />
+                </TouchableOpacity>
+              </View>
 
               {/* Sugerencias contextuales */}
               {(() => {
@@ -513,6 +531,24 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   directionsBtnText: { ...typography.bodyEmphasized, color: colors.textInverse },
+  modalActionsRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginTop: spacing.sm,
+  },
+  actionFlex: {
+    flex: 1,
+    marginTop: 0,
+  },
+  shareIconBtn: {
+    width: 52,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: radius.md,
+    backgroundColor: colors.backgroundElevated,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.separator,
+  },
 
   suggestionsBlock: {
     marginTop: spacing.xl,

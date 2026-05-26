@@ -34,6 +34,8 @@ function AppContent() {
   // Animación de transición splash → app
   const splashOpacity = useRef(new Animated.Value(1)).current;
   const appOpacity = useRef(new Animated.Value(0)).current;
+  // Animación de transición entre pestañas (fade + ligero slide)
+  const tabAnim = useRef(new Animated.Value(1)).current;
 
   // Splash visible 2s, luego cross-fade hacia la app
   useEffect(() => {
@@ -86,6 +88,16 @@ function AppContent() {
     return () => subscription.remove();
   }, []);
 
+  // Animación de transición al cambiar de pestaña
+  useEffect(() => {
+    tabAnim.setValue(0);
+    Animated.timing(tabAnim, {
+      toValue: 1,
+      duration: 220,
+      useNativeDriver: true,
+    }).start();
+  }, [activeTab, tabAnim]);
+
   const renderScreen = () => {
     switch (activeTab) {
       case 'today': return <TodayScreen />;
@@ -103,9 +115,25 @@ function AppContent() {
   // queda detrás con opacidad 0 e invisible al usuario).
   const appBlock = (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
+      <Animated.View
+        style={[
+          styles.content,
+          {
+            opacity: tabAnim,
+            transform: [{
+              translateX: tabAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [10, 0],
+              }),
+            }],
+          },
+        ]}
+        // key fuerza al View a remontarse en cada cambio de tab,
+        // garantizando que la animación parta desde el inicio
+        key={activeTab}
+      >
         {renderScreen()}
-      </View>
+      </Animated.View>
       <TabBar
         activeTab={activeTab}
         onTabChange={tab => {

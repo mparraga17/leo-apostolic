@@ -11,6 +11,7 @@ import { prayers } from '../data/prayers';
 import { Prayer, PrayerCategory } from '../models/types';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
 import { useI18n } from '../i18n';
+import { shareText } from '../utils/share';
 
 function groupByCategory(items: Prayer[]) {
   const groups: Record<string, Prayer[]> = {};
@@ -124,6 +125,21 @@ export default function PrayersScreen() {
               <Text style={styles.modalText}>
                 {showLatin && selected.textLatin ? selected.textLatin : selected.text}
               </Text>
+
+              <View style={styles.shareWrapper}>
+                <TouchableOpacity
+                  onPress={() => shareText({
+                    title: selected.title,
+                    message: `${selected.title}\n\n${showLatin && selected.textLatin ? selected.textLatin : selected.text}`,
+                  })}
+                  style={styles.shareBtn}
+                  activeOpacity={0.7}
+                  accessibilityLabel={t('common.share')}
+                >
+                  <Ionicons name="share-outline" size={16} color={colors.primary} />
+                  <Text style={styles.shareBtnText}>{t('common.share')}</Text>
+                </TouchableOpacity>
+              </View>
             </ScrollView>
           </View>
         )}
@@ -247,5 +263,26 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontSize: 18,
     lineHeight: 30,
+  },
+  shareWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: spacing.lg,
+  },
+  shareBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 8,
+    borderRadius: radius.md,
+    backgroundColor: colors.backgroundElevated,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.separator,
+  },
+  shareBtnText: {
+    ...typography.caption,
+    color: colors.primary,
+    fontWeight: '600',
   },
 });

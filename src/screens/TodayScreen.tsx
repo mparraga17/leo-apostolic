@@ -4,7 +4,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import {
-  View, Text, ScrollView, StyleSheet,
+  View, Text, ScrollView, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { getSaintOfTheDay } from '../data/saints';
@@ -14,6 +14,7 @@ import PapalLocationCard from '../components/PapalLocationCard';
 import LanguageToggle from '../components/LanguageToggle';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
 import { useI18n } from '../i18n';
+import { shareText } from '../utils/share';
 
 const VISIT_START = new Date('2026-06-06T10:30:00');
 const VISIT_END = new Date('2026-06-09T11:10:00');
@@ -114,6 +115,20 @@ export default function TodayScreen() {
           <Ionicons name="chatbubble-outline" size={22} color={colors.primary} style={{ marginBottom: spacing.sm }} />
           <Text style={styles.quoteText} numberOfLines={8}>{popeQuote.text}</Text>
           <Text style={styles.quoteSource}>— {popeQuote.source}</Text>
+          <View style={styles.quoteShareRow}>
+            <TouchableOpacity
+              onPress={() => shareText({
+                title: t('today.popeQuote'),
+                message: `"${popeQuote.text}"\n\n— ${popeQuote.source}`,
+              })}
+              style={styles.shareBtn}
+              activeOpacity={0.7}
+              accessibilityLabel={t('common.share')}
+            >
+              <Ionicons name="share-outline" size={16} color={colors.primary} />
+              <Text style={styles.shareBtnText}>{t('common.share')}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
 
@@ -287,6 +302,27 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     marginTop: spacing.md,
     fontStyle: 'italic',
+  },
+  quoteShareRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: spacing.sm,
+  },
+  shareBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 8,
+    borderRadius: radius.md,
+    backgroundColor: colors.backgroundElevated,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.separator,
+  },
+  shareBtnText: {
+    ...typography.caption,
+    color: colors.primary,
+    fontWeight: '600',
   },
 
   // ---- Oración del día ----

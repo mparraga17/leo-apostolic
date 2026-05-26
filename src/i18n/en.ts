@@ -93,6 +93,7 @@ export default {
     close: 'Close',
     cancel: 'Cancel',
     ok: 'OK',
+    share: 'Share',
     language: 'Language',
     languageSpanish: 'Español',
     languageEnglish: 'English',
