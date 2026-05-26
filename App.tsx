@@ -1,13 +1,16 @@
 // ============================================================
 // App.tsx — PUNTO DE ENTRADA
 // ============================================================
-// Muestra splash 2s al arrancar, después la app normal.
+// Muestra splash 2s al arrancar, después la app principal.
+// Cross-fade suave del splash a la app.
 // Al tocar una notificación de evento del Papa, abre la pestaña
 // "Eventos" con el modal del evento desplegado.
 // ============================================================
 
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, SafeAreaView, Platform, StatusBar as RNStatusBar } from 'react-native';
+import {
+  View, StyleSheet, SafeAreaView, Platform, StatusBar as RNStatusBar, Animated,
+} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import * as Notifications from 'expo-notifications';
 
@@ -28,12 +31,28 @@ function AppContent() {
   const [showSplash, setShowSplash] = useState(true);
   // EventId pendiente de abrir cuando lleguemos a la pestaña Eventos
   const [pendingEventId, setPendingEventId] = useState<string | null>(null);
+  // Animación de transición splash → app
+  const splashOpacity = useRef(new Animated.Value(1)).current;
+  const appOpacity = useRef(new Animated.Value(0)).current;
 
-  // Splash screen durante 2000ms
+  // Splash visible 2s, luego cross-fade hacia la app
   useEffect(() => {
-    const timer = setTimeout(() => setShowSplash(false), 2000);
+    const timer = setTimeout(() => {
+      Animated.parallel([
+        Animated.timing(splashOpacity, {
+          toValue: 0,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+        Animated.timing(appOpacity, {
+          toValue: 1,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+      ]).start(() => setShowSplash(false));
+    }, 2000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [splashOpacity, appOpacity]);
 
   // Pide permiso y programa notificaciones de los eventos del Papa.
   // Se reprograman si el usuario cambia de idioma.
@@ -46,8 +65,6 @@ function AppContent() {
 
   // Si la app se abre tocando una notificación, navega al evento
   useEffect(() => {
-    // Caso 1: la app estaba cerrada y el usuario tocó la notificación.
-    // getLastNotificationResponseAsync devuelve la última que abrió la app.
     Notifications.getLastNotificationResponseAsync()
       .then(response => {
         const eventId = response?.notification.request.content.data?.eventId;
@@ -58,7 +75,6 @@ function AppContent() {
       })
       .catch(() => {});
 
-    // Caso 2: la app está abierta cuando llega y se toca la notificación.
     const subscription = Notifications.addNotificationResponseReceivedListener(response => {
       const eventId = response?.notification.request.content.data?.eventId;
       if (typeof eventId === 'string') {
@@ -70,36 +86,23 @@ function AppContent() {
     return () => subscription.remove();
   }, []);
 
-  if (showSplash) {
-    return (
-      <>
-        <StatusBar style="light" />
-        <SplashScreen />
-      </>
-    );
-  }
-
   const renderScreen = () => {
     switch (activeTab) {
       case 'today': return <TodayScreen />;
       case 'prayers': return <PrayersScreen />;
       case 'songs': return <SongsScreen />;
       case 'agenda': return (
-        <AgendaScreen
-          initialEventId={pendingEventId}
-          // Una vez consumido, lo limpiamos para no reabrirlo
-          // si el usuario navega y vuelve a la pestaña.
-          // (AgendaScreen lo hace al abrir el modal; aquí solo evitamos persistencia)
-        />
+        <AgendaScreen initialEventId={pendingEventId} />
       );
       case 'places': return <PlacesScreen />;
       case 'shop': return <ShopScreen />;
     }
   };
 
-  return (
+  // Bloque principal de la app (siempre se renderiza, durante el splash
+  // queda detrás con opacidad 0 e invisible al usuario).
+  const appBlock = (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="dark" />
       <View style={styles.content}>
         {renderScreen()}
       </View>
@@ -107,11 +110,36 @@ function AppContent() {
         activeTab={activeTab}
         onTabChange={tab => {
           setActiveTab(tab);
-          // Si el usuario sale manualmente de "agenda", liberamos el pending
           if (tab !== 'agenda') setPendingEventId(null);
         }}
       />
     </SafeAreaView>
+  );
+
+  if (showSplash) {
+    return (
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
+        <StatusBar style="light" />
+        {/* App debajo, fade-in al terminar el splash */}
+        <Animated.View style={[StyleSheet.absoluteFill, { opacity: appOpacity }]}>
+          {appBlock}
+        </Animated.View>
+        {/* Splash encima, fade-out al terminar */}
+        <Animated.View
+          style={[StyleSheet.absoluteFill, { opacity: splashOpacity }]}
+          pointerEvents="none"
+        >
+          <SplashScreen />
+        </Animated.View>
+      </View>
+    );
+  }
+
+  return (
+    <>
+      <StatusBar style="dark" />
+      {appBlock}
+    </>
   );
 }
 
