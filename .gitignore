@@ -48,7 +48,7 @@ PUBLICACION.md
 AGENTS.md
 CLAUDE.md
 .claude/
-data/
+/data/
 
 # Source design files (large originals not needed in repo)
 ChatGPT Image*.png
