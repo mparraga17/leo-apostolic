@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "Leo Apostolic",
+    "slug": "leo-apostolic",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#161B33"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.leoapostolic.app",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.leoapostolic.app"
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "beda1414-5153-4c86-b0a1-213ddbb4db3e"
+      }
+    },
+    "owner": "pizcodeploy",
+    "plugins": [
+      "expo-font",
+      [
+        "expo-notifications",
+        {
+          "color": "#C9A55A"
+        }
+      ]
+    ]
+  }
+}
