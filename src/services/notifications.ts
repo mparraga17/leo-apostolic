@@ -9,8 +9,10 @@
 
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
-import { papalEvents } from '../data/agenda';
+import { papalEvents, localizeEvent } from '../data/agenda';
 import { PapalEvent } from '../models/types';
+
+type Locale = 'es' | 'en';
 
 // Cómo se muestran las notificaciones cuando la app está abierta
 Notifications.setNotificationHandler({
@@ -28,15 +30,25 @@ const MINUTES_BEFORE = 15;
 // Identificador del canal Android (iOS lo ignora)
 const CHANNEL_ID = 'papal-events';
 
+const channelNames: Record<Locale, string> = {
+  es: 'Eventos del Papa',
+  en: 'Papal events',
+};
+
+const titlePrefixes: Record<Locale, string> = {
+  es: `🦁 En ${MINUTES_BEFORE} min`,
+  en: `🦁 In ${MINUTES_BEFORE} min`,
+};
+
 /**
  * Pide permiso al usuario para enviar notificaciones.
  * Devuelve true si se concedió el permiso.
  */
-export async function requestNotificationPermissions(): Promise<boolean> {
+export async function requestNotificationPermissions(locale: Locale = 'es'): Promise<boolean> {
   // En Android necesitamos un canal antes de pedir permisos
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync(CHANNEL_ID, {
-      name: 'Eventos del Papa',
+      name: channelNames[locale],
       importance: Notifications.AndroidImportance.HIGH,
       vibrationPattern: [0, 250, 250, 250],
       lightColor: '#C9A55A',
@@ -71,8 +83,8 @@ function buildNotificationDate(event: PapalEvent): Date {
  * que aún no hayan ocurrido. Borra las anteriores antes para
  * evitar duplicados.
  */
-export async function schedulePapalEventNotifications(): Promise<number> {
-  const granted = await requestNotificationPermissions();
+export async function schedulePapalEventNotifications(locale: Locale = 'es'): Promise<number> {
+  const granted = await requestNotificationPermissions(locale);
   if (!granted) return 0;
 
   // Limpiar notificaciones programadas previamente
@@ -87,11 +99,13 @@ export async function schedulePapalEventNotifications(): Promise<number> {
     const triggerDate = buildNotificationDate(event);
     if (triggerDate <= now) continue; // ya pasó
 
+    const localized = localizeEvent(event, locale);
+
     await Notifications.scheduleNotificationAsync({
       identifier: `papal-event-${event.id}`,
       content: {
-        title: `🦁 En ${MINUTES_BEFORE} min: ${event.title}`,
-        body: event.location,
+        title: `${titlePrefixes[locale]}: ${localized.title}`,
+        body: localized.location,
         sound: 'default',
         data: { eventId: event.id },
       },

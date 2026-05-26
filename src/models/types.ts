@@ -30,6 +30,11 @@ export interface PapalEvent {
   category: EventCategory;
   isPublic: boolean;      // Si el público puede asistir
   highlight: boolean;     // Si es uno de los actos principales
+  // Versiones en inglés (opcionales)
+  titleEn?: string;
+  descriptionEn?: string;
+  locationEn?: string;
+  registrationNoteEn?: string;
   // Si requiere inscripción previa, info de cómo hacerlo
   registrationRequired?: boolean;
   registrationUrl?: string;

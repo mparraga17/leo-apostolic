@@ -7,7 +7,7 @@ import {
   View, Text, ScrollView, TouchableOpacity, StyleSheet, Linking, Modal,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { papalEvents } from '../data/agenda';
+import { papalEvents, localizeEvent } from '../data/agenda';
 import { PapalEvent } from '../models/types';
 import PapalLocationCard from '../components/PapalLocationCard';
 import { getPapalLocationStatus } from '../utils/papalLocation';
@@ -85,7 +85,7 @@ function formatDate(isoDate: string): string {
 }
 
 export default function AgendaScreen({ initialEventId }: { initialEventId?: string | null }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [selectedEvent, setSelectedEvent] = useState<PapalEvent | null>(null);
   const [currentEventId, setCurrentEventId] = useState<string | null>(null);
   const grouped = groupEventsByDate(papalEvents);
@@ -148,11 +148,11 @@ export default function AgendaScreen({ initialEventId }: { initialEventId?: stri
                       <View style={styles.eventTitleRow}>
                         {isCurrent && <View style={styles.liveDot} />}
                         <Text style={[styles.eventTitle, isCurrent && styles.textLight]} numberOfLines={1}>
-                          {event.title}
+                          {localizeEvent(event, locale).title}
                         </Text>
                       </View>
                       <Text style={[styles.eventLocation, isCurrent && styles.textLightOpaque]} numberOfLines={1}>
-                        {event.location}
+                        {localizeEvent(event, locale).location}
                       </Text>
                       {event.isPublic && !isCurrent && (
                         <View style={styles.publicBadge}>
@@ -201,13 +201,13 @@ export default function AgendaScreen({ initialEventId }: { initialEventId?: stri
                 {formatDate(selectedEvent.date).toUpperCase()} · {selectedEvent.startTime}
                 {selectedEvent.endTime ? ` — ${selectedEvent.endTime}` : ''}
               </Text>
-              <Text style={styles.modalTitle}>{selectedEvent.title}</Text>
+              <Text style={styles.modalTitle}>{localizeEvent(selectedEvent, locale).title}</Text>
 
               <View style={styles.detailCard}>
                 <View style={styles.detailRow}>
                   <Ionicons name="location-outline" size={18} color={colors.primary} />
                   <View style={{ flex: 1 }}>
-                    <Text style={styles.detailValue}>{selectedEvent.location}</Text>
+                    <Text style={styles.detailValue}>{localizeEvent(selectedEvent, locale).location}</Text>
                     <Text style={styles.detailSubvalue}>{selectedEvent.address}</Text>
                   </View>
                 </View>
@@ -218,7 +218,7 @@ export default function AgendaScreen({ initialEventId }: { initialEventId?: stri
                 </View>
               </View>
 
-              <Text style={styles.detailDescription}>{selectedEvent.description}</Text>
+              <Text style={styles.detailDescription}>{localizeEvent(selectedEvent, locale).description}</Text>
 
               {selectedEvent.isPublic && (
                 <View style={styles.publicNotice}>
@@ -235,9 +235,9 @@ export default function AgendaScreen({ initialEventId }: { initialEventId?: stri
                     <Ionicons name="ticket-outline" size={16} color={colors.primary} />
                     <Text style={styles.registrationTitle}>{t('agenda.registrationTitle')}</Text>
                   </View>
-                  {selectedEvent.registrationNote && (
+                  {localizeEvent(selectedEvent, locale).registrationNote && (
                     <Text style={styles.registrationNote}>
-                      {selectedEvent.registrationNote}
+                      {localizeEvent(selectedEvent, locale).registrationNote}
                     </Text>
                   )}
                   {selectedEvent.registrationUrl && (
@@ -281,7 +281,7 @@ export default function AgendaScreen({ initialEventId }: { initialEventId?: stri
                           {t('agenda.timeFreeValue', { time: timeWindow.freeText })}
                         </Text>
                         <Text style={styles.timeFreeHint}>
-                          {t('agenda.timeFreeNext', { title: timeWindow.nextEvent.title, time: timeWindow.nextEvent.startTime })}
+                          {t('agenda.timeFreeNext', { title: localizeEvent(timeWindow.nextEvent, locale).title, time: timeWindow.nextEvent.startTime })}
                         </Text>
                       </View>
                     )}

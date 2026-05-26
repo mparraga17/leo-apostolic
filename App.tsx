@@ -20,9 +20,10 @@ import PlacesScreen from './src/screens/PlacesScreen';
 import SplashScreen from './src/screens/SplashScreen';
 import TabBar, { TabId } from './src/components/TabBar';
 import { schedulePapalEventNotifications } from './src/services/notifications';
-import { I18nProvider } from './src/i18n';
+import { I18nProvider, useI18n } from './src/i18n';
 
 function AppContent() {
+  const { locale } = useI18n();
   const [activeTab, setActiveTab] = useState<TabId>('today');
   const [showSplash, setShowSplash] = useState(true);
   // EventId pendiente de abrir cuando lleguemos a la pestaña Eventos
@@ -35,12 +36,13 @@ function AppContent() {
   }, []);
 
   // Pide permiso y programa notificaciones de los eventos del Papa.
+  // Se reprograman si el usuario cambia de idioma.
   useEffect(() => {
-    schedulePapalEventNotifications().catch(() => {
+    schedulePapalEventNotifications(locale).catch(() => {
       // Silenciamos errores: la app no debe romper si las
       // notificaciones no se pueden programar.
     });
-  }, []);
+  }, [locale]);
 
   // Si la app se abre tocando una notificación, navega al evento
   useEffect(() => {
