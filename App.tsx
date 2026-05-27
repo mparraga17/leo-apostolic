@@ -100,7 +100,9 @@ function AppContent() {
 
   const renderScreen = () => {
     switch (activeTab) {
-      case 'today': return <TodayScreen />;
+      case 'today': return (
+        <TodayScreen onNavigateToPrayers={() => setActiveTab('prayers')} />
+      );
       case 'prayers': return <PrayersScreen />;
       case 'songs': return <SongsScreen />;
       case 'agenda': return (

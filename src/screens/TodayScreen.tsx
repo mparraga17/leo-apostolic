@@ -46,7 +46,7 @@ function getVisitStatus(now: Date = new Date()): VisitStatus {
   return { phase: 'after' };
 }
 
-export default function TodayScreen() {
+export default function TodayScreen({ onNavigateToPrayers }: { onNavigateToPrayers?: () => void }) {
   const { t, locale } = useI18n();
   const today = useMemo(() => new Date(), []);
   const saint = useMemo(() => getSaintOfTheDay(today), [today]);
@@ -135,14 +135,19 @@ export default function TodayScreen() {
       {/* Oración del día */}
       <View style={styles.section}>
         <Text style={styles.sectionLabel}>{t('today.prayerOfTheDay')}</Text>
-        <View style={styles.card}>
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => onNavigateToPrayers?.()}
+          activeOpacity={0.85}
+          accessibilityLabel={t('today.morePrayers')}
+        >
           <Text style={styles.prayerTitle}>{prayerOfTheDay.title}</Text>
           <Text style={styles.prayerText} numberOfLines={6}>{prayerOfTheDay.text}</Text>
           <View style={styles.prayerHintRow}>
-            <Text style={styles.prayerHint}>Más oraciones</Text>
+            <Text style={styles.prayerHint}>{t('today.morePrayers')}</Text>
             <Ionicons name="chevron-forward" size={14} color={colors.primary} />
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
 
       {/* Cita pastoral */}

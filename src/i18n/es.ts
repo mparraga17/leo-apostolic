@@ -25,6 +25,7 @@ export default {
     feastBadge: 'SOLEMNIDAD',
     popeQuote: 'PALABRAS DEL SANTO PADRE',
     prayerOfTheDay: 'ORACIÓN DEL DÍA',
+    morePrayers: 'Más oraciones',
     blessing: 'Bendición',
     duringVisit: 'EL PAPA ESTÁ EN MADRID',
     afterVisit: 'La visita ha concluido. Que el fruto de estos días permanezca.',
