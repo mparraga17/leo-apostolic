@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { places, PlaceCategory, CulturalPlace } from '../data/places';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
 import { useI18n } from '../i18n';
+import AdBanner from '../components/AdBanner';
 
 function groupByCategory(items: CulturalPlace[]) {
   const groups: Record<string, CulturalPlace[]> = {};
@@ -191,6 +192,7 @@ export default function PlacesScreen() {
           </View>
         )}
       </Modal>
+      <AdBanner />
     </View>
   );
 }

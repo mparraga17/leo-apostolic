@@ -23,6 +23,7 @@ import PlacesScreen from './src/screens/PlacesScreen';
 import SplashScreen from './src/screens/SplashScreen';
 import TabBar, { TabId } from './src/components/TabBar';
 import { schedulePapalEventNotifications } from './src/services/notifications';
+import { initializeAds } from './src/services/adsInit';
 import { I18nProvider, useI18n } from './src/i18n';
 
 function AppContent() {
@@ -64,6 +65,14 @@ function AppContent() {
       // notificaciones no se pueden programar.
     });
   }, [locale]);
+
+  // Inicializar AdMob una sola vez al arrancar la app.
+  // Pide permiso ATT en iOS y precarga el primer intersticial.
+  useEffect(() => {
+    initializeAds().catch(() => {
+      // Silenciar errores: la app debe seguir funcionando sin ads
+    });
+  }, []);
 
   // Si la app se abre tocando una notificación, navega al evento
   useEffect(() => {

@@ -11,6 +11,7 @@ import { products, amazonSearches, buildAmazonUrl, buildAmazonSearchUrl } from '
 import { Product, ProductCategory } from '../models/types';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
 import { useI18n } from '../i18n';
+import AdBanner from '../components/AdBanner';
 
 function groupByCategory(items: Product[]) {
   const groups: Record<string, Product[]> = {};
@@ -178,6 +179,7 @@ export default function ShopScreen() {
           {t('shop.affiliateDisclaimer')}
         </Text>
       </ScrollView>
+      <AdBanner />
     </View>
   );
 }

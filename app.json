@@ -38,7 +38,16 @@
           "color": "#C9A55A"
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      [
+        "react-native-google-mobile-ads",
+        {
+          "iosAppId": "ca-app-pub-5368247261960193~1059510385",
+          "androidAppId": "ca-app-pub-5368247261960193~8712666900",
+          "userTrackingPermission": "Para ofrecerte anuncios más relevantes y mantener la app gratuita, esta app puede usar tu identificador de publicidad. Tú decides."
+        }
+      ],
+      "expo-tracking-transparency"
     ]
   }
 }
