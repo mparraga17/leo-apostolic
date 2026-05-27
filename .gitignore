@@ -54,3 +54,8 @@ CLAUDE.md
 # Source design files (large originals not needed in repo)
 ChatGPT Image*.png
 *_Nero_AI_*.png
+
+# Screenshots para App Store (no necesarios en el repo)
+images/
+images-resized/
+resize-screenshots.ps1
