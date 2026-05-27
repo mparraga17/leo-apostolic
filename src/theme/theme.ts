@@ -6,7 +6,7 @@
 // ============================================================
 
 // ---- COLORES ----
-// Paleta inspirada en el branding "Leo Apostolic":
+// Paleta inspirada en el branding "Leo Look Up":
 // navy profundo + dorado vaticano. Elegante y solemne.
 export const colors = {
   // Primario: dorado refinado vaticano

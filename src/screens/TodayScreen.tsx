@@ -68,7 +68,7 @@ export default function TodayScreen() {
     >
       {/* Header — estilo iOS, no banner colorido */}
       <View style={styles.header}>
-        <Text style={styles.appTitle}>Leo Apostolic</Text>
+        <Text style={styles.appTitle}>Leo Look Up</Text>
         <LanguageToggle />
       </View>
 

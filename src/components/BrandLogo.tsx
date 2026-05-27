@@ -36,7 +36,7 @@ export default function BrandLogo({ size = 200, showName = true, variant = 'dark
 
       {showName && (
         <View style={styles.textContainer}>
-          <Text style={[styles.name, { color: textColor }]}>Leo Apostolic</Text>
+          <Text style={[styles.name, { color: textColor }]}>Leo Look Up</Text>
           <Text style={[styles.subtitle, { color: subtextColor }]}>
             MADRID · MMXXVI
           </Text>

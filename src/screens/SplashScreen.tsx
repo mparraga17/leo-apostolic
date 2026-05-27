@@ -134,7 +134,7 @@ export default function SplashScreen() {
           },
         ]}
       >
-        Leo Apostolic
+        Leo Look Up
       </Animated.Text>
 
       {/* Subtitle */}

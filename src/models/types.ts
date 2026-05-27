@@ -1,7 +1,7 @@
 // ============================================================
 // types.ts — DEFINICIÓN DE TIPOS DE DATOS
 // ============================================================
-// Tipos centrales de la app Leo Apostolic.
+// Tipos centrales de la app Leo Look Up.
 // ============================================================
 
 // ---- AGENDA DEL PAPA ----

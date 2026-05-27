@@ -8,7 +8,7 @@
 import { Share, Platform } from 'react-native';
 import * as Haptics from 'expo-haptics';
 
-const APP_TAG = 'Leo Apostolic';
+const APP_TAG = 'Leo Look Up';
 
 interface ShareOptions {
   title?: string;
