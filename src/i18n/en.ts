@@ -99,4 +99,21 @@ export default {
     languageSpanish: 'Español',
     languageEnglish: 'English',
   },
+
+  // About / Information
+  about: {
+    title: 'About',
+    version: 'Version {{version}}',
+    aboutSection: 'ABOUT',
+    aboutText: 'Leo Look Up is a permanent spiritual companion for Catholic faithful. Designed for the historic visit of Pope Leo XIV to Madrid (June 2026), it brings together traditional prayers, a liturgical hymnal, the papal agenda and a curated guide of cultural-religious places. The app does not collect personal data and fully respects your privacy.',
+    actionsSection: 'COLLABORATE',
+    shareApp: 'Share Leo Look Up',
+    contact: 'Contact and feedback',
+    legalSection: 'LEGAL',
+    privacyPolicy: 'Privacy Policy',
+    termsOfUse: 'Terms of Use',
+    support: 'Support page',
+    creditsSection: 'CREDITS',
+    creditsText: 'Traditional prayers and hymns: public domain of the Catholic Church.\n\nQuotes of Pope Leo XIV: from official Vatican sources and Catholic media.\n\nPapal agenda: official vatican.va website.\n\nDevelopment: Manuel Parraga.\n\nMay God bless your pilgrimage.',
+  },
 };

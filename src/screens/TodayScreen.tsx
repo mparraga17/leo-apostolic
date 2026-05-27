@@ -12,6 +12,7 @@ import { prayers } from '../data/prayers';
 import { getQuoteOfTheDay } from '../data/popeQuotes';
 import PapalLocationCard from '../components/PapalLocationCard';
 import LanguageToggle from '../components/LanguageToggle';
+import AboutModal from '../components/AboutModal';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
 import { useI18n } from '../i18n';
 import { shareText } from '../utils/share';
@@ -48,6 +49,7 @@ function getVisitStatus(now: Date = new Date()): VisitStatus {
 
 export default function TodayScreen({ onNavigateToPrayers }: { onNavigateToPrayers?: () => void }) {
   const { t, locale } = useI18n();
+  const [aboutVisible, setAboutVisible] = useState(false);
   const today = useMemo(() => new Date(), []);
   const saint = useMemo(() => getSaintOfTheDay(today), [today]);
   const prayerOfTheDay = useMemo(() => pickByDayOfYear(prayers, today), [today]);
@@ -61,6 +63,7 @@ export default function TodayScreen({ onNavigateToPrayers }: { onNavigateToPraye
   }, []);
 
   return (
+    <>
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.content}
@@ -69,7 +72,17 @@ export default function TodayScreen({ onNavigateToPrayers }: { onNavigateToPraye
       {/* Header — estilo iOS, no banner colorido */}
       <View style={styles.header}>
         <Text style={styles.appTitle}>Leo Look Up</Text>
-        <LanguageToggle />
+        <View style={styles.headerActions}>
+          <LanguageToggle />
+          <TouchableOpacity
+            onPress={() => setAboutVisible(true)}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            accessibilityLabel={t('about.title')}
+            style={styles.infoBtn}
+          >
+            <Ionicons name="information-circle-outline" size={26} color={colors.textSecondary} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Cuenta atrás — card oscura premium */}
@@ -158,6 +171,8 @@ export default function TodayScreen({ onNavigateToPrayers }: { onNavigateToPraye
         </Text>
       </View>
     </ScrollView>
+    <AboutModal visible={aboutVisible} onClose={() => setAboutVisible(false)} />
+    </>
   );
 }
 
@@ -193,6 +208,14 @@ const styles = StyleSheet.create({
   appTitle: {
     ...typography.display,
     color: colors.text,
+  },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  infoBtn: {
+    padding: 2,
   },
 
   // ---- Cuenta atrás ----

@@ -99,4 +99,21 @@ export default {
     languageSpanish: 'Español',
     languageEnglish: 'English',
   },
+
+  // About / Información
+  about: {
+    title: 'Información',
+    version: 'Versión {{version}}',
+    aboutSection: 'ACERCA DE',
+    aboutText: 'Leo Look Up es un compañero espiritual permanente para fieles católicos. Diseñado con motivo de la histórica visita del Papa León XIV a Madrid (junio 2026), reúne oraciones tradicionales, cancionero litúrgico, agenda papal y una guía cuidada de lugares cultural-religiosos. La app no recoge datos personales y respeta tu privacidad por completo.',
+    actionsSection: 'COLABORA',
+    shareApp: 'Compartir Leo Look Up',
+    contact: 'Contacto y sugerencias',
+    legalSection: 'LEGAL',
+    privacyPolicy: 'Política de privacidad',
+    termsOfUse: 'Términos de uso',
+    support: 'Página de soporte',
+    creditsSection: 'CRÉDITOS',
+    creditsText: 'Oraciones y cantos tradicionales: dominio público de la Iglesia Católica.\n\nFrases del Papa León XIV: extraídas de fuentes oficiales del Vaticano y medios católicos.\n\nAgenda papal: sitio oficial vatican.va.\n\nDesarrollo: Manuel Parraga.\n\nDios bendiga tu peregrinación.',
+  },
 };
