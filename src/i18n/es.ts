@@ -114,6 +114,6 @@ export default {
     termsOfUse: 'Términos de uso',
     support: 'Página de soporte',
     creditsSection: 'CRÉDITOS',
-    creditsText: 'Oraciones y cantos tradicionales: dominio público de la Iglesia Católica.\n\nFrases del Papa León XIV: extraídas de fuentes oficiales del Vaticano y medios católicos.\n\nAgenda papal: sitio oficial vatican.va.\n\nDesarrollo: Manuel Parraga.\n\nDios bendiga tu peregrinación.',
+    creditsText: 'Oraciones y cantos tradicionales: dominio público de la Iglesia Católica.\n\nFrases del Papa León XIV: extraídas de fuentes oficiales del Vaticano y medios católicos.\n\nAgenda papal: sitio oficial vatican.va.\n\nDesarrollo: Pizco Deploy.\n\nDios bendiga tu peregrinación.',
   },
 };

@@ -142,7 +142,7 @@ export default function AboutModal({ visible, onClose }: Props) {
           </View>
 
           <Text style={styles.footer}>
-            © 2026 Manuel Parraga · Leo Look Up
+            © 2026 Pizco Deploy · Leo Look Up
           </Text>
         </ScrollView>
       </View>

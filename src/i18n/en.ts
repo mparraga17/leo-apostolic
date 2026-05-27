@@ -114,6 +114,6 @@ export default {
     termsOfUse: 'Terms of Use',
     support: 'Support page',
     creditsSection: 'CREDITS',
-    creditsText: 'Traditional prayers and hymns: public domain of the Catholic Church.\n\nQuotes of Pope Leo XIV: from official Vatican sources and Catholic media.\n\nPapal agenda: official vatican.va website.\n\nDevelopment: Manuel Parraga.\n\nMay God bless your pilgrimage.',
+    creditsText: 'Traditional prayers and hymns: public domain of the Catholic Church.\n\nQuotes of Pope Leo XIV: from official Vatican sources and Catholic media.\n\nPapal agenda: official vatican.va website.\n\nDevelopment: Pizco Deploy.\n\nMay God bless your pilgrimage.',
   },
 };
