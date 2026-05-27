@@ -140,6 +140,141 @@ antes bien, escúchalas y acógelas benignamente.
 Amén.`,
     description: 'Oración de confianza filial a la Virgen, atribuida a San Bernardo.',
   },
+  {
+    id: 'pry_014',
+    title: 'Santo Rosario',
+    category: PrayerCategory.Marianas,
+    text: `[ Inicio ]
+
+Por la señal de la Santa Cruz, de nuestros enemigos líbranos, Señor, Dios nuestro. En el nombre del Padre y del Hijo y del Espíritu Santo. Amén.
+
+Señor mío Jesucristo, Dios y hombre verdadero, Creador, Padre y Redentor mío…
+
+Acto de contrición:
+Pésame, Dios mío, de todo corazón de haberte ofendido, por ser Tú quien eres, bondad infinita, y porque te amo sobre todas las cosas. Propongo firmemente, ayudado de tu divina gracia, no volver a pecar, confesarme y cumplir la penitencia que me sea impuesta. Amén.
+
+[ Misterios del día ]
+
+Lunes y sábado: GOZOSOS
+1. La Encarnación del Hijo de Dios
+2. La Visitación de María a su prima Santa Isabel
+3. El Nacimiento del Hijo de Dios en Belén
+4. La Presentación de Jesús en el Templo
+5. El Niño Jesús perdido y hallado en el Templo
+
+Martes y viernes: DOLOROSOS
+1. La oración de Jesús en el Huerto de los Olivos
+2. La flagelación del Señor
+3. La coronación de espinas
+4. Jesús con la cruz a cuestas, camino del Calvario
+5. La crucifixión y muerte de nuestro Señor
+
+Miércoles y domingo: GLORIOSOS
+1. La Resurrección del Hijo de Dios
+2. La Ascensión del Señor a los cielos
+3. La venida del Espíritu Santo sobre los Apóstoles
+4. La Asunción de Nuestra Señora a los cielos
+5. La Coronación de la Virgen María como Reina del cielo
+
+Jueves: LUMINOSOS
+1. El Bautismo de Jesús en el Jordán
+2. La autorrevelación de Jesús en las bodas de Caná
+3. El anuncio del Reino de Dios invitando a la conversión
+4. La Transfiguración del Señor
+5. La institución de la Eucaristía en la Última Cena
+
+[ Cómo rezar cada misterio ]
+
+Por cada uno de los cinco misterios del día:
+
+1. Anunciar el misterio y meditarlo brevemente.
+2. Rezar un Padrenuestro.
+3. Rezar diez Avemarías mientras se medita el misterio.
+4. Rezar un Gloria.
+5. Rezar la oración de Fátima:
+   "Oh Jesús mío, perdona nuestros pecados, líbranos del fuego del infierno y lleva al cielo a todas las almas, especialmente a las más necesitadas de tu misericordia."
+
+[ Letanías ]
+
+Tras los cinco misterios, se rezan las Letanías Lauretanas y se concluye con la Salve.
+
+Letanía a la Santísima Virgen:
+
+Señor, ten piedad de nosotros.
+Cristo, ten piedad de nosotros.
+Señor, ten piedad de nosotros.
+Cristo, óyenos. Cristo, escúchanos.
+
+Dios, Padre celestial, ten piedad de nosotros.
+Dios, Hijo, Redentor del mundo, ten piedad de nosotros.
+Dios, Espíritu Santo, ten piedad de nosotros.
+Trinidad Santa, un solo Dios, ten piedad de nosotros.
+
+Santa María, ruega por nosotros.
+Santa Madre de Dios, ruega por nosotros.
+Santa Virgen de las Vírgenes, ruega por nosotros.
+Madre de Cristo, ruega por nosotros.
+Madre de la Iglesia, ruega por nosotros.
+Madre de la divina gracia, ruega por nosotros.
+Madre purísima, ruega por nosotros.
+Madre castísima, ruega por nosotros.
+Madre virgen, ruega por nosotros.
+Madre sin mancha, ruega por nosotros.
+Madre inmaculada, ruega por nosotros.
+Madre amable, ruega por nosotros.
+Madre admirable, ruega por nosotros.
+Madre del buen consejo, ruega por nosotros.
+Madre del Creador, ruega por nosotros.
+Madre del Salvador, ruega por nosotros.
+Virgen prudentísima, ruega por nosotros.
+Virgen digna de veneración, ruega por nosotros.
+Virgen digna de alabanza, ruega por nosotros.
+Virgen poderosa, ruega por nosotros.
+Virgen clemente, ruega por nosotros.
+Virgen fiel, ruega por nosotros.
+Espejo de justicia, ruega por nosotros.
+Trono de la Sabiduría, ruega por nosotros.
+Causa de nuestra alegría, ruega por nosotros.
+Vaso espiritual, ruega por nosotros.
+Vaso digno de honor, ruega por nosotros.
+Vaso insigne de devoción, ruega por nosotros.
+Rosa mística, ruega por nosotros.
+Torre de David, ruega por nosotros.
+Torre de marfil, ruega por nosotros.
+Casa de oro, ruega por nosotros.
+Arca de la Alianza, ruega por nosotros.
+Puerta del cielo, ruega por nosotros.
+Estrella de la mañana, ruega por nosotros.
+Salud de los enfermos, ruega por nosotros.
+Refugio de los pecadores, ruega por nosotros.
+Consoladora de los afligidos, ruega por nosotros.
+Auxilio de los cristianos, ruega por nosotros.
+Reina de los Ángeles, ruega por nosotros.
+Reina de los Patriarcas, ruega por nosotros.
+Reina de los Profetas, ruega por nosotros.
+Reina de los Apóstoles, ruega por nosotros.
+Reina de los Mártires, ruega por nosotros.
+Reina de los Confesores, ruega por nosotros.
+Reina de las Vírgenes, ruega por nosotros.
+Reina de todos los Santos, ruega por nosotros.
+Reina concebida sin pecado original, ruega por nosotros.
+Reina asunta a los cielos, ruega por nosotros.
+Reina del Santísimo Rosario, ruega por nosotros.
+Reina de la familia, ruega por nosotros.
+Reina de la paz, ruega por nosotros.
+
+Cordero de Dios, que quitas el pecado del mundo, perdónanos, Señor.
+Cordero de Dios, que quitas el pecado del mundo, escúchanos, Señor.
+Cordero de Dios, que quitas el pecado del mundo, ten piedad de nosotros.
+
+Ruega por nosotros, Santa Madre de Dios.
+Para que seamos dignos de alcanzar las promesas de Cristo.
+
+[ Salve final ]
+
+Dios te salve, Reina y Madre de misericordia, vida, dulzura y esperanza nuestra; Dios te salve. A Ti llamamos los desterrados hijos de Eva; a Ti suspiramos, gimiendo y llorando, en este valle de lágrimas. Ea, pues, Señora abogada nuestra, vuelve a nosotros esos tus ojos misericordiosos; y, después de este destierro, muéstranos a Jesús, fruto bendito de tu vientre. Oh clemente, oh piadosa, oh dulce siempre Virgen María. Ruega por nosotros, Santa Madre de Dios, para que seamos dignos de alcanzar las promesas de nuestro Señor Jesucristo. Amén.`,
+    description: 'Oración mariana central. Cinco misterios al día rotando: Lunes/Sábado Gozosos, Martes/Viernes Dolorosos, Miércoles/Domingo Gloriosos, Jueves Luminosos.',
+  },
 
   // POR EL PAPA
   {
