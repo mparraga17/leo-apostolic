@@ -43,5 +43,11 @@ export const adIds = {
   interstitial: getAdId('interstitial'),
 };
 
-// Frecuencia: cada cuántos cierres de modal de evento mostrar intersticial
-export const INTERSTITIAL_FREQUENCY = 5;
+// Frecuencia: cada cuántos cierres de modal mostrar intersticial.
+// Cada 2 cierres da un buen equilibrio entre ingresos y UX.
+export const INTERSTITIAL_FREQUENCY = 2;
+
+// Cuántos cierres iniciales pasamos sin mostrar intersticiales.
+// Da una primera experiencia limpia al usuario nuevo y evita
+// que vea anuncio si solo entra a ver 1-2 eventos por sesión.
+export const INTERSTITIAL_GRACE_CLOSES = 2;

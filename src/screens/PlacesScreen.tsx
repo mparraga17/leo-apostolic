@@ -11,6 +11,7 @@ import { places, PlaceCategory, CulturalPlace } from '../data/places';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
 import { useI18n } from '../i18n';
 import AdBanner from '../components/AdBanner';
+import { onModalClosed } from '../services/adManager';
 
 function groupByCategory(items: CulturalPlace[]) {
   const groups: Record<string, CulturalPlace[]> = {};
@@ -35,6 +36,13 @@ export default function PlacesScreen() {
   const [selected, setSelected] = useState<CulturalPlace | null>(null);
   const grouped = groupByCategory(places);
   const featured = places.filter(p => p.highlight);
+
+  // Cierra el modal y notifica al adManager para llevar la cuenta de
+  // cierres, que cada N veces dispara un intersticial.
+  const closePlaceModal = () => {
+    setSelected(null);
+    onModalClosed();
+  };
 
   const openInMaps = (place: CulturalPlace) => {
     const url = `https://www.google.com/maps/dir/?api=1&destination=${place.latitude},${place.longitude}`;
@@ -106,14 +114,14 @@ export default function PlacesScreen() {
         visible={selected !== null}
         animationType="slide"
         presentationStyle="pageSheet"
-        onRequestClose={() => setSelected(null)}
+        onRequestClose={closePlaceModal}
       >
         {selected && (
           <View style={styles.modalContainer}>
             <View style={styles.modalHeader}>
               <View style={{ flex: 1 }} />
               <TouchableOpacity
-                onPress={() => setSelected(null)}
+                onPress={closePlaceModal}
                 hitSlop={{ top: 12, right: 12, bottom: 12, left: 12 }}
                 accessibilityLabel="Cerrar"
               >

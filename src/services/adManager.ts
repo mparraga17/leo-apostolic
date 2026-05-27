@@ -13,11 +13,12 @@ import {
   InterstitialAd,
   AdEventType,
 } from 'react-native-google-mobile-ads';
-import { adIds, INTERSTITIAL_FREQUENCY } from '../config/ads';
+import { adIds, INTERSTITIAL_FREQUENCY, INTERSTITIAL_GRACE_CLOSES } from '../config/ads';
 
 let interstitial: InterstitialAd | null = null;
 let isLoaded = false;
 let counter = 0;
+let totalCloses = 0;
 
 function ensureInterstitial(): InterstitialAd {
   if (interstitial) return interstitial;
@@ -53,10 +54,18 @@ export function initAds(): void {
 }
 
 /**
- * Llamar cuando el usuario cierra el modal de un evento.
- * El intersticial solo se muestra si han pasado N llamadas.
+ * Llamar cuando el usuario cierra cualquier modal de detalle
+ * (evento, lugar). El intersticial se muestra cada N cierres
+ * después de un período de gracia inicial.
  */
-export function onEventModalClosed(): void {
+export function onModalClosed(): void {
+  totalCloses += 1;
+
+  // Período de gracia: las primeras N veces no enseñamos intersticial
+  if (totalCloses <= INTERSTITIAL_GRACE_CLOSES) {
+    return;
+  }
+
   counter += 1;
   if (counter >= INTERSTITIAL_FREQUENCY) {
     counter = 0;
@@ -69,3 +78,8 @@ export function onEventModalClosed(): void {
     }
   }
 }
+
+/**
+ * Alias retrocompatible. Se usa desde AgendaScreen.
+ */
+export const onEventModalClosed = onModalClosed;
