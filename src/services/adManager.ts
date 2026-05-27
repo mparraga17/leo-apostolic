@@ -12,13 +12,19 @@
 import {
   InterstitialAd,
   AdEventType,
+  TestIds,
 } from 'react-native-google-mobile-ads';
 import { adIds, INTERSTITIAL_FREQUENCY, INTERSTITIAL_GRACE_CLOSES } from '../config/ads';
 
 let interstitial: InterstitialAd | null = null;
-let isLoaded = false;
 let counter = 0;
 let totalCloses = 0;
+
+function log(...args: any[]) {
+  if (__DEV__) {
+    console.log('[adManager]', ...args);
+  }
+}
 
 function ensureInterstitial(): InterstitialAd {
   if (interstitial) return interstitial;
@@ -28,17 +34,21 @@ function ensureInterstitial(): InterstitialAd {
   });
 
   ad.addAdEventListener(AdEventType.LOADED, () => {
-    isLoaded = true;
+    log('Interstitial LOADED');
+  });
+
+  ad.addAdEventListener(AdEventType.OPENED, () => {
+    log('Interstitial OPENED');
   });
 
   ad.addAdEventListener(AdEventType.CLOSED, () => {
-    isLoaded = false;
-    // Recargar para la próxima
-    ad.load();
+    log('Interstitial CLOSED — preloading next');
+    // Recargar para la próxima vez
+    try { ad.load(); } catch { /* noop */ }
   });
 
-  ad.addAdEventListener(AdEventType.ERROR, () => {
-    isLoaded = false;
+  ad.addAdEventListener(AdEventType.ERROR, (error) => {
+    log('Interstitial ERROR:', error);
   });
 
   interstitial = ad;
@@ -50,7 +60,8 @@ function ensureInterstitial(): InterstitialAd {
  */
 export function initAds(): void {
   const ad = ensureInterstitial();
-  ad.load();
+  log('Starting initial load...');
+  try { ad.load(); } catch (err) { log('initial load error', err); }
 }
 
 /**
@@ -60,22 +71,44 @@ export function initAds(): void {
  */
 export function onModalClosed(): void {
   totalCloses += 1;
+  log(`Modal closed (total=${totalCloses}, counter=${counter})`);
 
   // Período de gracia: las primeras N veces no enseñamos intersticial
   if (totalCloses <= INTERSTITIAL_GRACE_CLOSES) {
+    log('Skipping (grace period)');
     return;
   }
 
   counter += 1;
-  if (counter >= INTERSTITIAL_FREQUENCY) {
-    counter = 0;
-    if (interstitial && isLoaded) {
-      try {
-        interstitial.show();
-      } catch {
-        // Silenciar errores de show; no romper la UX
-      }
-    }
+  if (counter < INTERSTITIAL_FREQUENCY) {
+    log(`Not showing yet (counter=${counter}/${INTERSTITIAL_FREQUENCY})`);
+    return;
+  }
+
+  // Llegamos al umbral. Solo mostramos si REALMENTE hay un anuncio cargado.
+  // La SDK expone .loaded como fuente de verdad real.
+  const ad = interstitial;
+  if (!ad) {
+    log('No ad instance, skipping');
+    return;
+  }
+
+  if (!ad.loaded) {
+    log('Ad not yet loaded, will retry on next modal close');
+    // No reseteamos counter para que en el siguiente cierre lo intentemos otra vez
+    counter = INTERSTITIAL_FREQUENCY - 1;
+    // Y mientras tanto, intentamos cargar otro
+    try { ad.load(); } catch { /* noop */ }
+    return;
+  }
+
+  // Tenemos anuncio listo: lo mostramos y reseteamos contador
+  log('Showing interstitial');
+  counter = 0;
+  try {
+    ad.show();
+  } catch (err) {
+    log('Show error', err);
   }
 }
 
