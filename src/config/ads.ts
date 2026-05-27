@@ -15,7 +15,10 @@
 import { Platform } from 'react-native';
 import { TestIds } from 'react-native-google-mobile-ads';
 
-// Cambiar a true cuando vayamos a publicar v1.1 con anuncios reales
+// Cambiar a true cuando vayamos a publicar v1.1 con anuncios reales.
+// IMPORTANTE: AdMob necesita que la app esté publicada en App Store
+// para servir anuncios reales. Hasta entonces, en TestFlight pueden
+// verse en blanco porque AdMob aún no ha aprobado la app.
 const USE_PRODUCTION_ADS = true;
 
 // IDs reales de la cuenta AdMob de Pizco Deploy
