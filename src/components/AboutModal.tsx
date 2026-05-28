@@ -21,7 +21,7 @@ interface Props {
   onClose: () => void;
 }
 
-const APP_STORE_URL = 'https://apps.apple.com/app/leo-look-up/id0000000000'; // se actualiza tras publicar
+const APP_STORE_URL = 'https://apps.apple.com/es/app/leo-look-up/id6773494248';
 const PRIVACY_URL = 'https://mparraga17.github.io/leo-apostolic/privacy-es.html';
 const PRIVACY_URL_EN = 'https://mparraga17.github.io/leo-apostolic/privacy-en.html';
 const TERMS_URL = 'https://mparraga17.github.io/leo-apostolic/terms-es.html';
