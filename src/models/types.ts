@@ -84,6 +84,7 @@ export enum ProductCategory {
   Libros = 'Libros',
   Religiosos = 'Religiosos',
   Ninos = 'Niños',
+  Banderas = 'Banderas',
   Souvenirs = 'Souvenirs',
 }
 

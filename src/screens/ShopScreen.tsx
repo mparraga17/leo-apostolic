@@ -28,6 +28,7 @@ function categoryIcon(category: ProductCategory): keyof typeof Ionicons.glyphMap
     case ProductCategory.Souvenirs: return 'gift-outline';
     case ProductCategory.Ninos: return 'happy-outline';
     case ProductCategory.Religiosos: return 'flower-outline';
+    case ProductCategory.Banderas: return 'flag-outline';
     default: return 'pricetag-outline';
   }
 }

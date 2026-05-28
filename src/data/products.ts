@@ -155,6 +155,58 @@ export const products: Product[] = [
     description: 'Libro para colorear con la historia del Papa. Edades 4-12.',
     featured: true,
   },
+
+  // ============================================================
+  // BANDERAS — para llevar a los actos públicos del Papa
+  // ============================================================
+  {
+    id: 'prd_011',
+    category: ProductCategory.Banderas,
+    title: 'Bandera del Vaticano con firma del Papa León XIV (100x70 cm)',
+    author: 'Pla Pla Pla',
+    price: 19.99,
+    currency: 'EUR',
+    amazonAsin: 'B0F8R6NDLS',
+    description: 'Bandera oficial del Vaticano con la firma conmemorativa del Papa León XIV. Tamaño grande para asta o exterior.',
+    featured: true,
+  },
+  {
+    id: 'prd_012',
+    category: ProductCategory.Banderas,
+    title: 'Bandera de España con Sagrado Corazón de Jesús (150x90 cm)',
+    author: 'Durabol',
+    price: 5.95,
+    currency: 'EUR',
+    rating: 4.6,
+    totalRatings: 36,
+    amazonAsin: 'B07NJ27N2V',
+    description: 'Bandera tradicional española con el Sagrado Corazón. Habitual en peregrinaciones y actos religiosos.',
+    featured: true,
+  },
+  {
+    id: 'prd_013',
+    category: ProductCategory.Banderas,
+    title: 'Bandera de España (90x150 cm) con pulsera',
+    price: 7.29,
+    currency: 'EUR',
+    rating: 4.5,
+    totalRatings: 180,
+    amazonAsin: 'B0CRYJ9JG7',
+    description: 'Bandera española de calidad con dos ojales metálicos. Apta para asta, exterior o uso interior.',
+    featured: false,
+  },
+  {
+    id: 'prd_014',
+    category: ProductCategory.Banderas,
+    title: 'Pack de 40 banderines del Vaticano de mano (5.5 x 8.25 in)',
+    author: 'Pandiui23',
+    price: 9.99,
+    currency: 'EUR',
+    rating: 5.0,
+    amazonAsin: 'B0CL6QXXMX',
+    description: 'Pack de 40 banderines pequeños del Vaticano para llevar en la mano durante el evento. Ideales para grupos parroquiales.',
+    featured: true,
+  },
 ];
 
 // Búsquedas predefinidas en Amazon (para botones de "explorar más")
@@ -164,4 +216,5 @@ export const amazonSearches = [
   { id: 'srch_3', label: '📖 Biblias católicas', query: 'biblia catolica español' },
   { id: 'srch_4', label: '🕯️ Velas de oración', query: 'vela oracion catolica' },
   { id: 'srch_5', label: '📚 Más libros del Papa', query: 'papa leon xiv libros' },
+  { id: 'srch_6', label: '🚩 Banderas para el evento', query: 'bandera vaticano peregrinos' },
 ];
