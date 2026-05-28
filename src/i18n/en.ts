@@ -86,7 +86,7 @@ export default {
     headerTitle: 'Shop',
     featuredSection: 'FEATURED',
     exploreSection: 'EXPLORE ON AMAZON',
-    affiliateDisclaimer: 'As an Amazon Associate, this app may earn commissions from purchases made through the links. This does not affect the price you pay.',
+    affiliateDisclaimer: 'As an Amazon Associate, Pizco Deploy earns from qualifying purchases. This does not affect the price you pay.',
   },
 
   // Common

@@ -86,7 +86,7 @@ export default {
     headerTitle: 'Tienda',
     featuredSection: 'DESTACADOS',
     exploreSection: 'EXPLORAR EN AMAZON',
-    affiliateDisclaimer: 'Como afiliado de Amazon, esta app puede obtener comisiones por compras realizadas a través de los enlaces. Esto no afecta al precio que pagas.',
+    affiliateDisclaimer: 'Como Afiliado de Amazon, Pizco Deploy obtiene ingresos por las compras adscritas que cumplen los requisitos aplicables. Esto no afecta al precio que pagas.',
   },
 
   // Comunes

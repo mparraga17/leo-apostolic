@@ -7,9 +7,11 @@
 
 import { Product, ProductCategory } from '../models/types';
 
-// Tag de afiliado de Amazon (cuando lo tengas, lo cambias aquí)
-// Ejemplo: 'tualias-21'
-export const AMAZON_AFFILIATE_TAG: string | null = null;
+// Tag de afiliado de Amazon España (cuenta paraguas Pizco Deploy).
+// Cuando publiquemos otras apps, podemos crear Tracking IDs adicionales
+// (p.ej. 'leolookup-21', 'otraapp-21') desde el panel de afiliados, todos
+// asociados a la misma cuenta `pizcodeploy-21`.
+export const AMAZON_AFFILIATE_TAG: string | null = 'pizcodeploy-21';
 
 // Construye la URL de Amazon con o sin tag de afiliado
 export function buildAmazonUrl(asin: string): string {
