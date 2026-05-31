@@ -66,13 +66,16 @@ function AppContent() {
     });
   }, [locale]);
 
-  // Inicializar AdMob una sola vez al arrancar la app.
-  // Pide permiso ATT en iOS y precarga el primer intersticial.
+  // Inicializar AdMob una vez que el splash ha desaparecido.
+  // Importante: lanzamos DESPUÉS del splash para que el diálogo
+  // de ATT aparezca con la app ya en primer plano y visible.
+  // (adsInit además espera internamente a AppState 'active'.)
   useEffect(() => {
+    if (showSplash) return;
     initializeAds().catch(() => {
       // Silenciar errores: la app debe seguir funcionando sin ads
     });
-  }, []);
+  }, [showSplash]);
 
   // Si la app se abre tocando una notificación, navega al evento
   useEffect(() => {
