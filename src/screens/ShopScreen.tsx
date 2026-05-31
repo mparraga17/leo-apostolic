@@ -92,6 +92,16 @@ export default function ShopScreen() {
           <Text style={styles.headerTitle}>{t('shop.headerTitle')}</Text>
         </View>
 
+        {/* Banner de donación: 100% de ingresos a la fundación */}
+        <TouchableOpacity
+          style={styles.donationBanner}
+          onPress={() => Linking.openURL('https://fsocialhijasdelacaridad.org/')}
+          activeOpacity={0.85}
+        >
+          <Ionicons name="heart" size={18} color={colors.liveRed} />
+          <Text style={styles.donationBannerText}>{t('shop.donationBanner')}</Text>
+        </TouchableOpacity>
+
         {/* Destacados horizontales */}
         <View style={styles.section}>
           <Text style={styles.sectionLabel}>{t('shop.featuredSection')}</Text>
@@ -196,6 +206,27 @@ const styles = StyleSheet.create({
   },
   headerSubtitle: { ...typography.subhead, color: colors.textSecondary, marginBottom: 4 },
   headerTitle: { ...typography.display, color: colors.text },
+
+  donationBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginHorizontal: spacing.base,
+    marginBottom: spacing.sm,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.base,
+    backgroundColor: colors.primaryMuted,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.primarySoft,
+  },
+  donationBannerText: {
+    ...typography.footnote,
+    color: colors.text,
+    flex: 1,
+    lineHeight: 17,
+    fontWeight: '500',
+  },
 
   section: { marginTop: spacing.lg },
   sectionLabel: {

@@ -87,6 +87,7 @@ export default {
     featuredSection: 'DESTACADOS',
     exploreSection: 'EXPLORAR EN AMAZON',
     affiliateDisclaimer: 'Como Afiliado de Amazon, Pizco Deploy obtiene ingresos por las compras adscritas que cumplen los requisitos aplicables. Esto no afecta al precio que pagas.',
+    donationBanner: '100% de los ingresos de esta app se donan a la Fundación Social Hijas de la Caridad.',
   },
 
   // Comunes
@@ -109,6 +110,10 @@ export default {
     actionsSection: 'COLABORA',
     shareApp: 'Compartir Leo Look Up',
     contact: 'Contacto y sugerencias',
+    donationSection: 'COMPROMISO SOCIAL',
+    donationTitle: 'Todos los ingresos se donan',
+    donationText: 'El 100% de los ingresos que genera esta app (publicidad y enlaces de afiliado) se dona íntegramente a la Fundación Social Hijas de la Caridad (CIF G88640958), dedicada a ayudar a familias, personas sin hogar, migrantes y los más vulnerables. Al usar Leo Look Up, colaboras con su labor.',
+    donationLink: 'Conocer la Fundación',
     legalSection: 'LEGAL',
     privacyPolicy: 'Política de privacidad',
     termsOfUse: 'Términos de uso',
