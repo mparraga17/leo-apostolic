@@ -87,7 +87,7 @@ export default {
     featuredSection: 'FEATURED',
     exploreSection: 'EXPLORE ON AMAZON',
     affiliateDisclaimer: 'As an Amazon Associate, Pizco Deploy earns from qualifying purchases. This does not affect the price you pay.',
-    donationBanner: '100% of this app\'s proceeds are donated to Fundación Social Hijas de la Caridad.',
+    donationBanner: 'This app\'s proceeds are donated to a soup kitchen in the Chamberí district of Madrid.',
   },
 
   // Common
@@ -111,9 +111,8 @@ export default {
     shareApp: 'Share Leo Look Up',
     contact: 'Contact and feedback',
     donationSection: 'SOCIAL COMMITMENT',
-    donationTitle: 'All proceeds are donated',
-    donationText: '100% of the revenue this app generates (advertising and affiliate links) is donated in full to Fundación Social Hijas de la Caridad (tax ID G88640958), a foundation dedicated to helping families, homeless people, migrants and the most vulnerable. By using Leo Look Up, you support their work.',
-    donationLink: 'Learn about the Foundation',
+    donationTitle: 'Proceeds are donated',
+    donationText: 'This app is not meant to make money, but to accompany the faithful. Any proceeds it may generate (advertising and affiliate links) are donated to a soup kitchen in the Chamberí district of Madrid that helps the most vulnerable. By using Leo Look Up, you support that work.',
     legalSection: 'LEGAL',
     privacyPolicy: 'Privacy Policy',
     termsOfUse: 'Terms of Use',

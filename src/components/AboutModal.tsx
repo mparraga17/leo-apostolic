@@ -28,7 +28,6 @@ const TERMS_URL = 'https://mparraga17.github.io/leo-apostolic/terms-es.html';
 const TERMS_URL_EN = 'https://mparraga17.github.io/leo-apostolic/terms-en.html';
 const SUPPORT_URL = 'https://mparraga17.github.io/leo-apostolic/';
 const CONTACT_EMAIL = 'pizcodeploy@gmail.com';
-const FOUNDATION_URL = 'https://fsocialhijasdelacaridad.org/';
 
 export default function AboutModal({ visible, onClose }: Props) {
   const { t, locale } = useI18n();
@@ -98,21 +97,13 @@ export default function AboutModal({ visible, onClose }: Props) {
 
           {/* Compromiso social — donación destacada */}
           <Text style={styles.sectionLabel}>{t('about.donationSection')}</Text>
-          <TouchableOpacity
-            style={styles.donationCard}
-            onPress={() => openLink(FOUNDATION_URL)}
-            activeOpacity={0.85}
-          >
+          <View style={styles.donationCard}>
             <View style={styles.donationHeader}>
               <Ionicons name="heart" size={22} color={colors.liveRed} />
               <Text style={styles.donationTitle}>{t('about.donationTitle')}</Text>
             </View>
             <Text style={styles.donationText}>{t('about.donationText')}</Text>
-            <View style={styles.donationLinkRow}>
-              <Text style={styles.donationLink}>{t('about.donationLink')}</Text>
-              <Ionicons name="open-outline" size={15} color={colors.primary} />
-            </View>
-          </TouchableOpacity>
+          </View>
 
           {/* Acciones */}
           <Text style={styles.sectionLabel}>{t('about.actionsSection')}</Text>
@@ -297,17 +288,6 @@ const styles = StyleSheet.create({
     ...typography.subhead,
     color: colors.text,
     lineHeight: 20,
-  },
-  donationLinkRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    marginTop: spacing.md,
-  },
-  donationLink: {
-    ...typography.bodyEmphasized,
-    color: colors.primary,
-    fontWeight: '600',
   },
 
   list: {

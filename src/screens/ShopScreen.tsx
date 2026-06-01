@@ -92,15 +92,11 @@ export default function ShopScreen() {
           <Text style={styles.headerTitle}>{t('shop.headerTitle')}</Text>
         </View>
 
-        {/* Banner de donación: 100% de ingresos a la fundación */}
-        <TouchableOpacity
-          style={styles.donationBanner}
-          onPress={() => Linking.openURL('https://fsocialhijasdelacaridad.org/')}
-          activeOpacity={0.85}
-        >
+        {/* Banner de donación: ingresos a un comedor social del barrio */}
+        <View style={styles.donationBanner}>
           <Ionicons name="heart" size={18} color={colors.liveRed} />
           <Text style={styles.donationBannerText}>{t('shop.donationBanner')}</Text>
-        </TouchableOpacity>
+        </View>
 
         {/* Destacados horizontales */}
         <View style={styles.section}>
