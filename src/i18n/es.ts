@@ -11,6 +11,7 @@ export default {
     prayers: 'Oraciones',
     songs: 'Cantos',
     shop: 'Tienda',
+    traffic: 'Tráfico',
   },
 
   // Pantalla Hoy
@@ -99,6 +100,26 @@ export default {
     language: 'Idioma',
     languageSpanish: 'Español',
     languageEnglish: 'English',
+  },
+
+  // Pantalla Tráfico
+  traffic: {
+    headerSubtitle: 'Visita del Papa · Madrid',
+    headerTitle: 'Tráfico',
+    activeSection: 'CORTES ACTIVOS AHORA',
+    upcomingSection: 'PRÓXIMOS CORTES',
+    byDaySection: 'TODOS LOS CORTES POR DÍA',
+    noneActive: 'No hay cortes activos en este momento.',
+    severityTotal: 'Corte total',
+    severityParcial: 'Corte parcial',
+    severityAfectado: 'Tráfico afectado',
+    affectsEvent: 'Afecta a: {{event}}',
+    officialButton: 'Ver información oficial del Ayuntamiento',
+    emtButton: 'Líneas de autobús afectadas (EMT)',
+    disclaimer: 'Información orientativa basada en fuentes oficiales del Ayuntamiento de Madrid y EMT (actualizada {{date}}). Los cortes pueden cambiar sin previo aviso. Consulta siempre las fuentes oficiales antes de desplazarte.',
+    inEventTitle: 'AFECTACIÓN AL TRÁFICO',
+    inTodayTitle: 'CORTES DE TRÁFICO AHORA',
+    seeAll: 'Ver todos los cortes',
   },
 
   // About / Información

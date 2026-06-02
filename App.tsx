@@ -20,6 +20,7 @@ import PrayersScreen from './src/screens/PrayersScreen';
 import SongsScreen from './src/screens/SongsScreen';
 import ShopScreen from './src/screens/ShopScreen';
 import PlacesScreen from './src/screens/PlacesScreen';
+import TrafficScreen from './src/screens/TrafficScreen';
 import SplashScreen from './src/screens/SplashScreen';
 import TabBar, { TabId } from './src/components/TabBar';
 import { schedulePapalEventNotifications } from './src/services/notifications';
@@ -113,7 +114,10 @@ function AppContent() {
   const renderScreen = () => {
     switch (activeTab) {
       case 'today': return (
-        <TodayScreen onNavigateToPrayers={() => setActiveTab('prayers')} />
+        <TodayScreen
+          onNavigateToPrayers={() => setActiveTab('prayers')}
+          onNavigateToTraffic={() => setActiveTab('traffic')}
+        />
       );
       case 'prayers': return <PrayersScreen />;
       case 'songs': return <SongsScreen />;
@@ -122,6 +126,7 @@ function AppContent() {
       );
       case 'places': return <PlacesScreen />;
       case 'shop': return <ShopScreen />;
+      case 'traffic': return <TrafficScreen />;
     }
   };
 

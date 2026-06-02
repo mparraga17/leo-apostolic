@@ -102,3 +102,35 @@ export interface Product {
   description: string;
   featured: boolean;
 }
+
+
+// ---- CORTES DE TRÁFICO (visita del Papa) ----
+// Fuente oficial: Ayuntamiento de Madrid y EMT Madrid.
+
+export enum TrafficSeverity {
+  Total = 'Total',        // Calle cerrada por completo
+  Parcial = 'Parcial',    // Algunos carriles / tráfico local permitido
+  Afectado = 'Afectado',  // Posibles retenciones, desvíos
+}
+
+export interface TrafficClosure {
+  id: string;
+  zone: string;              // "Plaza de Lima y entorno"
+  zoneEn?: string;
+  streets: string;           // "Paseo de la Castellana (carriles centrales)"
+  streetsEn?: string;
+  severity: TrafficSeverity;
+  // Vigencia del corte
+  startDate: string;         // ISO "2026-06-06"
+  startTime?: string;        // "09:00" (si aplica)
+  endDate: string;           // ISO "2026-06-06"
+  endTime?: string;          // "23:00" (si aplica)
+  note?: string;             // Detalle adicional
+  noteEn?: string;
+  // IDs de eventos del Papa a los que afecta esta zona (para enlazar
+  // el corte con el detalle del evento y con "dónde está el Papa")
+  relatedEventIds?: string[];
+  // Coordenadas aproximadas del centro de la zona (para futuro mapa)
+  latitude?: number;
+  longitude?: number;
+}

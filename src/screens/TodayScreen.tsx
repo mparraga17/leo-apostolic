@@ -11,6 +11,7 @@ import { getSaintOfTheDay } from '../data/saints';
 import { prayers } from '../data/prayers';
 import { getQuoteOfTheDay } from '../data/popeQuotes';
 import PapalLocationCard from '../components/PapalLocationCard';
+import ActiveTrafficWidget from '../components/ActiveTrafficWidget';
 import LanguageToggle from '../components/LanguageToggle';
 import AboutModal from '../components/AboutModal';
 import AdBanner from '../components/AdBanner';
@@ -48,7 +49,7 @@ function getVisitStatus(now: Date = new Date()): VisitStatus {
   return { phase: 'after' };
 }
 
-export default function TodayScreen({ onNavigateToPrayers }: { onNavigateToPrayers?: () => void }) {
+export default function TodayScreen({ onNavigateToPrayers, onNavigateToTraffic }: { onNavigateToPrayers?: () => void; onNavigateToTraffic?: () => void }) {
   const { t, locale } = useI18n();
   const [aboutVisible, setAboutVisible] = useState(false);
   const today = useMemo(() => new Date(), []);
@@ -107,6 +108,11 @@ export default function TodayScreen({ onNavigateToPrayers }: { onNavigateToPraye
       )}
 
       {visitStatus.phase === 'during' && <PapalLocationCard />}
+
+      {/* Cortes de tráfico activos ahora (solo durante la visita) */}
+      {visitStatus.phase === 'during' && (
+        <ActiveTrafficWidget onSeeAll={onNavigateToTraffic} />
+      )}
 
       {/* Santo del día */}
       <View style={styles.section}>

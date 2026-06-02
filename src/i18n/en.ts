@@ -11,6 +11,7 @@ export default {
     prayers: 'Prayers',
     songs: 'Hymns',
     shop: 'Shop',
+    traffic: 'Traffic',
   },
 
   // Today screen
@@ -99,6 +100,26 @@ export default {
     language: 'Language',
     languageSpanish: 'Español',
     languageEnglish: 'English',
+  },
+
+  // Traffic screen
+  traffic: {
+    headerSubtitle: "Pope's visit · Madrid",
+    headerTitle: 'Traffic',
+    activeSection: 'CLOSURES ACTIVE NOW',
+    upcomingSection: 'UPCOMING CLOSURES',
+    byDaySection: 'ALL CLOSURES BY DAY',
+    noneActive: 'There are no active closures at the moment.',
+    severityTotal: 'Full closure',
+    severityParcial: 'Partial closure',
+    severityAfectado: 'Traffic affected',
+    affectsEvent: 'Affects: {{event}}',
+    officialButton: 'See official City Council information',
+    emtButton: 'Affected bus lines (EMT)',
+    disclaimer: 'Indicative information based on official sources from Madrid City Council and EMT (updated {{date}}). Closures may change without notice. Always check official sources before traveling.',
+    inEventTitle: 'TRAFFIC IMPACT',
+    inTodayTitle: 'TRAFFIC CLOSURES NOW',
+    seeAll: 'See all closures',
   },
 
   // About / Information
