@@ -45,6 +45,7 @@ export const trafficClosures: TrafficClosure[] = [
     relatedEventIds: ['evt_006'],
     latitude: 40.4528,
     longitude: -3.6883,
+    mapQuery: 'Plaza de Lima, Madrid',
   },
   {
     id: 'trf_cibeles_preparativos',
@@ -60,6 +61,7 @@ export const trafficClosures: TrafficClosure[] = [
     relatedEventIds: ['evt_007'],
     latitude: 40.4196,
     longitude: -3.6929,
+    mapQuery: 'Plaza de Cibeles, Madrid',
   },
 
   // ============================================================
@@ -80,6 +82,7 @@ export const trafficClosures: TrafficClosure[] = [
     relatedEventIds: ['evt_006', 'evt_015'],
     latitude: 40.4528,
     longitude: -3.6883,
+    mapQuery: 'Plaza de Lima, Madrid',
   },
 
   // ============================================================
@@ -101,6 +104,7 @@ export const trafficClosures: TrafficClosure[] = [
     relatedEventIds: ['evt_006'],
     latitude: 40.4528,
     longitude: -3.6883,
+    mapQuery: 'Plaza de Lima, Madrid',
   },
 
   // ============================================================
@@ -122,6 +126,7 @@ export const trafficClosures: TrafficClosure[] = [
     relatedEventIds: ['evt_007'],
     latitude: 40.4196,
     longitude: -3.6929,
+    mapQuery: 'Calle de Alcalá, Madrid',
   },
 
   // ============================================================
@@ -143,6 +148,7 @@ export const trafficClosures: TrafficClosure[] = [
     relatedEventIds: ['evt_009'],
     latitude: 40.4232,
     longitude: -3.6716,
+    mapQuery: 'Movistar Arena, Madrid',
   },
 
   // ============================================================
@@ -164,6 +170,7 @@ export const trafficClosures: TrafficClosure[] = [
     relatedEventIds: ['evt_014'],
     latitude: 40.4156,
     longitude: -3.7144,
+    mapQuery: 'Catedral de la Almudena, Madrid',
   },
 
   // ============================================================
@@ -185,6 +192,7 @@ export const trafficClosures: TrafficClosure[] = [
     relatedEventIds: ['evt_015'],
     latitude: 40.4530,
     longitude: -3.6883,
+    mapQuery: 'Estadio Santiago Bernabéu, Madrid',
   },
 
   // ============================================================
@@ -206,5 +214,6 @@ export const trafficClosures: TrafficClosure[] = [
     relatedEventIds: ['evt_016'],
     latitude: 40.4636,
     longitude: -3.6160,
+    mapQuery: 'IFEMA Madrid',
   },
 ];

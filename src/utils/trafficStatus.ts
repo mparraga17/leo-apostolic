@@ -71,3 +71,20 @@ export function getClosuresByDay(): { date: string; closures: TrafficClosure[] }
     .sort()
     .map(date => ({ date, closures: byDay[date] }));
 }
+
+
+/**
+ * Construye una URL de Google Maps para visualizar la zona de un corte.
+ * Google resalta en el mapa los lugares/calles con nombre reconocible.
+ * Prioridad: mapQuery explícito > coordenadas > nombre de la zona.
+ * El formato universal abre la app nativa de Maps en iOS/Android.
+ */
+export function buildClosureMapUrl(c: TrafficClosure): string {
+  if (c.mapQuery) {
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.mapQuery)}`;
+  }
+  if (c.latitude != null && c.longitude != null) {
+    return `https://www.google.com/maps/search/?api=1&query=${c.latitude},${c.longitude}`;
+  }
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.zone + ', Madrid')}`;
+}

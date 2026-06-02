@@ -7,11 +7,12 @@
 // ============================================================
 
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { TrafficClosure, TrafficSeverity } from '../models/types';
 import { colors, typography, spacing, radius } from '../theme/theme';
 import { useI18n } from '../i18n';
+import { buildClosureMapUrl } from '../utils/trafficStatus';
 
 interface Props {
   closure: TrafficClosure;
@@ -83,6 +84,15 @@ export default function TrafficClosureCard({ closure, compact }: Props) {
       {!compact && note && (
         <Text style={styles.note}>{note}</Text>
       )}
+
+      <TouchableOpacity
+        style={styles.mapButton}
+        onPress={() => Linking.openURL(buildClosureMapUrl(closure))}
+        activeOpacity={0.7}
+      >
+        <Ionicons name="map-outline" size={14} color={colors.primary} />
+        <Text style={styles.mapButtonText}>{t('traffic.viewOnMap')}</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -143,5 +153,18 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
     lineHeight: 17,
     fontStyle: 'italic',
+  },
+  mapButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    alignSelf: 'flex-start',
+    marginTop: spacing.sm,
+    paddingVertical: 4,
+  },
+  mapButtonText: {
+    ...typography.footnote,
+    color: colors.primary,
+    fontWeight: '600',
   },
 });

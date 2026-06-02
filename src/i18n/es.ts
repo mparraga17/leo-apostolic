@@ -116,6 +116,7 @@ export default {
     affectsEvent: 'Afecta a: {{event}}',
     officialButton: 'Ver información oficial del Ayuntamiento',
     emtButton: 'Líneas de autobús afectadas (EMT)',
+    viewOnMap: 'Ver en el mapa',
     disclaimer: 'Información orientativa basada en fuentes oficiales del Ayuntamiento de Madrid y EMT (actualizada {{date}}). Los cortes pueden cambiar sin previo aviso. Consulta siempre las fuentes oficiales antes de desplazarte.',
     inEventTitle: 'AFECTACIÓN AL TRÁFICO',
     inTodayTitle: 'CORTES DE TRÁFICO AHORA',

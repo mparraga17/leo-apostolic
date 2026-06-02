@@ -116,6 +116,7 @@ export default {
     affectsEvent: 'Affects: {{event}}',
     officialButton: 'See official City Council information',
     emtButton: 'Affected bus lines (EMT)',
+    viewOnMap: 'View on map',
     disclaimer: 'Indicative information based on official sources from Madrid City Council and EMT (updated {{date}}). Closures may change without notice. Always check official sources before traveling.',
     inEventTitle: 'TRAFFIC IMPACT',
     inTodayTitle: 'TRAFFIC CLOSURES NOW',

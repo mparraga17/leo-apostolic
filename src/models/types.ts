@@ -133,4 +133,8 @@ export interface TrafficClosure {
   // Coordenadas aproximadas del centro de la zona (para futuro mapa)
   latitude?: number;
   longitude?: number;
+  // Consulta para Google Maps: un nombre de lugar/calle reconocible que
+  // Maps resalte al abrirlo (p.ej. "Plaza de Lima, Madrid"). Si no se
+  // indica, se usa la zona o las coordenadas como fallback.
+  mapQuery?: string;
 }
