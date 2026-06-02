@@ -11,7 +11,7 @@
 // necesidades que puedan surgir". Por eso SIEMPRE mostramos un
 // aviso y un enlace a la fuente oficial.
 //
-// Última actualización manual: 2026-06-02
+// Última actualización manual: 2026-06-02 (verificado recorrido Corpus)
 // ============================================================
 
 import { TrafficClosure, TrafficSeverity } from '../models/types';
@@ -108,17 +108,17 @@ export const trafficClosures: TrafficClosure[] = [
   // ============================================================
   {
     id: 'trf_evt007_cibeles',
-    zone: 'Plaza de Cibeles y centro (Corpus Christi)',
-    zoneEn: 'Plaza de Cibeles and city center (Corpus Christi)',
-    streets: 'Plaza de Cibeles, Paseo del Prado, Paseo de Recoletos, calle Alcalá, calle Mayor, calle Bailén y calles adyacentes del recorrido de la procesión. Más de 50 líneas EMT afectadas.',
-    streetsEn: 'Plaza de Cibeles, Paseo del Prado, Paseo de Recoletos, Calle Alcalá, Calle Mayor, Calle Bailén and streets along the procession route. Over 50 EMT lines affected.',
+    zone: 'Plaza de Cibeles y recorrido del Corpus',
+    zoneEn: 'Plaza de Cibeles and Corpus route',
+    streets: 'Plaza de Cibeles, calle Alcalá (recorrido de la procesión entre Cibeles y la iglesia de San José, hacia Gran Vía), Paseo del Prado, Paseo de Recoletos. Más de 50 líneas EMT afectadas.',
+    streetsEn: 'Plaza de Cibeles, Calle Alcalá (procession route between Cibeles and the church of San José, towards Gran Vía), Paseo del Prado, Paseo de Recoletos. Over 50 EMT lines affected.',
     severity: TrafficSeverity.Total,
     startDate: '2026-06-07',
     startTime: '06:00',
     endDate: '2026-06-07',
     endTime: '15:00',
-    note: 'Santa Misa (10:00) y Procesión del Corpus por el centro. Es el acto con mayor afectación al tráfico. Todo el centro histórico afectado durante la mañana.',
-    noteEn: 'Holy Mass (10:00) and Corpus Procession through the center. The event with the greatest traffic impact. Entire historic center affected during the morning.',
+    note: 'Santa Misa (10:00, accesos desde las 07:00) y Procesión del Corpus. La procesión recorre la calle Alcalá desde Cibeles hasta la iglesia de San José y regresa. Es el acto con mayor afectación al tráfico; todo el entorno de Cibeles afectado durante la mañana.',
+    noteEn: 'Holy Mass (10:00, access from 07:00) and Corpus Procession. The procession runs along Calle Alcalá from Cibeles to the church of San José and back. The event with the greatest traffic impact; the entire Cibeles area is affected during the morning.',
     relatedEventIds: ['evt_007'],
     latitude: 40.4196,
     longitude: -3.6929,
