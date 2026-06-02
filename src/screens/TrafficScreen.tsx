@@ -54,20 +54,24 @@ export default function TrafficScreen() {
 
         {/* Cortes activos ahora */}
         <Text style={styles.sectionLabel}>{t('traffic.activeSection')}</Text>
-        {active.length > 0 ? (
-          active.map(c => <TrafficClosureCard key={c.id} closure={c} />)
-        ) : (
-          <View style={styles.emptyCard}>
-            <Ionicons name="checkmark-circle-outline" size={20} color={colors.success} />
-            <Text style={styles.emptyText}>{t('traffic.noneActive')}</Text>
-          </View>
-        )}
+        <View style={styles.sectionBody}>
+          {active.length > 0 ? (
+            active.map(c => <TrafficClosureCard key={c.id} closure={c} />)
+          ) : (
+            <View style={styles.emptyCard}>
+              <Ionicons name="checkmark-circle-outline" size={20} color={colors.success} />
+              <Text style={styles.emptyText}>{t('traffic.noneActive')}</Text>
+            </View>
+          )}
+        </View>
 
         {/* Próximos cortes (48h) */}
         {upcoming.length > 0 && (
           <>
             <Text style={styles.sectionLabel}>{t('traffic.upcomingSection')}</Text>
-            {upcoming.map(c => <TrafficClosureCard key={c.id} closure={c} />)}
+            <View style={styles.sectionBody}>
+              {upcoming.map(c => <TrafficClosureCard key={c.id} closure={c} />)}
+            </View>
           </>
         )}
 
@@ -130,12 +134,15 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
 
+  sectionBody: {
+    marginHorizontal: spacing.base,
+  },
+
   emptyCard: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
     backgroundColor: colors.backgroundElevated,
-    marginHorizontal: spacing.base,
     padding: spacing.base,
     borderRadius: radius.md,
   },
