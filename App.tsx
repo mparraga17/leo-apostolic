@@ -20,9 +20,11 @@ import PrayersScreen from './src/screens/PrayersScreen';
 import SongsScreen from './src/screens/SongsScreen';
 import ShopScreen from './src/screens/ShopScreen';
 import PlacesScreen from './src/screens/PlacesScreen';
+import TrafficScreen from './src/screens/TrafficScreen';
 import SplashScreen from './src/screens/SplashScreen';
 import TabBar, { TabId } from './src/components/TabBar';
 import { schedulePapalEventNotifications } from './src/services/notifications';
+import { initializeAds } from './src/services/adsInit';
 import { I18nProvider, useI18n } from './src/i18n';
 
 function AppContent() {
@@ -65,6 +67,17 @@ function AppContent() {
     });
   }, [locale]);
 
+  // Inicializar AdMob una vez que el splash ha desaparecido.
+  // Importante: lanzamos DESPUÉS del splash para que el diálogo
+  // de ATT aparezca con la app ya en primer plano y visible.
+  // (adsInit además espera internamente a AppState 'active'.)
+  useEffect(() => {
+    if (showSplash) return;
+    initializeAds().catch(() => {
+      // Silenciar errores: la app debe seguir funcionando sin ads
+    });
+  }, [showSplash]);
+
   // Si la app se abre tocando una notificación, navega al evento
   useEffect(() => {
     Notifications.getLastNotificationResponseAsync()
@@ -101,7 +114,10 @@ function AppContent() {
   const renderScreen = () => {
     switch (activeTab) {
       case 'today': return (
-        <TodayScreen onNavigateToPrayers={() => setActiveTab('prayers')} />
+        <TodayScreen
+          onNavigateToPrayers={() => setActiveTab('prayers')}
+          onNavigateToTraffic={() => setActiveTab('traffic')}
+        />
       );
       case 'prayers': return <PrayersScreen />;
       case 'songs': return <SongsScreen />;
@@ -110,6 +126,7 @@ function AppContent() {
       );
       case 'places': return <PlacesScreen />;
       case 'shop': return <ShopScreen />;
+      case 'traffic': return <TrafficScreen />;
     }
   };
 

@@ -11,6 +11,7 @@ import { products, amazonSearches, buildAmazonUrl, buildAmazonSearchUrl } from '
 import { Product, ProductCategory } from '../models/types';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
 import { useI18n } from '../i18n';
+import AdBanner from '../components/AdBanner';
 
 function groupByCategory(items: Product[]) {
   const groups: Record<string, Product[]> = {};
@@ -27,6 +28,7 @@ function categoryIcon(category: ProductCategory): keyof typeof Ionicons.glyphMap
     case ProductCategory.Souvenirs: return 'gift-outline';
     case ProductCategory.Ninos: return 'happy-outline';
     case ProductCategory.Religiosos: return 'flower-outline';
+    case ProductCategory.Banderas: return 'flag-outline';
     default: return 'pricetag-outline';
   }
 }
@@ -88,6 +90,12 @@ export default function ShopScreen() {
         <View style={styles.header}>
           <Text style={styles.headerSubtitle}>{t('shop.headerSubtitle')}</Text>
           <Text style={styles.headerTitle}>{t('shop.headerTitle')}</Text>
+        </View>
+
+        {/* Banner de donación: ingresos a un comedor social del barrio */}
+        <View style={styles.donationBanner}>
+          <Ionicons name="heart" size={18} color={colors.liveRed} />
+          <Text style={styles.donationBannerText}>{t('shop.donationBanner')}</Text>
         </View>
 
         {/* Destacados horizontales */}
@@ -178,6 +186,7 @@ export default function ShopScreen() {
           {t('shop.affiliateDisclaimer')}
         </Text>
       </ScrollView>
+      <AdBanner />
     </View>
   );
 }
@@ -193,6 +202,27 @@ const styles = StyleSheet.create({
   },
   headerSubtitle: { ...typography.subhead, color: colors.textSecondary, marginBottom: 4 },
   headerTitle: { ...typography.display, color: colors.text },
+
+  donationBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginHorizontal: spacing.base,
+    marginBottom: spacing.sm,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.base,
+    backgroundColor: colors.primaryMuted,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.primarySoft,
+  },
+  donationBannerText: {
+    ...typography.footnote,
+    color: colors.text,
+    flex: 1,
+    lineHeight: 17,
+    fontWeight: '500',
+  },
 
   section: { marginTop: spacing.lg },
   sectionLabel: {

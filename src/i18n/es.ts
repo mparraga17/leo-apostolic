@@ -11,6 +11,7 @@ export default {
     prayers: 'Oraciones',
     songs: 'Cantos',
     shop: 'Tienda',
+    traffic: 'Tráfico',
   },
 
   // Pantalla Hoy
@@ -86,7 +87,8 @@ export default {
     headerTitle: 'Tienda',
     featuredSection: 'DESTACADOS',
     exploreSection: 'EXPLORAR EN AMAZON',
-    affiliateDisclaimer: 'Como afiliado de Amazon, esta app puede obtener comisiones por compras realizadas a través de los enlaces. Esto no afecta al precio que pagas.',
+    affiliateDisclaimer: 'Como Afiliado de Amazon, Pizco Deploy obtiene ingresos por las compras adscritas que cumplen los requisitos aplicables. Esto no afecta al precio que pagas.',
+    donationBanner: 'Los ingresos de esta app se donan a un comedor social del barrio de Chamberí (Madrid).',
   },
 
   // Comunes
@@ -100,6 +102,27 @@ export default {
     languageEnglish: 'English',
   },
 
+  // Pantalla Tráfico
+  traffic: {
+    headerSubtitle: 'Visita del Papa · Madrid',
+    headerTitle: 'Tráfico',
+    activeSection: 'CORTES ACTIVOS AHORA',
+    upcomingSection: 'PRÓXIMOS CORTES',
+    byDaySection: 'TODOS LOS CORTES POR DÍA',
+    noneActive: 'No hay cortes activos en este momento.',
+    severityTotal: 'Corte total',
+    severityParcial: 'Corte parcial',
+    severityAfectado: 'Tráfico afectado',
+    affectsEvent: 'Afecta a: {{event}}',
+    officialButton: 'Ver información oficial del Ayuntamiento',
+    emtButton: 'Líneas de autobús afectadas (EMT)',
+    viewOnMap: 'Ver en el mapa',
+    disclaimer: 'Información orientativa basada en fuentes oficiales del Ayuntamiento de Madrid y EMT (actualizada {{date}}). Los cortes pueden cambiar sin previo aviso. Consulta siempre las fuentes oficiales antes de desplazarte.',
+    inEventTitle: 'AFECTACIÓN AL TRÁFICO',
+    inTodayTitle: 'CORTES DE TRÁFICO AHORA',
+    seeAll: 'Ver todos los cortes',
+  },
+
   // About / Información
   about: {
     title: 'Información',
@@ -109,6 +132,9 @@ export default {
     actionsSection: 'COLABORA',
     shareApp: 'Compartir Leo Look Up',
     contact: 'Contacto y sugerencias',
+    donationSection: 'COMPROMISO SOCIAL',
+    donationTitle: 'Los ingresos se donan',
+    donationText: 'Esta app no está pensada para ganar dinero, sino para acompañar a los fieles. Los ingresos que pueda generar (publicidad y enlaces de afiliado) se destinan a un comedor social del barrio de Chamberí (Madrid) que ayuda a las personas más vulnerables. Al usar Leo Look Up, colaboras con esa labor.',
     legalSection: 'LEGAL',
     privacyPolicy: 'Política de privacidad',
     termsOfUse: 'Términos de uso',

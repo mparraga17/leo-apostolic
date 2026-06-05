@@ -21,7 +21,7 @@ interface Props {
   onClose: () => void;
 }
 
-const APP_STORE_URL = 'https://apps.apple.com/app/leo-look-up/id0000000000'; // se actualiza tras publicar
+const APP_STORE_URL = 'https://apps.apple.com/es/app/leo-look-up/id6773494248';
 const PRIVACY_URL = 'https://mparraga17.github.io/leo-apostolic/privacy-es.html';
 const PRIVACY_URL_EN = 'https://mparraga17.github.io/leo-apostolic/privacy-en.html';
 const TERMS_URL = 'https://mparraga17.github.io/leo-apostolic/terms-es.html';
@@ -93,6 +93,16 @@ export default function AboutModal({ visible, onClose }: Props) {
             <Text style={styles.bodyText}>
               {t('about.aboutText')}
             </Text>
+          </View>
+
+          {/* Compromiso social — donación destacada */}
+          <Text style={styles.sectionLabel}>{t('about.donationSection')}</Text>
+          <View style={styles.donationCard}>
+            <View style={styles.donationHeader}>
+              <Ionicons name="heart" size={22} color={colors.liveRed} />
+              <Text style={styles.donationTitle}>{t('about.donationTitle')}</Text>
+            </View>
+            <Text style={styles.donationText}>{t('about.donationText')}</Text>
           </View>
 
           {/* Acciones */}
@@ -252,6 +262,32 @@ const styles = StyleSheet.create({
     ...typography.body,
     color: colors.text,
     lineHeight: 22,
+  },
+
+  donationCard: {
+    backgroundColor: colors.primaryMuted,
+    borderRadius: radius.lg,
+    padding: spacing.base,
+    borderWidth: 1,
+    borderColor: colors.primarySoft,
+    ...shadows.card,
+  },
+  donationHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginBottom: spacing.sm,
+  },
+  donationTitle: {
+    ...typography.headline,
+    color: colors.text,
+    fontWeight: '700',
+    flex: 1,
+  },
+  donationText: {
+    ...typography.subhead,
+    color: colors.text,
+    lineHeight: 20,
   },
 
   list: {

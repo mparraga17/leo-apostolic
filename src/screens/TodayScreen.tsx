@@ -11,8 +11,10 @@ import { getSaintOfTheDay } from '../data/saints';
 import { prayers } from '../data/prayers';
 import { getQuoteOfTheDay } from '../data/popeQuotes';
 import PapalLocationCard from '../components/PapalLocationCard';
+import ActiveTrafficWidget from '../components/ActiveTrafficWidget';
 import LanguageToggle from '../components/LanguageToggle';
 import AboutModal from '../components/AboutModal';
+import AdBanner from '../components/AdBanner';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
 import { useI18n } from '../i18n';
 import { shareText } from '../utils/share';
@@ -47,7 +49,7 @@ function getVisitStatus(now: Date = new Date()): VisitStatus {
   return { phase: 'after' };
 }
 
-export default function TodayScreen({ onNavigateToPrayers }: { onNavigateToPrayers?: () => void }) {
+export default function TodayScreen({ onNavigateToPrayers, onNavigateToTraffic }: { onNavigateToPrayers?: () => void; onNavigateToTraffic?: () => void }) {
   const { t, locale } = useI18n();
   const [aboutVisible, setAboutVisible] = useState(false);
   const today = useMemo(() => new Date(), []);
@@ -64,6 +66,7 @@ export default function TodayScreen({ onNavigateToPrayers }: { onNavigateToPraye
 
   return (
     <>
+    <View style={styles.container}>
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.content}
@@ -105,6 +108,11 @@ export default function TodayScreen({ onNavigateToPrayers }: { onNavigateToPraye
       )}
 
       {visitStatus.phase === 'during' && <PapalLocationCard />}
+
+      {/* Cortes de tráfico activos ahora (solo durante la visita) */}
+      {visitStatus.phase === 'during' && (
+        <ActiveTrafficWidget onSeeAll={onNavigateToTraffic} />
+      )}
 
       {/* Santo del día */}
       <View style={styles.section}>
@@ -171,6 +179,8 @@ export default function TodayScreen({ onNavigateToPrayers }: { onNavigateToPraye
         </Text>
       </View>
     </ScrollView>
+    <AdBanner />
+    </View>
     <AboutModal visible={aboutVisible} onClose={() => setAboutVisible(false)} />
     </>
   );

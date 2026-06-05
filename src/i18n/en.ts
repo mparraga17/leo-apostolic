@@ -11,6 +11,7 @@ export default {
     prayers: 'Prayers',
     songs: 'Hymns',
     shop: 'Shop',
+    traffic: 'Traffic',
   },
 
   // Today screen
@@ -86,7 +87,8 @@ export default {
     headerTitle: 'Shop',
     featuredSection: 'FEATURED',
     exploreSection: 'EXPLORE ON AMAZON',
-    affiliateDisclaimer: 'As an Amazon Associate, this app may earn commissions from purchases made through the links. This does not affect the price you pay.',
+    affiliateDisclaimer: 'As an Amazon Associate, Pizco Deploy earns from qualifying purchases. This does not affect the price you pay.',
+    donationBanner: 'This app\'s proceeds are donated to a soup kitchen in the Chamberí district of Madrid.',
   },
 
   // Common
@@ -100,6 +102,27 @@ export default {
     languageEnglish: 'English',
   },
 
+  // Traffic screen
+  traffic: {
+    headerSubtitle: "Pope's visit · Madrid",
+    headerTitle: 'Traffic',
+    activeSection: 'CLOSURES ACTIVE NOW',
+    upcomingSection: 'UPCOMING CLOSURES',
+    byDaySection: 'ALL CLOSURES BY DAY',
+    noneActive: 'There are no active closures at the moment.',
+    severityTotal: 'Full closure',
+    severityParcial: 'Partial closure',
+    severityAfectado: 'Traffic affected',
+    affectsEvent: 'Affects: {{event}}',
+    officialButton: 'See official City Council information',
+    emtButton: 'Affected bus lines (EMT)',
+    viewOnMap: 'View on map',
+    disclaimer: 'Indicative information based on official sources from Madrid City Council and EMT (updated {{date}}). Closures may change without notice. Always check official sources before traveling.',
+    inEventTitle: 'TRAFFIC IMPACT',
+    inTodayTitle: 'TRAFFIC CLOSURES NOW',
+    seeAll: 'See all closures',
+  },
+
   // About / Information
   about: {
     title: 'About',
@@ -109,6 +132,9 @@ export default {
     actionsSection: 'COLLABORATE',
     shareApp: 'Share Leo Look Up',
     contact: 'Contact and feedback',
+    donationSection: 'SOCIAL COMMITMENT',
+    donationTitle: 'Proceeds are donated',
+    donationText: 'This app is not meant to make money, but to accompany the faithful. Any proceeds it may generate (advertising and affiliate links) are donated to a soup kitchen in the Chamberí district of Madrid that helps the most vulnerable. By using Leo Look Up, you support that work.',
     legalSection: 'LEGAL',
     privacyPolicy: 'Privacy Policy',
     termsOfUse: 'Terms of Use',

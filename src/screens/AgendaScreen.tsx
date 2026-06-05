@@ -10,11 +10,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { papalEvents, localizeEvent } from '../data/agenda';
 import { PapalEvent } from '../models/types';
 import PapalLocationCard from '../components/PapalLocationCard';
+import AdBanner from '../components/AdBanner';
+import TrafficClosureCard from '../components/TrafficClosureCard';
 import { getPapalLocationStatus } from '../utils/papalLocation';
 import { getTimeWindowAfter, getNearbyPlaces } from '../utils/eventSuggestions';
+import { getClosuresForEvent } from '../utils/trafficStatus';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
 import { useI18n } from '../i18n';
 import { shareText } from '../utils/share';
+import { onEventModalClosed } from '../services/adManager';
 
 function groupEventsByDate(events: PapalEvent[]) {
   const groups: Record<string, PapalEvent[]> = {};
@@ -113,6 +117,13 @@ export default function AgendaScreen({ initialEventId }: { initialEventId?: stri
     Linking.openURL(url);
   };
 
+  // Cierra el modal y notifica al adManager para contar y, cada N
+  // cierres, mostrar un intersticial.
+  const closeEventModal = () => {
+    setSelectedEvent(null);
+    onEventModalClosed();
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
@@ -182,14 +193,14 @@ export default function AgendaScreen({ initialEventId }: { initialEventId?: stri
         visible={selectedEvent !== null}
         animationType="slide"
         presentationStyle="pageSheet"
-        onRequestClose={() => setSelectedEvent(null)}
+        onRequestClose={closeEventModal}
       >
         {selectedEvent && (
           <View style={styles.modalContainer}>
             <View style={styles.modalHeader}>
               <View style={{ flex: 1 }} />
               <TouchableOpacity
-                onPress={() => setSelectedEvent(null)}
+                onPress={closeEventModal}
                 hitSlop={{ top: 12, right: 12, bottom: 12, left: 12 }}
                 accessibilityLabel="Cerrar"
               >
@@ -253,6 +264,21 @@ export default function AgendaScreen({ initialEventId }: { initialEventId?: stri
                   )}
                 </View>
               )}
+
+              {/* Afectación al tráfico para este evento */}
+              {(() => {
+                const closures = getClosuresForEvent(selectedEvent.id);
+                if (closures.length === 0) return null;
+                return (
+                  <View style={styles.trafficBlock}>
+                    <View style={styles.trafficHeader}>
+                      <Ionicons name="warning-outline" size={15} color={colors.liveRed} />
+                      <Text style={styles.trafficTitle}>{t('traffic.inEventTitle')}</Text>
+                    </View>
+                    {closures.map(c => <TrafficClosureCard key={c.id} closure={c} compact />)}
+                  </View>
+                );
+              })()}
 
               <View style={styles.modalActionsRow}>
                 <TouchableOpacity
@@ -325,6 +351,7 @@ export default function AgendaScreen({ initialEventId }: { initialEventId?: stri
           </View>
         )}
       </Modal>
+      <AdBanner />
     </View>
   );
 }
@@ -555,6 +582,21 @@ const styles = StyleSheet.create({
     paddingTop: spacing.lg,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.separator,
+  },
+  trafficBlock: {
+    marginBottom: spacing.base,
+  },
+  trafficHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: spacing.sm,
+  },
+  trafficTitle: {
+    ...typography.caption,
+    color: colors.liveRed,
+    fontWeight: '700',
+    letterSpacing: 0.6,
   },
   timeFreeCard: {
     backgroundColor: colors.primaryMuted,

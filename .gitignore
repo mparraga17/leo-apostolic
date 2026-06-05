@@ -60,3 +60,8 @@ ChatGPT Image*.png
 images/
 images-resized/
 resize-screenshots.ps1
+
+# Marketing y materiales privados (contienen datos personales, contactos y estrategia)
+marketing/
+cartel/
+assets/Leo_look_up_QR.png

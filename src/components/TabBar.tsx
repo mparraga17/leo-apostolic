@@ -14,7 +14,7 @@ import * as Haptics from 'expo-haptics';
 import { colors, typography, spacing } from '../theme/theme';
 import { useI18n } from '../i18n';
 
-export type TabId = 'today' | 'prayers' | 'songs' | 'agenda' | 'places' | 'shop';
+export type TabId = 'today' | 'prayers' | 'songs' | 'agenda' | 'places' | 'shop' | 'traffic';
 
 interface Props {
   activeTab: TabId;
@@ -30,6 +30,7 @@ const tabsConfig: {
 }[] = [
   { id: 'today',    labelKey: 'tabs.today',    icon: 'sunny-outline',         iconActive: 'sunny' },
   { id: 'agenda',   labelKey: 'tabs.agenda',   icon: 'calendar-outline',      iconActive: 'calendar' },
+  { id: 'traffic',  labelKey: 'tabs.traffic',  icon: 'warning-outline',       iconActive: 'warning' },
   { id: 'places',   labelKey: 'tabs.places',   icon: 'location-outline',      iconActive: 'location' },
   { id: 'prayers',  labelKey: 'tabs.prayers',  icon: 'book-outline',          iconActive: 'book' },
   { id: 'songs',    labelKey: 'tabs.songs',    icon: 'musical-notes-outline', iconActive: 'musical-notes' },
