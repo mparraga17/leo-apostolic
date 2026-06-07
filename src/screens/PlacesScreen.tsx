@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { places, PlaceCategory, CulturalPlace } from '../data/places';
+import { CITIES_ORDERED, getActiveCity } from '../data/cities';
+import { City } from '../models/types';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
 import { useI18n } from '../i18n';
 import AdBanner from '../components/AdBanner';
@@ -32,10 +34,12 @@ function categoryIcon(category: PlaceCategory): keyof typeof Ionicons.glyphMap {
 }
 
 export default function PlacesScreen() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [selected, setSelected] = useState<CulturalPlace | null>(null);
-  const grouped = groupByCategory(places);
-  const featured = places.filter(p => p.highlight);
+  const [selectedCity, setSelectedCity] = useState<City>(() => getActiveCity());
+  const cityPlaces = places.filter(p => p.city === selectedCity);
+  const grouped = groupByCategory(cityPlaces);
+  const featured = cityPlaces.filter(p => p.highlight);
 
   // Cierra el modal y notifica al adManager para llevar la cuenta de
   // cierres, que cada N veces dispara un intersticial.
@@ -57,7 +61,38 @@ export default function PlacesScreen() {
           <Text style={styles.headerTitle}>{t('places.headerTitle')}</Text>
         </View>
 
+        {/* Selector de ciudad */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.cityTabs}
+        >
+          {CITIES_ORDERED.map(city => {
+            const isSel = city.id === selectedCity;
+            return (
+              <TouchableOpacity
+                key={city.id}
+                style={[styles.cityTab, isSel && styles.cityTabActive]}
+                onPress={() => setSelectedCity(city.id)}
+                activeOpacity={0.7}
+              >
+                <Text style={[styles.cityTabText, isSel && styles.cityTabTextActive]}>
+                  {locale === 'en' ? city.nameEn : city.name}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+
+        {cityPlaces.length === 0 ? (
+          <View style={styles.emptyCard}>
+            <Ionicons name="information-circle-outline" size={20} color={colors.textSecondary} />
+            <Text style={styles.emptyText}>{t('places.emptyCity')}</Text>
+          </View>
+        ) : (
+        <>
         {/* Imprescindibles */}
+        {featured.length > 0 && (
         <View style={styles.section}>
           <Text style={styles.sectionLabel}>{t('places.featuredSection')}</Text>
           <ScrollView
@@ -84,6 +119,7 @@ export default function PlacesScreen() {
             ))}
           </ScrollView>
         </View>
+        )}
 
         {/* Por categoría */}
         {grouped.map(([category, items]) => (
@@ -107,6 +143,8 @@ export default function PlacesScreen() {
             </View>
           </View>
         ))}
+        </>
+        )}
       </ScrollView>
 
       {/* Modal detalle */}
@@ -217,6 +255,38 @@ const styles = StyleSheet.create({
   headerSubtitle: { ...typography.subhead, color: colors.textSecondary, marginBottom: 4 },
   headerTitle: { ...typography.display, color: colors.text },
 
+  cityTabs: {
+    paddingHorizontal: spacing.base,
+    gap: spacing.sm,
+    paddingTop: spacing.xs,
+    paddingBottom: spacing.xs,
+  },
+  cityTab: {
+    paddingHorizontal: spacing.base,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.pill,
+    backgroundColor: colors.backgroundElevated,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.separator,
+  },
+  cityTabActive: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+  },
+  cityTabText: { ...typography.subhead, color: colors.textSecondary, fontWeight: '600' },
+  cityTabTextActive: { color: colors.textInverse },
+  emptyCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    backgroundColor: colors.backgroundElevated,
+    padding: spacing.base,
+    marginHorizontal: spacing.base,
+    marginTop: spacing.base,
+    borderRadius: radius.md,
+  },
+  emptyText: { ...typography.subhead, color: colors.textSecondary, flex: 1 },
+
   section: { marginTop: spacing.lg },
   sectionLabel: {
     ...typography.sectionHeader,
@@ -314,11 +384,11 @@ const styles = StyleSheet.create({
 
   scheduleCard: {
     marginBottom: spacing.md,
-    padding: spacing.md,
-    backgroundColor: colors.backgroundElevated,
-    borderRadius: radius.md,
-    borderLeftWidth: 3,
-    borderLeftColor: colors.primary,
+    padding: spacing.base,
+    backgroundColor: 'rgba(201,165,90,0.05)',
+    borderRadius: radius.lg,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(201,165,90,0.18)',
   },
   scheduleHeader: {
     flexDirection: 'row',

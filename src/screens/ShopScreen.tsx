@@ -250,6 +250,20 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   featuredName: { ...typography.subhead, fontWeight: '600', color: colors.text, minHeight: 38 },
+  featuredHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: spacing.sm,
+  },
+  featuredCategory: {
+    ...typography.caption,
+    color: colors.primary,
+    fontWeight: '600',
+    letterSpacing: 0.3,
+    textTransform: 'uppercase',
+    fontSize: 11,
+  },
   featuredAuthor: { ...typography.caption, color: colors.textSecondary, marginTop: 2 },
   featuredPrice: {
     ...typography.bodyEmphasized,

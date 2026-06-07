@@ -7,8 +7,7 @@ import {
   View, Text, ScrollView, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { getSaintOfTheDay } from '../data/saints';
-import { prayers } from '../data/prayers';
+import { getCurrentNews, localizeNews, NewsKind } from '../data/news';
 import { getQuoteOfTheDay } from '../data/popeQuotes';
 import PapalLocationCard from '../components/PapalLocationCard';
 import ActiveTrafficWidget from '../components/ActiveTrafficWidget';
@@ -19,15 +18,12 @@ import { colors, typography, spacing, radius, shadows } from '../theme/theme';
 import { useI18n } from '../i18n';
 import { shareText } from '../utils/share';
 
-const VISIT_START = new Date('2026-06-06T10:30:00');
-const VISIT_END = new Date('2026-06-09T11:10:00');
-
-function pickByDayOfYear<T>(items: T[], date: Date = new Date()): T {
-  const start = new Date(date.getFullYear(), 0, 0);
-  const diff = date.getTime() - start.getTime();
-  const dayOfYear = Math.floor(diff / 86400000);
-  return items[dayOfYear % items.length];
-}
+// Inicio y fin del viaje como instantes ABSOLUTOS (con offset de cada
+// extremo): llegada a Madrid 6 jun 10:30 (UTC+2) y fin en Tenerife
+// 12 jun ~15:30 (UTC+1). Así la cuenta atrás es correcta en cualquier
+// huso horario del dispositivo.
+const VISIT_START = new Date('2026-06-06T10:30:00+02:00');
+const VISIT_END = new Date('2026-06-12T15:30:00+01:00');
 
 type VisitStatus =
   | { phase: 'before'; days: number; hours: number; minutes: number; seconds: number }
@@ -53,9 +49,9 @@ export default function TodayScreen({ onNavigateToPrayers, onNavigateToTraffic }
   const { t, locale } = useI18n();
   const [aboutVisible, setAboutVisible] = useState(false);
   const today = useMemo(() => new Date(), []);
-  const saint = useMemo(() => getSaintOfTheDay(today), [today]);
-  const prayerOfTheDay = useMemo(() => pickByDayOfYear(prayers, today), [today]);
   const popeQuote = useMemo(() => getQuoteOfTheDay(today, locale), [today, locale]);
+  const newsItem = useMemo(() => getCurrentNews(today), [today]);
+  const news = localizeNews(newsItem, locale);
 
   const [visitStatus, setVisitStatus] = useState<VisitStatus>(() => getVisitStatus());
 
@@ -114,18 +110,26 @@ export default function TodayScreen({ onNavigateToPrayers, onNavigateToTraffic }
         <ActiveTrafficWidget onSeeAll={onNavigateToTraffic} />
       )}
 
-      {/* Santo del día */}
+      {/* Noticias destacadas de la visita */}
       <View style={styles.section}>
-        <Text style={styles.sectionLabel}>{t('today.saintOfTheDay')}</Text>
+        <Text style={styles.sectionLabel}>{t('today.newsSection')}</Text>
         <View style={styles.card}>
-          {saint.isFeast && (
-            <View style={styles.feastBadge}>
-              <Ionicons name="star" size={11} color={colors.primary} />
-              <Text style={styles.feastBadgeText}>{t('today.feastBadge')}</Text>
-            </View>
-          )}
-          <Text style={styles.saintName}>{saint.name}</Text>
-          <Text style={styles.saintDescription}>{saint.description}</Text>
+          <View style={styles.newsBadge}>
+            <Ionicons
+              name={newsItem.kind === NewsKind.Recap ? 'newspaper-outline' : newsItem.kind === NewsKind.Practical ? 'warning-outline' : 'megaphone-outline'}
+              size={11}
+              color={colors.primary}
+            />
+            <Text style={styles.newsBadgeText}>
+              {newsItem.kind === NewsKind.Recap
+                ? t('today.newsRecap')
+                : newsItem.kind === NewsKind.Practical
+                ? t('today.newsPractical')
+                : t('today.newsUpcoming')}
+            </Text>
+          </View>
+          <Text style={styles.newsTitle}>{news.title}</Text>
+          <Text style={styles.newsBody}>{news.body}</Text>
         </View>
       </View>
 
@@ -151,24 +155,6 @@ export default function TodayScreen({ onNavigateToPrayers, onNavigateToTraffic }
             </TouchableOpacity>
           </View>
         </View>
-      </View>
-
-      {/* Oración del día */}
-      <View style={styles.section}>
-        <Text style={styles.sectionLabel}>{t('today.prayerOfTheDay')}</Text>
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => onNavigateToPrayers?.()}
-          activeOpacity={0.85}
-          accessibilityLabel={t('today.morePrayers')}
-        >
-          <Text style={styles.prayerTitle}>{prayerOfTheDay.title}</Text>
-          <Text style={styles.prayerText} numberOfLines={6}>{prayerOfTheDay.text}</Text>
-          <View style={styles.prayerHintRow}>
-            <Text style={styles.prayerHint}>{t('today.morePrayers')}</Text>
-            <Ionicons name="chevron-forward" size={14} color={colors.primary} />
-          </View>
-        </TouchableOpacity>
       </View>
 
       {/* Cita pastoral */}
@@ -299,8 +285,8 @@ const styles = StyleSheet.create({
     ...shadows.card,
   },
 
-  // ---- Santo del día ----
-  feastBadge: {
+  // ---- Noticias destacadas ----
+  newsBadge: {
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-start',
@@ -311,19 +297,20 @@ const styles = StyleSheet.create({
     gap: 4,
     marginBottom: spacing.sm,
   },
-  feastBadgeText: {
+  newsBadgeText: {
     ...typography.caption,
     color: colors.primary,
     letterSpacing: 1,
   },
-  saintName: {
+  newsTitle: {
     ...typography.title3,
     color: colors.text,
     marginBottom: spacing.sm,
   },
-  saintDescription: {
+  newsBody: {
     ...typography.body,
     color: colors.textSecondary,
+    lineHeight: 22,
   },
 
   // ---- Cita del Papa ----
@@ -359,28 +346,6 @@ const styles = StyleSheet.create({
   },
   shareBtnText: {
     ...typography.caption,
-    color: colors.primary,
-    fontWeight: '600',
-  },
-
-  // ---- Oración del día ----
-  prayerTitle: {
-    ...typography.title3,
-    color: colors.text,
-    marginBottom: spacing.sm,
-  },
-  prayerText: {
-    ...typography.quote,
-    color: colors.textSecondary,
-  },
-  prayerHintRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    marginTop: spacing.md,
-  },
-  prayerHint: {
-    ...typography.footnote,
     color: colors.primary,
     fontWeight: '600',
   },

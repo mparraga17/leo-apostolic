@@ -4,6 +4,18 @@
 // Tipos centrales de la app Leo Look Up.
 // ============================================================
 
+// ---- CIUDADES DEL VIAJE APOSTÓLICO ----
+// El Papa León XIV visita España del 6 al 12 de junio de 2026.
+// Cada ciudad es una "etapa" del viaje. El identificador es estable
+// (se usa como clave en datos), el nombre visible se localiza aparte.
+
+export enum City {
+  Madrid = 'madrid',
+  Barcelona = 'barcelona',
+  GranCanaria = 'gran_canaria',
+  Tenerife = 'tenerife',
+}
+
 // ---- AGENDA DEL PAPA ----
 
 export enum EventCategory {
@@ -18,6 +30,7 @@ export enum EventCategory {
 
 export interface PapalEvent {
   id: string;
+  city: City;             // Etapa del viaje a la que pertenece
   date: string;           // ISO date "2026-06-06"
   startTime: string;      // "11:30"
   endTime?: string;       // "12:30" (opcional)
@@ -115,6 +128,7 @@ export enum TrafficSeverity {
 
 export interface TrafficClosure {
   id: string;
+  city: City;                // Ciudad/etapa a la que pertenece el corte
   zone: string;              // "Plaza de Lima y entorno"
   zoneEn?: string;
   streets: string;           // "Paseo de la Castellana (carriles centrales)"
