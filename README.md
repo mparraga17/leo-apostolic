@@ -5,9 +5,10 @@ Devotional companion app for Catholic faithful, built around the visit of Pope L
 [![App Store](https://img.shields.io/badge/App%20Store-Live-161B33?style=flat-square&logo=appstore)](https://apps.apple.com/es/app/leo-look-up/id6773494248)
 [![Privacy Policy](https://img.shields.io/badge/Privacy-Policy-161B33?style=flat-square)](https://mparraga17.github.io/leo-apostolic/)
 [![Terms of Use](https://img.shields.io/badge/Terms-of%20Use-C9A55A?style=flat-square)](https://mparraga17.github.io/leo-apostolic/terms-es.html)
+[![Changelog](https://img.shields.io/badge/Changelog-v1.2.1-C9A55A?style=flat-square)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
-> **Live on the App Store** · Built end-to-end as a product portfolio piece: from market research and feature prioritization to engineering, monetization design and post-launch growth.
+> **Live on the App Store** · Built end-to-end as a product portfolio piece: from market research and feature prioritization to engineering, monetization design and post-launch growth. See the full version history in the [Changelog](CHANGELOG.md).
 
 ---
 
