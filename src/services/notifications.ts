@@ -11,8 +11,9 @@ import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 import { papalEvents, localizeEvent } from '../data/agenda';
 import { PapalEvent } from '../models/types';
+import { cityDateTime } from '../data/cities';
 
-type Locale = 'es' | 'en';
+type Locale = 'es' | 'en' | 'ca';
 
 // Cómo se muestran las notificaciones cuando la app está abierta
 Notifications.setNotificationHandler({
@@ -33,11 +34,13 @@ const CHANNEL_ID = 'papal-events';
 const channelNames: Record<Locale, string> = {
   es: 'Eventos del Papa',
   en: 'Papal events',
+  ca: 'Esdeveniments del Papa',
 };
 
 const titlePrefixes: Record<Locale, string> = {
   es: `🦁 En ${MINUTES_BEFORE} min`,
   en: `🦁 In ${MINUTES_BEFORE} min`,
+  ca: `🦁 En ${MINUTES_BEFORE} min`,
 };
 
 /**
@@ -67,15 +70,13 @@ export async function requestNotificationPermissions(locale: Locale = 'es'): Pro
 }
 
 /**
- * Construye un objeto Date a partir de la fecha (YYYY-MM-DD) y la hora (HH:MM)
- * de un evento, restando los minutos de antelación.
+ * Construye el instante absoluto de la notificación: la hora del
+ * evento en la zona horaria de su ciudad, menos los minutos de
+ * antelación. Independiente del huso del dispositivo.
  */
 function buildNotificationDate(event: PapalEvent): Date {
-  const [year, month, day] = event.date.split('-').map(Number);
-  const [hour, minute] = event.startTime.split(':').map(Number);
-  const eventDate = new Date(year, month - 1, day, hour, minute);
-  eventDate.setMinutes(eventDate.getMinutes() - MINUTES_BEFORE);
-  return eventDate;
+  const eventInstant = cityDateTime(event.date, event.startTime, event.city);
+  return new Date(eventInstant.getTime() - MINUTES_BEFORE * 60 * 1000);
 }
 
 /**

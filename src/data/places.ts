@@ -1,10 +1,12 @@
 // ============================================================
-// places.ts — LUGARES CULTURAL-RELIGIOSOS DE MADRID
+// places.ts — LUGARES CULTURAL-RELIGIOSOS DEL VIAJE APOSTÓLICO
 // ============================================================
 // Lugares curados a mano: iglesias, museos, monasterios y
-// rutas con valor devocional y cultural.
-// Información de fuentes públicas (esmadrid.com, sitios oficiales).
+// rutas con valor devocional y cultural, por cada ciudad/etapa.
+// Información de fuentes públicas (sitios oficiales, turismo).
 // ============================================================
+
+import { City } from '../models/types';
 
 export enum PlaceCategory {
   Iglesias = 'Iglesias y catedrales',
@@ -15,6 +17,7 @@ export enum PlaceCategory {
 
 export interface CulturalPlace {
   id: string;
+  city: City;               // Ciudad/etapa del viaje a la que pertenece
   name: string;
   category: PlaceCategory;
   description: string;
@@ -33,6 +36,7 @@ export const places: CulturalPlace[] = [
   // ==================== IGLESIAS Y CATEDRALES ====================
   {
     id: 'pl_001',
+    city: City.Madrid,
     name: 'Catedral de la Almudena',
     category: PlaceCategory.Iglesias,
     description: 'Catedral de Madrid, dedicada a la Virgen de la Almudena, patrona de la ciudad. Junto al Palacio Real, combina estilos neogótico y neoclásico. Aquí el Papa León XIV celebrará un acto de oración.',
@@ -52,6 +56,7 @@ export const places: CulturalPlace[] = [
   },
   {
     id: 'pl_002',
+    city: City.Madrid,
     name: 'Real Basílica de San Francisco el Grande',
     category: PlaceCategory.Iglesias,
     description: 'Una de las cúpulas no sostenidas más grandes del mundo. Alberga obras de Goya, Zurbarán y otros maestros. Templo neoclásico del s. XVIII.',
@@ -70,6 +75,7 @@ export const places: CulturalPlace[] = [
   },
   {
     id: 'pl_003',
+    city: City.Madrid,
     name: 'Iglesia de San Jerónimo el Real',
     category: PlaceCategory.Iglesias,
     description: 'Conocida como "Los Jerónimos", iglesia gótica donde se ha jurado a los Reyes de España. Reformada en el s. XIX, junto al Museo del Prado.',
@@ -87,6 +93,7 @@ export const places: CulturalPlace[] = [
   },
   {
     id: 'pl_004',
+    city: City.Madrid,
     name: 'Basílica Pontificia de San Miguel',
     category: PlaceCategory.Iglesias,
     description: 'Obra maestra del barroco italiano en Madrid, junto a la Plaza Mayor. Sede de la Nunciatura. Su fachada cóncava es única en España.',
@@ -105,6 +112,7 @@ export const places: CulturalPlace[] = [
   },
   {
     id: 'pl_005',
+    city: City.Madrid,
     name: 'Real Iglesia Colegiata de San Isidro',
     category: PlaceCategory.Iglesias,
     description: 'Catedral provisional de Madrid antes de la Almudena. Custodia las reliquias de San Isidro Labrador y Santa María de la Cabeza, patronos de Madrid.',
@@ -123,6 +131,7 @@ export const places: CulturalPlace[] = [
   },
   {
     id: 'pl_006',
+    city: City.Madrid,
     name: 'Basílica de Nuestra Señora de Atocha',
     category: PlaceCategory.Iglesias,
     description: 'Santuario dedicado a la Virgen de Atocha, una de las imágenes más antiguas de Madrid. Vinculada históricamente a la Casa Real.',
@@ -143,6 +152,7 @@ export const places: CulturalPlace[] = [
   // ==================== MUSEOS RELIGIOSOS ====================
   {
     id: 'pl_007',
+    city: City.Madrid,
     name: 'Museo Nacional del Prado — Sala Religiosa',
     category: PlaceCategory.Museos,
     description: 'El Prado alberga la mayor colección de pintura religiosa de España: El Greco, Velázquez, Zurbarán, Murillo, Rubens, Fra Angélico. Imprescindible Las Meninas y El Cristo Crucificado de Velázquez.',
@@ -156,6 +166,7 @@ export const places: CulturalPlace[] = [
   },
   {
     id: 'pl_008',
+    city: City.Madrid,
     name: 'Monasterio de las Descalzas Reales',
     category: PlaceCategory.Museos,
     description: 'Convento del s. XVI fundado por Juana de Austria. Contiene una de las colecciones de arte religioso más importantes: tapices flamencos, esculturas, pintura.',
@@ -168,6 +179,7 @@ export const places: CulturalPlace[] = [
   },
   {
     id: 'pl_009',
+    city: City.Madrid,
     name: 'Real Monasterio de la Encarnación',
     category: PlaceCategory.Museos,
     description: 'Fundado en 1611. Famoso por su relicario con más de 700 reliquias y por la milagrosa licuefacción anual de la sangre de San Pantaleón cada 27 de julio.',
@@ -181,6 +193,7 @@ export const places: CulturalPlace[] = [
   // ==================== MONASTERIOS Y CONVENTOS ====================
   {
     id: 'pl_010',
+    city: City.Madrid,
     name: 'Monasterio de El Escorial',
     category: PlaceCategory.Monasterios,
     description: 'Patrimonio de la Humanidad. Monasterio jerónimo del s. XVI mandado construir por Felipe II. Panteón de los Reyes de España. A 1h en tren desde Madrid.',
@@ -194,6 +207,7 @@ export const places: CulturalPlace[] = [
   },
   {
     id: 'pl_011',
+    city: City.Madrid,
     name: 'Valle de los Caídos / Cuelgamuros',
     category: PlaceCategory.Monasterios,
     description: 'Basílica subterránea con la cruz más alta del mundo (152m) y comunidad benedictina. Monumento histórico complejo, junto a El Escorial.',
@@ -205,6 +219,7 @@ export const places: CulturalPlace[] = [
   },
   {
     id: 'pl_012',
+    city: City.Madrid,
     name: 'Cartuja de Santa María de El Paular',
     category: PlaceCategory.Monasterios,
     description: 'Antiguo monasterio cartujo del s. XIV en plena Sierra de Guadarrama. Combinación perfecta de espiritualidad y naturaleza. A 1h en coche desde Madrid.',
@@ -218,6 +233,7 @@ export const places: CulturalPlace[] = [
   // ==================== RUTAS DEVOCIONALES ====================
   {
     id: 'pl_013',
+    city: City.Madrid,
     name: 'Madrid de los Austrias',
     category: PlaceCategory.Rutas,
     description: 'Ruta a pie por el Madrid del s. XVI-XVII: Plaza Mayor, Plaza de la Villa, San Miguel, Plaza Conde de Barajas. 90 minutos.',
@@ -230,6 +246,7 @@ export const places: CulturalPlace[] = [
   },
   {
     id: 'pl_014',
+    city: City.Madrid,
     name: 'Lugares de San Isidro Labrador',
     category: PlaceCategory.Rutas,
     description: 'Ruta por los lugares vinculados al patrón de Madrid: Pradera de San Isidro, Ermita, Colegiata, casa natal. Especialmente vivo en mayo.',
@@ -241,6 +258,7 @@ export const places: CulturalPlace[] = [
   },
   {
     id: 'pl_015',
+    city: City.Madrid,
     name: 'Casa Museo de San Juan de la Cruz',
     category: PlaceCategory.Rutas,
     description: 'En Segovia (a 30 min en AVE). Donde vivió y escribió parte de su obra el místico carmelita, doctor de la Iglesia.',
@@ -255,6 +273,7 @@ export const places: CulturalPlace[] = [
   // ============================================================
   {
     id: 'pl_016',
+    city: City.Madrid,
     name: 'Iglesia de la Concepción',
     category: PlaceCategory.Iglesias,
     description: 'Templo neogótico del siglo XIX, conocido por sus vidrieras y por estar entre las parroquias más activas de Salamanca.',
@@ -272,6 +291,7 @@ export const places: CulturalPlace[] = [
   },
   {
     id: 'pl_017',
+    city: City.Madrid,
     name: 'Parroquia de Santa María Magdalena',
     category: PlaceCategory.Iglesias,
     description: 'Iglesia parroquial cercana a Plaza de Lima, frecuentada por feligreses del barrio de Chamartín.',
@@ -288,6 +308,7 @@ export const places: CulturalPlace[] = [
   },
   {
     id: 'pl_018',
+    city: City.Madrid,
     name: 'Museo Sorolla',
     category: PlaceCategory.Museos,
     description: 'Casa-museo del pintor Joaquín Sorolla en pleno barrio de Chamberí. Ambiente intimista entre obras y jardín.',
@@ -299,6 +320,7 @@ export const places: CulturalPlace[] = [
   },
   {
     id: 'pl_019',
+    city: City.Madrid,
     name: 'Parroquia de la Virgen del Carmen y San Luis',
     category: PlaceCategory.Iglesias,
     description: 'Templo histórico en plena Gran Vía con culto regular y horario amplio para visitas y oración.',
@@ -314,5 +336,184 @@ export const places: CulturalPlace[] = [
       'Domingos y festivos: 9:00 · 10:00 · 11:00 · 12:00 · 13:00 · 13:50 · 18:00 · 19:00 · 20:00 · 21:00',
     ],
     confessionSchedule: 'Durante todo el horario de apertura del templo.',
+  },
+
+  // ============================================================
+  // BARCELONA — Lugares cultural-religiosos
+  // ============================================================
+  {
+    id: 'pl_101',
+    city: City.Barcelona,
+    name: 'Basílica de la Sagrada Família',
+    category: PlaceCategory.Iglesias,
+    description: 'Obra maestra de Antoni Gaudí y símbolo de Barcelona. Basílica menor y Patrimonio de la Humanidad, en obras desde 1882. Aquí el Papa León XIV celebra la Misa coincidiendo con la culminación de la torre de Jesucristo.',
+    address: 'Carrer de Mallorca, 401',
+    neighborhood: "L'Eixample",
+    latitude: 41.4036,
+    longitude: 2.1744,
+    visitInfo: 'Lun-sáb 9:00-20:00, dom 10:30-20:00 (varía por temporada). Entrada con reserva previa.',
+    website: 'https://sagradafamilia.org',
+    highlight: true,
+  },
+  {
+    id: 'pl_102',
+    city: City.Barcelona,
+    name: 'Catedral de la Santa Cruz y Santa Eulalia',
+    category: PlaceCategory.Iglesias,
+    description: 'Catedral gótica de Barcelona (s. XIII-XV) en el corazón del Barrio Gótico, dedicada a Santa Eulalia, copatrona de la ciudad. El Papa reza aquí la oración del mediodía.',
+    address: "Pla de la Seu, s/n",
+    neighborhood: 'Ciutat Vella (Barrio Gótico)',
+    latitude: 41.3839,
+    longitude: 2.1762,
+    visitInfo: 'Lun-vie 9:30-18:30, sáb 9:30-17:15, dom 14:00-17:30. Aportación para el culto.',
+    website: 'https://catedralbcn.org',
+    highlight: true,
+  },
+  {
+    id: 'pl_103',
+    city: City.Barcelona,
+    name: 'Abadía de Santa María de Montserrat',
+    category: PlaceCategory.Monasterios,
+    description: 'Monasterio benedictino en la montaña de Montserrat, hogar de la Virgen de Montserrat ("La Moreneta"), patrona de Cataluña, y de la Escolanía. A 1h de Barcelona. El Papa reza aquí el Santo Rosario.',
+    address: 'Monistrol de Montserrat',
+    neighborhood: 'Montserrat',
+    latitude: 41.5928,
+    longitude: 1.8376,
+    visitInfo: 'Basílica abierta a diario. Acceso en cremallera o teleférico. Camarín de la Moreneta con horario propio.',
+    website: 'https://abadiamontserrat.cat',
+    highlight: true,
+  },
+  {
+    id: 'pl_104',
+    city: City.Barcelona,
+    name: 'Basílica de Santa María del Mar',
+    category: PlaceCategory.Iglesias,
+    description: 'Joya del gótico catalán (s. XIV) en el barrio de la Ribera, célebre por su pureza de líneas y su luz. Una de las iglesias más queridas de Barcelona.',
+    address: "Plaça de Santa Maria, 1",
+    neighborhood: 'La Ribera',
+    latitude: 41.3839,
+    longitude: 2.1819,
+    visitInfo: 'Lun-dom 9:00-13:00 y 17:00-20:30 (varía). Acceso cultural por la tarde con entrada.',
+  },
+  {
+    id: 'pl_105',
+    city: City.Barcelona,
+    name: 'Iglesia de Sant Agustí',
+    category: PlaceCategory.Iglesias,
+    description: 'Templo del s. XVIII en el Raval, de fachada inacabada característica. Acoge el encuentro del Papa con las entidades caritativas diocesanas.',
+    address: "Plaça de Sant Agustí, 2",
+    neighborhood: 'El Raval',
+    latitude: 41.3795,
+    longitude: 2.1690,
+    visitInfo: 'Consultar horario de culto en la parroquia.',
+  },
+
+  // ============================================================
+  // GRAN CANARIA — Lugares cultural-religiosos
+  // ============================================================
+  {
+    id: 'pl_201',
+    city: City.GranCanaria,
+    name: 'Catedral de Santa Ana',
+    category: PlaceCategory.Iglesias,
+    description: 'Catedral de Canarias, en el barrio histórico de Vegueta. Iniciada en 1500, mezcla gótico, renacimiento y neoclásico. Sede de la Diócesis de Canarias; aquí el Papa se reúne con la Iglesia diocesana.',
+    address: "Plaza de Santa Ana, 13",
+    neighborhood: 'Vegueta',
+    latitude: 28.1010,
+    longitude: -15.4154,
+    visitInfo: 'Lun-sáb 10:00-16:30 (varía). Museo Diocesano y acceso a la torre con entrada.',
+    highlight: true,
+  },
+  {
+    id: 'pl_202',
+    city: City.GranCanaria,
+    name: 'Basílica de Nuestra Señora del Pino (Teror)',
+    category: PlaceCategory.Iglesias,
+    description: 'Santuario de la Virgen del Pino, patrona de Gran Canaria, en la villa de Teror. Principal centro de peregrinación de la isla, a 25 km de Las Palmas.',
+    address: "Plaza de Nuestra Señora del Pino, Teror",
+    neighborhood: 'Teror',
+    latitude: 28.0598,
+    longitude: -15.5470,
+    visitInfo: 'Abierta a diario para culto y visita. Consultar horario de misas.',
+    highlight: true,
+  },
+  {
+    id: 'pl_203',
+    city: City.GranCanaria,
+    name: 'Ermita de San Antonio Abad',
+    category: PlaceCategory.Iglesias,
+    description: 'Pequeña ermita de Vegueta donde, según la tradición, oró Cristóbal Colón antes de partir hacia América. Uno de los rincones más históricos de la ciudad.',
+    address: "Plaza de San Antonio Abad, Vegueta",
+    neighborhood: 'Vegueta',
+    latitude: 28.0995,
+    longitude: -15.4148,
+    visitInfo: 'Horario de culto restringido. Entorno visitable a pie.',
+  },
+  {
+    id: 'pl_204',
+    city: City.GranCanaria,
+    name: 'Casa de Colón',
+    category: PlaceCategory.Museos,
+    description: 'Museo en el corazón de Vegueta dedicado a los viajes de Colón y la relación de Canarias con América. Edificio de arquitectura canaria con patios señoriales.',
+    address: "Calle Colón, 1, Vegueta",
+    neighborhood: 'Vegueta',
+    latitude: 28.1007,
+    longitude: -15.4161,
+    visitInfo: 'Lun-sáb 10:00-18:00, dom 10:00-15:00. Entrada económica.',
+    website: 'https://casadecolon.com',
+  },
+
+  // ============================================================
+  // TENERIFE — Lugares cultural-religiosos
+  // ============================================================
+  {
+    id: 'pl_301',
+    city: City.Tenerife,
+    name: 'Basílica de Nuestra Señora de Candelaria',
+    category: PlaceCategory.Iglesias,
+    description: 'Santuario de la Virgen de Candelaria, patrona de Canarias, a orillas del Atlántico. Principal centro de peregrinación del archipiélago, con las esculturas de los nueve menceyes guanches en la plaza.',
+    address: 'Plaza de la Patrona de Canarias, Candelaria',
+    neighborhood: 'Candelaria',
+    latitude: 28.3553,
+    longitude: -16.3705,
+    visitInfo: 'Abierta a diario para culto y visita. Consultar horario de misas.',
+    highlight: true,
+  },
+  {
+    id: 'pl_302',
+    city: City.Tenerife,
+    name: 'Iglesia de la Concepción (La Laguna)',
+    category: PlaceCategory.Iglesias,
+    description: 'Templo matriz de San Cristóbal de La Laguna (s. XVI), con su célebre torre, símbolo de la ciudad Patrimonio de la Humanidad. Cuna de la fe en la isla.',
+    address: 'Plaza de la Concepción, San Cristóbal de La Laguna',
+    neighborhood: 'La Laguna',
+    latitude: 28.4874,
+    longitude: -16.3144,
+    visitInfo: 'Visitable en horario de culto. Subida a la torre con entrada.',
+    highlight: true,
+  },
+  {
+    id: 'pl_303',
+    city: City.Tenerife,
+    name: 'Catedral de La Laguna',
+    category: PlaceCategory.Iglesias,
+    description: 'Catedral de la Diócesis de Tenerife, de estilo neoclásico y neogótico, en el casco histórico de La Laguna. Sede episcopal de la isla.',
+    address: 'Plaza Fray Albino, San Cristóbal de La Laguna',
+    neighborhood: 'La Laguna',
+    latitude: 28.4860,
+    longitude: -16.3138,
+    visitInfo: 'Lun-sáb en horario de culto y visita. Consultar misas.',
+  },
+  {
+    id: 'pl_304',
+    city: City.Tenerife,
+    name: 'Iglesia de la Concepción (Santa Cruz)',
+    category: PlaceCategory.Iglesias,
+    description: 'Una de las iglesias más antiguas de Santa Cruz de Tenerife, junto al barranco de Santos. Su torre es uno de los emblemas de la capital, cerca del puerto donde el Papa celebra la Misa.',
+    address: 'Plaza de la Iglesia, Santa Cruz de Tenerife',
+    neighborhood: 'Santa Cruz de Tenerife',
+    latitude: 28.4682,
+    longitude: -16.2480,
+    visitInfo: 'Visitable en horario de culto.',
   },
 ];

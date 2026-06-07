@@ -11,22 +11,23 @@
 // ============================================================
 
 import { papalEvents } from '../data/agenda';
-import { PapalEvent } from '../models/types';
+import { PapalEvent, City } from '../models/types';
+import { cityDateTime } from '../data/cities';
 
-// Crea un objeto Date a partir de una fecha ISO ("2026-06-06")
-// y una hora en formato "HH:mm" ("11:30")
-function eventDateTime(date: string, time: string): Date {
-  return new Date(`${date}T${time}:00`);
+// Crea el instante absoluto del inicio de un evento, anclado a la
+// zona horaria de su ciudad (no a la del dispositivo).
+function eventDateTime(event: PapalEvent): Date {
+  return cityDateTime(event.date, event.startTime, event.city);
 }
 
 // Para cada evento estima cuándo termina:
-// - Si tiene endTime, ese
+// - Si tiene endTime, ese (en hora de la ciudad)
 // - Si no, asumimos 1 hora de duración por defecto
 function eventEndDateTime(event: PapalEvent): Date {
   if (event.endTime) {
-    return eventDateTime(event.date, event.endTime);
+    return cityDateTime(event.date, event.endTime, event.city);
   }
-  const start = eventDateTime(event.date, event.startTime);
+  const start = eventDateTime(event);
   return new Date(start.getTime() + 60 * 60 * 1000); // +1h
 }
 
@@ -38,22 +39,22 @@ export type LocationStatus =
 
 /**
  * Devuelve qué está haciendo el Papa en este momento.
- * Si no hay evento activo, devuelve el siguiente.
+ * Considera TODOS los eventos del viaje (todas las ciudades),
+ * ordenados cronológicamente. Si no hay evento activo, devuelve
+ * el siguiente programado.
  */
 export function getPapalLocationStatus(now: Date = new Date()): LocationStatus {
-  // Filtramos solo eventos en Madrid (los días 6-9 junio 2026)
-  const madridEvents = papalEvents
-    .filter(e => e.date >= '2026-06-06' && e.date <= '2026-06-09')
-    .sort((a, b) => {
-      const ta = eventDateTime(a.date, a.startTime).getTime();
-      const tb = eventDateTime(b.date, b.startTime).getTime();
-      return ta - tb;
-    });
+  // Todos los eventos del viaje, ordenados cronológicamente.
+  const allEvents = [...papalEvents].sort((a, b) => {
+    const ta = eventDateTime(a).getTime();
+    const tb = eventDateTime(b).getTime();
+    return ta - tb;
+  });
 
-  if (madridEvents.length === 0) return { phase: 'before' };
+  if (allEvents.length === 0) return { phase: 'before' };
 
-  const firstStart = eventDateTime(madridEvents[0].date, madridEvents[0].startTime);
-  const lastEnd = eventEndDateTime(madridEvents[madridEvents.length - 1]);
+  const firstStart = eventDateTime(allEvents[0]);
+  const lastEnd = eventEndDateTime(allEvents[allEvents.length - 1]);
 
   // Antes de que empiece todo
   if (now < firstStart) return { phase: 'before' };
@@ -62,8 +63,8 @@ export function getPapalLocationStatus(now: Date = new Date()): LocationStatus {
   if (now > lastEnd) return { phase: 'finished' };
 
   // Buscar evento en curso
-  for (const event of madridEvents) {
-    const start = eventDateTime(event.date, event.startTime);
+  for (const event of allEvents) {
+    const start = eventDateTime(event);
     const end = eventEndDateTime(event);
     if (now >= start && now <= end) {
       return { phase: 'now', event };
@@ -71,8 +72,8 @@ export function getPapalLocationStatus(now: Date = new Date()): LocationStatus {
   }
 
   // Si no hay evento ahora, buscar el próximo
-  for (const event of madridEvents) {
-    const start = eventDateTime(event.date, event.startTime);
+  for (const event of allEvents) {
+    const start = eventDateTime(event);
     if (now < start) {
       const minutesUntil = Math.round((start.getTime() - now.getTime()) / 60000);
       return { phase: 'next', event, minutesUntil };

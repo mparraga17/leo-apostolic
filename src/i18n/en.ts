@@ -16,25 +16,26 @@ export default {
 
   // Today screen
   today: {
-    countdownLabel: 'APOSTOLIC VISIT · MADRID',
-    countdownDates: 'June 6 — 9, 2026',
+    countdownLabel: 'APOSTOLIC JOURNEY · SPAIN',
+    countdownDates: 'June 6 — 12, 2026',
     days: 'days',
     hours: 'hours',
     minutes: 'min',
     seconds: 'sec',
-    saintOfTheDay: 'SAINT OF THE DAY',
-    feastBadge: 'SOLEMNITY',
+    newsSection: 'THE VISIT, UP TO DATE',
+    newsUpcoming: 'COMING UP',
+    newsRecap: 'RECAP',
+    newsPractical: 'NOTICE',
     popeQuote: "WORDS OF THE HOLY FATHER",
-    prayerOfTheDay: 'PRAYER OF THE DAY',
     morePrayers: 'More prayers',
     blessing: 'Blessing',
-    duringVisit: 'THE POPE IS IN MADRID',
+    duringVisit: 'THE POPE IS IN SPAIN',
     afterVisit: 'The visit has ended. May the fruit of these days remain.',
   },
 
   // Events screen
   agenda: {
-    headerSubtitle: 'Apostolic visit · June 6-9, 2026',
+    headerSubtitle: 'Apostolic journey · June 6-12, 2026',
     headerTitle: 'Events',
     livePapal: 'THE POPE NOW',
     publicBadge: 'PUBLIC EVENT',
@@ -49,11 +50,15 @@ export default {
     timeFreeNext: 'Next: {{title}} · {{time}}',
     nearbyTitle: 'PLACES NEARBY',
     nearbyDirections: 'Get directions',
+    allCities: 'All',
+    localTimeNote: 'Local time in {{city}} ({{utc}})',
+    deviceTimeDiff: 'Your device is in a different time zone: times shown are those of {{city}}.',
+    pastSection: 'PAST EVENTS',
   },
 
   // Places screen
   places: {
-    headerSubtitle: 'Cultural and devotional Madrid',
+    headerSubtitle: 'Culture and devotion along the journey',
     headerTitle: 'Places',
     featuredSection: 'MUST-SEE',
     massScheduleTitle: 'MASS SCHEDULE',
@@ -61,6 +66,8 @@ export default {
     scheduleDisclaimer: 'Schedules may vary on holidays and during summer. Check the official website before visiting.',
     directionsButton: 'Get directions',
     websiteButton: 'Official website',
+    allCities: 'All',
+    emptyCity: 'No places yet for this city.',
   },
 
   // Prayers screen
@@ -104,23 +111,34 @@ export default {
 
   // Traffic screen
   traffic: {
-    headerSubtitle: "Pope's visit · Madrid",
+    headerSubtitle: "Pope's journey · Spain",
     headerTitle: 'Traffic',
     activeSection: 'CLOSURES ACTIVE NOW',
     upcomingSection: 'UPCOMING CLOSURES',
     byDaySection: 'ALL CLOSURES BY DAY',
     noneActive: 'There are no active closures at the moment.',
+    noneCity: 'No closures recorded for this city.',
     severityTotal: 'Full closure',
     severityParcial: 'Partial closure',
     severityAfectado: 'Traffic affected',
     affectsEvent: 'Affects: {{event}}',
     officialButton: 'See official City Council information',
     emtButton: 'Affected bus lines (EMT)',
+    officialSourcesTitle: 'OFFICIAL SOURCES',
     viewOnMap: 'View on map',
-    disclaimer: 'Indicative information based on official sources from Madrid City Council and EMT (updated {{date}}). Closures may change without notice. Always check official sources before traveling.',
+    disclaimer: 'Indicative information based on official sources (updated {{date}}). Closures may change without notice. Always check official sources before traveling.',
     inEventTitle: 'TRAFFIC IMPACT',
     inTodayTitle: 'TRAFFIC CLOSURES NOW',
     seeAll: 'See all closures',
+    sources: {
+      madridCityCouncil: 'Madrid City Council',
+      emt: 'EMT Madrid (buses)',
+      barcelonaCityCouncil: 'Barcelona City Council',
+      tmb: 'TMB (Barcelona metro & bus)',
+      lpgcCityCouncil: 'Las Palmas de Gran Canaria City Council',
+      guaguas: 'Guaguas Municipales',
+      tenerifeCityCouncil: 'Santa Cruz de Tenerife City Council',
+    },
   },
 
   // About / Information
@@ -128,7 +146,7 @@ export default {
     title: 'About',
     version: 'Version {{version}}',
     aboutSection: 'ABOUT',
-    aboutText: 'Leo Look Up is a permanent spiritual companion for Catholic faithful. Designed for the historic visit of Pope Leo XIV to Madrid (June 2026), it brings together traditional prayers, a liturgical hymnal, the papal agenda and a curated guide of cultural-religious places. The app does not collect personal data and fully respects your privacy.',
+    aboutText: 'Leo Look Up helps those attending or following Pope Leo XIV\'s visit to Spain (June 6-12, 2026). It brings together the official schedule of events in each city, real-time road closures and public transport, and a guide to points of interest. It also includes prayers and a hymnal for those who wish to experience it more closely. The app does not collect personal data and fully respects your privacy.',
     actionsSection: 'COLLABORATE',
     shareApp: 'Share Leo Look Up',
     contact: 'Contact and feedback',

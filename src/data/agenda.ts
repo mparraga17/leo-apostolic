@@ -5,11 +5,12 @@
 // https://www.vatican.va/content/leo-xiv/en/travels/2026/documents/spagna-6-12giugno2026.html
 // ============================================================
 
-import { PapalEvent, EventCategory } from '../models/types';
+import { PapalEvent, EventCategory, City } from '../models/types';
 
 // Helper para obtener título/descripción/location según el idioma
 // Si no hay versión EN, devuelve la española (fallback transparente).
-export function localizeEvent(event: PapalEvent, locale: 'es' | 'en') {
+// El catalán (ca) usa el contenido en español (no traducimos los datos).
+export function localizeEvent(event: PapalEvent, locale: 'es' | 'en' | 'ca') {
   if (locale === 'en') {
     return {
       title: event.titleEn ?? event.title,
@@ -32,6 +33,7 @@ export const papalEvents: PapalEvent[] = [
   // ============================================================
   {
     id: 'evt_001',
+    city: City.Madrid,
     date: '2026-06-06',
     startTime: '10:30',
     title: 'Llegada a Madrid',
@@ -49,6 +51,7 @@ export const papalEvents: PapalEvent[] = [
   },
   {
     id: 'evt_002',
+    city: City.Madrid,
     date: '2026-06-06',
     startTime: '11:30',
     endTime: '12:00',
@@ -67,6 +70,7 @@ export const papalEvents: PapalEvent[] = [
   },
   {
     id: 'evt_003',
+    city: City.Madrid,
     date: '2026-06-06',
     startTime: '12:00',
     endTime: '12:30',
@@ -85,6 +89,7 @@ export const papalEvents: PapalEvent[] = [
   },
   {
     id: 'evt_004',
+    city: City.Madrid,
     date: '2026-06-06',
     startTime: '12:30',
     title: 'Encuentro con autoridades y cuerpo diplomático',
@@ -102,6 +107,7 @@ export const papalEvents: PapalEvent[] = [
   },
   {
     id: 'evt_005',
+    city: City.Madrid,
     date: '2026-06-06',
     startTime: '18:00',
     title: 'Visita al proyecto social CEDIA 24 Horas',
@@ -119,6 +125,7 @@ export const papalEvents: PapalEvent[] = [
   },
   {
     id: 'evt_006',
+    city: City.Madrid,
     date: '2026-06-06',
     startTime: '20:30',
     title: '🌙 Vigilia de oración con jóvenes',
@@ -147,6 +154,7 @@ papalEvents.push(
   // ============================================================
   {
     id: 'evt_007',
+    city: City.Madrid,
     date: '2026-06-07',
     startTime: '10:00',
     title: '⛪ Santa Misa y Procesión del Corpus Christi',
@@ -168,6 +176,7 @@ papalEvents.push(
   },
   {
     id: 'evt_008',
+    city: City.Madrid,
     date: '2026-06-07',
     startTime: '16:30',
     title: 'Reunión con la Orden Agustina',
@@ -185,6 +194,7 @@ papalEvents.push(
   },
   {
     id: 'evt_009',
+    city: City.Madrid,
     date: '2026-06-07',
     startTime: '18:00',
     title: 'Encuentro "Construyendo redes"',
@@ -206,6 +216,7 @@ papalEvents.push(
   },
   {
     id: 'evt_010',
+    city: City.Madrid,
     date: '2026-06-07',
     startTime: '19:30',
     title: 'Cena con el Cardenal Arzobispo',
@@ -227,6 +238,7 @@ papalEvents.push(
   // ============================================================
   {
     id: 'evt_011',
+    city: City.Madrid,
     date: '2026-06-08',
     startTime: '09:30',
     title: 'Reunión con el Presidente del Gobierno',
@@ -244,6 +256,7 @@ papalEvents.push(
   },
   {
     id: 'evt_012',
+    city: City.Madrid,
     date: '2026-06-08',
     startTime: '10:30',
     title: '🏛️ Discurso ante el Congreso de los Diputados',
@@ -261,6 +274,7 @@ papalEvents.push(
   },
   {
     id: 'evt_013',
+    city: City.Madrid,
     date: '2026-06-08',
     startTime: '11:30',
     title: 'Reunión con los Obispos de España',
@@ -278,6 +292,7 @@ papalEvents.push(
   },
   {
     id: 'evt_014',
+    city: City.Madrid,
     date: '2026-06-08',
     startTime: '18:00',
     title: '🙏 Oración a la Virgen de la Almudena',
@@ -299,6 +314,7 @@ papalEvents.push(
   },
   {
     id: 'evt_015',
+    city: City.Madrid,
     date: '2026-06-08',
     startTime: '19:00',
     title: '🏟️ Encuentro en el Bernabéu',
@@ -324,6 +340,7 @@ papalEvents.push(
   // ============================================================
   {
     id: 'evt_016',
+    city: City.Madrid,
     date: '2026-06-09',
     startTime: '10:20',
     title: 'Encuentro con voluntarios',
@@ -341,6 +358,7 @@ papalEvents.push(
   },
   {
     id: 'evt_017',
+    city: City.Madrid,
     date: '2026-06-09',
     startTime: '11:10',
     title: 'Despedida de Madrid (vuelo a Barcelona)',
@@ -355,5 +373,315 @@ papalEvents.push(
     titleEn: 'Farewell from Madrid (flight to Barcelona)',
     descriptionEn: 'The Pope departs for Barcelona to continue his apostolic journey.',
     locationEn: 'Adolfo Suárez Madrid-Barajas Airport',
+  },
+);
+
+// ============================================================
+// BARCELONA · MONTSERRAT (9-10 de junio)
+// Fuente: vatican.va (itinerario oficial del viaje a España)
+// ============================================================
+papalEvents.push(
+  // ---- MARTES 9 DE JUNIO — BARCELONA ----
+  {
+    id: 'evt_018',
+    city: City.Barcelona,
+    date: '2026-06-09',
+    startTime: '12:25',
+    title: 'Llegada a Barcelona',
+    description: 'El Papa León XIV aterriza en el aeropuerto Josep Tarradellas Barcelona-El Prat procedente de Madrid.',
+    location: 'Aeropuerto Josep Tarradellas Barcelona-El Prat',
+    address: 'El Prat de Llobregat, Barcelona',
+    latitude: 41.2974,
+    longitude: 2.0833,
+    category: EventCategory.Traslado,
+    isPublic: false,
+    highlight: false,
+    titleEn: 'Arrival in Barcelona',
+    descriptionEn: 'Pope Leo XIV lands at Josep Tarradellas Barcelona-El Prat Airport from Madrid.',
+    locationEn: 'Josep Tarradellas Barcelona-El Prat Airport',
+  },
+  {
+    id: 'evt_019',
+    city: City.Barcelona,
+    date: '2026-06-09',
+    startTime: '13:00',
+    title: 'Oración del mediodía',
+    description: 'Oración de la Hora Media presidida por el Santo Padre en la Catedral de la Santa Cruz y Santa Eulalia, en el corazón del Barrio Gótico.',
+    location: 'Catedral de la Santa Cruz y Santa Eulalia',
+    address: "Pla de la Seu, s/n, 08002 Barcelona",
+    latitude: 41.3839,
+    longitude: 2.1762,
+    category: EventCategory.Vigilia,
+    isPublic: false,
+    highlight: false,
+    titleEn: 'Midday Prayer',
+    descriptionEn: 'Midday prayer presided by the Holy Father at the Cathedral of the Holy Cross and Saint Eulalia, in the heart of the Gothic Quarter.',
+    locationEn: 'Cathedral of the Holy Cross and Saint Eulalia',
+  },
+  {
+    id: 'evt_020',
+    city: City.Barcelona,
+    date: '2026-06-09',
+    startTime: '20:00',
+    title: '🌙 Vigilia de oración',
+    description: 'Vigilia de oración del Papa con los fieles en el Estadio Olímpico Lluís Companys, en la montaña de Montjuïc. Acto público multitudinario.',
+    location: 'Estadio Olímpico Lluís Companys',
+    address: "Passeig Olímpic, 15-17, 08038 Barcelona",
+    latitude: 41.3647,
+    longitude: 2.1556,
+    category: EventCategory.Vigilia,
+    isPublic: true,
+    highlight: true,
+    registrationRequired: true,
+    registrationNote: 'Acto público con aforo limitado. Se recomienda inscripción previa a través de tu parroquia o la Archidiócesis de Barcelona y acudir con antelación; el acceso a Montjuïc está restringido desde las 12:00.',
+    titleEn: '🌙 Prayer vigil',
+    descriptionEn: 'Prayer vigil of the Pope with the faithful at the Lluís Companys Olympic Stadium, on Montjuïc hill. A large public event.',
+    locationEn: 'Lluís Companys Olympic Stadium',
+    registrationNoteEn: 'Public event with limited capacity. Prior registration through your parish or the Archdiocese of Barcelona is recommended; access to Montjuïc is restricted from 12:00.',
+  },
+
+  // ---- MIÉRCOLES 10 DE JUNIO — BARCELONA / MONTSERRAT ----
+  {
+    id: 'evt_021',
+    city: City.Barcelona,
+    date: '2026-06-10',
+    startTime: '10:50',
+    title: 'Visita al Centro Penitenciario Brians 1',
+    description: 'Visita del Santo Padre a los internos y trabajadores del Centro Penitenciario Brians 1.',
+    location: 'Centro Penitenciario Brians 1',
+    address: 'Sant Esteve Sesrovires, Barcelona',
+    latitude: 41.4733,
+    longitude: 1.8717,
+    category: EventCategory.Visita,
+    isPublic: false,
+    highlight: false,
+    titleEn: 'Visit to Brians 1 Penitentiary Center',
+    descriptionEn: 'The Holy Father visits inmates and staff of the Brians 1 Penitentiary Center.',
+    locationEn: 'Brians 1 Penitentiary Center',
+  },
+  {
+    id: 'evt_022',
+    city: City.Barcelona,
+    date: '2026-06-10',
+    startTime: '12:00',
+    title: '📿 Rezo del Santo Rosario en Montserrat',
+    description: 'Rezo del Santo Rosario presidido por el Papa en la Abadía de Santa María de Montserrat, ante la Virgen de Montserrat ("La Moreneta"), patrona de Cataluña.',
+    location: 'Abadía de Montserrat',
+    address: 'Monistrol de Montserrat, Barcelona',
+    latitude: 41.5928,
+    longitude: 1.8376,
+    category: EventCategory.Vigilia,
+    isPublic: true,
+    highlight: true,
+    registrationNote: 'Acto en el santuario de Montserrat. El acceso a la montaña puede estar regulado; consulta el cremallera y los aparcamientos oficiales y acude con antelación.',
+    titleEn: '📿 Holy Rosary at Montserrat',
+    descriptionEn: 'Holy Rosary presided by the Pope at the Abbey of Santa Maria de Montserrat, before the Virgin of Montserrat ("La Moreneta"), patroness of Catalonia.',
+    locationEn: 'Abbey of Montserrat',
+    registrationNoteEn: 'Event at the sanctuary of Montserrat. Access to the mountain may be regulated; check the rack railway and official car parks and arrive early.',
+  },
+  {
+    id: 'evt_023',
+    city: City.Barcelona,
+    date: '2026-06-10',
+    startTime: '16:30',
+    title: 'Encuentro con entidades caritativas',
+    description: 'Encuentro del Papa con las organizaciones diocesanas de caridad y asistencia en la iglesia de Sant Agustí, en el Raval.',
+    location: 'Iglesia de Sant Agustí',
+    address: "Plaça de Sant Agustí, 2, 08001 Barcelona",
+    latitude: 41.3795,
+    longitude: 2.1690,
+    category: EventCategory.Encuentro,
+    isPublic: false,
+    highlight: false,
+    titleEn: 'Meeting with charity organizations',
+    descriptionEn: 'The Pope meets diocesan charity and welfare organizations at the church of Sant Agustí, in the Raval.',
+    locationEn: 'Church of Sant Agustí',
+  },
+  {
+    id: 'evt_024',
+    city: City.Barcelona,
+    date: '2026-06-10',
+    startTime: '19:30',
+    title: '⛪ Santa Misa en la Sagrada Família',
+    description: 'Santa Misa presidida por el Papa en la Basílica de la Sagrada Família, coincidiendo con la culminación de la torre de Jesucristo y el centenario de la muerte de Antoni Gaudí. Acto central de la etapa de Barcelona.',
+    location: 'Basílica de la Sagrada Família',
+    address: "Carrer de Mallorca, 401, 08013 Barcelona",
+    latitude: 41.4036,
+    longitude: 2.1744,
+    category: EventCategory.Misa,
+    isPublic: true,
+    highlight: true,
+    registrationRequired: true,
+    registrationNote: 'Aforo muy limitado dentro del templo e inscripción obligatoria. La estación de metro Sagrada Família (L2 y L5) estará cerrada todo el día: usa Verdaguer (L4/L5) o Sant Pau | Dos de Maig (L5).',
+    titleEn: '⛪ Holy Mass at the Sagrada Família',
+    descriptionEn: 'Holy Mass presided by the Pope at the Sagrada Família Basilica, coinciding with the completion of the tower of Jesus Christ and the centenary of Antoni Gaudí\'s death. Central event of the Barcelona stage.',
+    locationEn: 'Sagrada Família Basilica',
+    registrationNoteEn: 'Very limited capacity inside the basilica and mandatory registration. The Sagrada Família metro station (L2 and L5) is closed all day: use Verdaguer (L4/L5) or Sant Pau | Dos de Maig (L5).',
+  },
+);
+
+// ============================================================
+// LAS PALMAS DE GRAN CANARIA (11 de junio) — horario local UTC+1
+// Fuente: vatican.va (itinerario oficial del viaje a España)
+// ============================================================
+papalEvents.push(
+  {
+    id: 'evt_025',
+    city: City.GranCanaria,
+    date: '2026-06-11',
+    startTime: '10:50',
+    title: 'Llegada a Gran Canaria',
+    description: 'El Papa León XIV llega a la Base Aérea de Gando procedente de Barcelona. Hora local de Canarias (UTC+1).',
+    location: 'Base Aérea de Gando',
+    address: 'Telde, Gran Canaria',
+    latitude: 27.9319,
+    longitude: -15.3866,
+    category: EventCategory.Traslado,
+    isPublic: false,
+    highlight: false,
+    titleEn: 'Arrival in Gran Canaria',
+    descriptionEn: 'Pope Leo XIV arrives at Gando Air Base from Barcelona. Canary Islands local time (UTC+1).',
+    locationEn: 'Gando Air Base',
+  },
+  {
+    id: 'evt_026',
+    city: City.GranCanaria,
+    date: '2026-06-11',
+    startTime: '11:40',
+    title: 'Encuentro con organizaciones que ayudan a migrantes',
+    description: 'Encuentro del Santo Padre con organizaciones que trabajan en la acogida de migrantes, en el puerto de Arguineguín (Mogán), símbolo de la llegada de personas por la ruta canaria.',
+    location: 'Puerto de Arguineguín',
+    address: 'Arguineguín, Mogán, Gran Canaria',
+    latitude: 27.7594,
+    longitude: -15.6856,
+    category: EventCategory.Encuentro,
+    isPublic: false,
+    highlight: false,
+    titleEn: 'Meeting with organizations working with migrants',
+    descriptionEn: 'The Holy Father meets organizations that work in welcoming migrants, at the port of Arguineguín (Mogán), a symbol of arrivals via the Canary route.',
+    locationEn: 'Port of Arguineguín',
+  },
+  {
+    id: 'evt_027',
+    city: City.GranCanaria,
+    date: '2026-06-11',
+    startTime: '13:30',
+    title: 'Encuentro con la Iglesia diocesana',
+    description: 'Encuentro con obispos, sacerdotes, diáconos, religiosos, seminaristas y agentes de pastoral en la Catedral de Santa Ana, en el corazón de Vegueta.',
+    location: 'Catedral de Santa Ana',
+    address: "Plaza de Santa Ana, 13, Las Palmas de Gran Canaria",
+    latitude: 28.1010,
+    longitude: -15.4154,
+    category: EventCategory.Encuentro,
+    isPublic: false,
+    highlight: false,
+    titleEn: 'Meeting with the diocesan Church',
+    descriptionEn: 'Meeting with bishops, priests, deacons, religious, seminarians and pastoral workers at the Cathedral of Saint Anne, in the heart of Vegueta.',
+    locationEn: 'Cathedral of Saint Anne',
+  },
+  {
+    id: 'evt_028',
+    city: City.GranCanaria,
+    date: '2026-06-11',
+    startTime: '18:30',
+    title: '⛪ Santa Misa en el Estadio de Gran Canaria',
+    description: 'Santa Misa presidida por el Papa en el Estadio de Gran Canaria (Siete Palmas), el acto más multitudinario de la etapa canaria.',
+    location: 'Estadio de Gran Canaria',
+    address: "Av. Pintor Felo Monzón, Las Palmas de Gran Canaria",
+    latitude: 28.1000,
+    longitude: -15.4566,
+    category: EventCategory.Misa,
+    isPublic: true,
+    highlight: true,
+    registrationRequired: true,
+    registrationNote: 'Acto multitudinario con aforo por sectores. El entorno del Estadio y el Gran Canaria Arena cierra desde las 9:00. Usa el transporte público reforzado (Guaguas líneas 26, 91 y Especial Auditorio) y acude con antelación.',
+    titleEn: '⛪ Holy Mass at the Gran Canaria Stadium',
+    descriptionEn: 'Holy Mass presided by the Pope at the Gran Canaria Stadium (Siete Palmas), the largest event of the Canary stage.',
+    locationEn: 'Gran Canaria Stadium',
+    registrationNoteEn: 'Large event with capacity by sectors. The Stadium area and Gran Canaria Arena close from 09:00. Use the reinforced public transport (Guaguas lines 26, 91 and Special Auditorio) and arrive early.',
+  },
+);
+
+// ============================================================
+// SANTA CRUZ DE TENERIFE (12 de junio) — horario local UTC+1
+// Fuente: vatican.va (itinerario oficial del viaje a España)
+// ============================================================
+papalEvents.push(
+  {
+    id: 'evt_029',
+    city: City.Tenerife,
+    date: '2026-06-12',
+    startTime: '09:30',
+    title: 'Encuentro con migrantes en el Centro Las Raíces',
+    description: 'Encuentro del Santo Padre con migrantes acogidos en el Centro Las Raíces, en La Laguna.',
+    location: 'Centro Las Raíces',
+    address: 'La Laguna, Tenerife',
+    latitude: 28.4853,
+    longitude: -16.3270,
+    category: EventCategory.Visita,
+    isPublic: false,
+    highlight: false,
+    titleEn: 'Meeting with migrants at Las Raíces Center',
+    descriptionEn: 'The Holy Father meets migrants hosted at the Las Raíces Center, in La Laguna.',
+    locationEn: 'Las Raíces Center',
+  },
+  {
+    id: 'evt_030',
+    city: City.Tenerife,
+    date: '2026-06-12',
+    startTime: '10:10',
+    title: 'Encuentro por la integración de los migrantes',
+    description: 'Encuentro con organizaciones que trabajan por la integración de los migrantes en la Plaza del Cristo de La Laguna.',
+    location: 'Plaza del Cristo de La Laguna',
+    address: 'San Cristóbal de La Laguna, Tenerife',
+    latitude: 28.4853,
+    longitude: -16.3159,
+    category: EventCategory.Encuentro,
+    isPublic: true,
+    highlight: false,
+    registrationNote: 'Acto en espacio público. Consulta los accesos y el dispositivo de movilidad local y acude con antelación.',
+    titleEn: 'Meeting for the integration of migrants',
+    descriptionEn: 'Meeting with organizations working for the integration of migrants at the Plaza del Cristo de La Laguna.',
+    locationEn: 'Plaza del Cristo de La Laguna',
+    registrationNoteEn: 'Event in a public space. Check access points and the local mobility plan and arrive early.',
+  },
+  {
+    id: 'evt_031',
+    city: City.Tenerife,
+    date: '2026-06-12',
+    startTime: '12:15',
+    title: '⛪ Santa Misa en el puerto de Santa Cruz',
+    description: 'Santa Misa presidida por el Papa en el puerto de Santa Cruz de Tenerife, acto principal y despedida del viaje apostólico a España.',
+    location: 'Puerto de Santa Cruz de Tenerife',
+    address: 'Santa Cruz de Tenerife',
+    latitude: 28.4720,
+    longitude: -16.2426,
+    category: EventCategory.Misa,
+    isPublic: true,
+    highlight: true,
+    registrationRequired: true,
+    registrationNote: 'Acto multitudinario al aire libre en el puerto. Aforo por sectores; consulta el dispositivo de movilidad de Santa Cruz y acude con antelación.',
+    titleEn: '⛪ Holy Mass at the port of Santa Cruz',
+    descriptionEn: 'Holy Mass presided by the Pope at the port of Santa Cruz de Tenerife, the main event and farewell of the apostolic journey to Spain.',
+    locationEn: 'Port of Santa Cruz de Tenerife',
+    registrationNoteEn: 'Large open-air event at the port. Capacity by sectors; check the Santa Cruz mobility plan and arrive early.',
+  },
+  {
+    id: 'evt_032',
+    city: City.Tenerife,
+    date: '2026-06-12',
+    startTime: '15:00',
+    title: 'Despedida de España (vuelo a Roma)',
+    description: 'Ceremonia de despedida en el aeropuerto Tenerife Norte-Los Rodeos y salida en avión hacia Roma. Fin del viaje apostólico a España.',
+    location: 'Aeropuerto Tenerife Norte-Los Rodeos',
+    address: 'San Cristóbal de La Laguna, Tenerife',
+    latitude: 28.4827,
+    longitude: -16.3415,
+    category: EventCategory.Traslado,
+    isPublic: false,
+    highlight: false,
+    titleEn: 'Farewell from Spain (flight to Rome)',
+    descriptionEn: 'Farewell ceremony at Tenerife Norte-Los Rodeos Airport and departure by plane to Rome. End of the apostolic journey to Spain.',
+    locationEn: 'Tenerife Norte-Los Rodeos Airport',
   },
 );

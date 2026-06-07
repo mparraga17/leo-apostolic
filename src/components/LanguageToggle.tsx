@@ -32,6 +32,7 @@ export default function LanguageToggle() {
   return (
     <View style={styles.container}>
       {renderOption('es', 'ES')}
+      {renderOption('ca', 'CA')}
       {renderOption('en', 'EN')}
     </View>
   );

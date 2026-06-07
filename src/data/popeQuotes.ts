@@ -272,7 +272,7 @@ export const popeQuotes: PopeQuote[] = [...encyclicalQuotes, ...earlierQuotes];
  */
 export function getQuoteOfTheDay(
   date: Date = new Date(),
-  locale: 'es' | 'en' = 'es',
+  locale: 'es' | 'en' | 'ca' = 'es',
 ): LocalizedQuoteEntry {
   const start = new Date(date.getFullYear(), 0, 0);
   const diff = date.getTime() - start.getTime();

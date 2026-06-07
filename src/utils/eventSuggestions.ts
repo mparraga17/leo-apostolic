@@ -10,6 +10,7 @@
 import { papalEvents } from '../data/agenda';
 import { places, CulturalPlace } from '../data/places';
 import { PapalEvent } from '../models/types';
+import { cityDateTime } from '../data/cities';
 
 export interface EventTimeWindow {
   hasFreeTime: boolean;
@@ -29,20 +30,20 @@ function distanceKm(lat1: number, lon1: number, lat2: number, lon2: number): num
   return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-function eventDateTime(date: string, time: string): Date {
-  return new Date(`${date}T${time}:00`);
+function eventDateTime(event: PapalEvent): Date {
+  return cityDateTime(event.date, event.startTime, event.city);
 }
 
 function eventEndDateTime(event: PapalEvent): Date {
-  if (event.endTime) return eventDateTime(event.date, event.endTime);
-  const start = eventDateTime(event.date, event.startTime);
+  if (event.endTime) return cityDateTime(event.date, event.endTime, event.city);
+  const start = eventDateTime(event);
   return new Date(start.getTime() + 60 * 60 * 1000);
 }
 
 // Calcula la ventana de tiempo libre tras un evento
 export function getTimeWindowAfter(event: PapalEvent): EventTimeWindow {
   const sortedEvents = [...papalEvents].sort((a, b) =>
-    eventDateTime(a.date, a.startTime).getTime() - eventDateTime(b.date, b.startTime).getTime()
+    eventDateTime(a).getTime() - eventDateTime(b).getTime()
   );
 
   const idx = sortedEvents.findIndex(e => e.id === event.id);
@@ -52,10 +53,10 @@ export function getTimeWindowAfter(event: PapalEvent): EventTimeWindow {
 
   const thisEnd = eventEndDateTime(event);
   const nextEvent = sortedEvents[idx + 1];
-  const nextStart = eventDateTime(nextEvent.date, nextEvent.startTime);
+  const nextStart = eventDateTime(nextEvent);
 
-  // Si el siguiente evento es otro día, no calculamos hueco
-  if (event.date !== nextEvent.date) {
+  // Si el siguiente evento es otro día o de otra ciudad, no calculamos hueco
+  if (event.date !== nextEvent.date || event.city !== nextEvent.city) {
     return { hasFreeTime: false };
   }
 
@@ -73,9 +74,13 @@ export function getTimeWindowAfter(event: PapalEvent): EventTimeWindow {
   return { hasFreeTime: true, nextEvent, freeMinutes, freeText };
 }
 
-// Devuelve los lugares culturales más cercanos a un evento
+// Devuelve los lugares culturales más cercanos a un evento.
+// Filtra primero por la MISMA ciudad del evento (bullet-proof: nunca
+// sugiere lugares de otra etapa aunque las coordenadas estuvieran cerca)
+// y luego por distancia.
 export function getNearbyPlaces(event: PapalEvent, maxKm: number = 3, limit: number = 4): CulturalPlace[] {
   return places
+    .filter(place => place.city === event.city)
     .map(place => ({
       place,
       distance: distanceKm(event.latitude, event.longitude, place.latitude, place.longitude),

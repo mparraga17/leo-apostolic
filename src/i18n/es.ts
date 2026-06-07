@@ -16,25 +16,26 @@ export default {
 
   // Pantalla Hoy
   today: {
-    countdownLabel: 'VISITA APOSTÓLICA · MADRID',
-    countdownDates: '6 — 9 de junio de 2026',
+    countdownLabel: 'VIAJE APOSTÓLICO · ESPAÑA',
+    countdownDates: '6 — 12 de junio de 2026',
     days: 'días',
     hours: 'horas',
     minutes: 'min',
     seconds: 'seg',
-    saintOfTheDay: 'SANTO DEL DÍA',
-    feastBadge: 'SOLEMNIDAD',
+    newsSection: 'LA VISITA, AL DÍA',
+    newsUpcoming: 'PRÓXIMAMENTE',
+    newsRecap: 'CRÓNICA',
+    newsPractical: 'AVISO',
     popeQuote: 'PALABRAS DEL SANTO PADRE',
-    prayerOfTheDay: 'ORACIÓN DEL DÍA',
     morePrayers: 'Más oraciones',
     blessing: 'Bendición',
-    duringVisit: 'EL PAPA ESTÁ EN MADRID',
+    duringVisit: 'EL PAPA ESTÁ EN ESPAÑA',
     afterVisit: 'La visita ha concluido. Que el fruto de estos días permanezca.',
   },
 
   // Pantalla Eventos
   agenda: {
-    headerSubtitle: 'Visita apostólica · 6-9 junio 2026',
+    headerSubtitle: 'Viaje apostólico · 6-12 junio 2026',
     headerTitle: 'Eventos',
     livePapal: 'EL PAPA AHORA',
     publicBadge: 'ACTO PÚBLICO',
@@ -49,11 +50,15 @@ export default {
     timeFreeNext: 'Próximo: {{title}} · {{time}}',
     nearbyTitle: 'PARA VISITAR CERCA',
     nearbyDirections: 'Cómo llegar',
+    allCities: 'Todas',
+    localTimeNote: 'Hora local de {{city}} ({{utc}})',
+    deviceTimeDiff: 'Tu dispositivo está en otra zona horaria: las horas mostradas son las de {{city}}.',
+    pastSection: 'EVENTOS YA CELEBRADOS',
   },
 
   // Pantalla Lugares
   places: {
-    headerSubtitle: 'Madrid cultural y devocional',
+    headerSubtitle: 'Cultura y devoción del viaje',
     headerTitle: 'Lugares',
     featuredSection: 'IMPRESCINDIBLES',
     massScheduleTitle: 'HORARIO DE MISAS',
@@ -61,6 +66,8 @@ export default {
     scheduleDisclaimer: 'Los horarios pueden variar en festivos y temporada de verano. Consulta la web oficial antes de acudir.',
     directionsButton: 'Cómo llegar',
     websiteButton: 'Web oficial',
+    allCities: 'Todas',
+    emptyCity: 'Aún no hay lugares para esta ciudad.',
   },
 
   // Pantalla Oraciones
@@ -104,23 +111,34 @@ export default {
 
   // Pantalla Tráfico
   traffic: {
-    headerSubtitle: 'Visita del Papa · Madrid',
+    headerSubtitle: 'Viaje del Papa · España',
     headerTitle: 'Tráfico',
     activeSection: 'CORTES ACTIVOS AHORA',
     upcomingSection: 'PRÓXIMOS CORTES',
     byDaySection: 'TODOS LOS CORTES POR DÍA',
     noneActive: 'No hay cortes activos en este momento.',
+    noneCity: 'No hay cortes registrados para esta ciudad.',
     severityTotal: 'Corte total',
     severityParcial: 'Corte parcial',
     severityAfectado: 'Tráfico afectado',
     affectsEvent: 'Afecta a: {{event}}',
     officialButton: 'Ver información oficial del Ayuntamiento',
     emtButton: 'Líneas de autobús afectadas (EMT)',
+    officialSourcesTitle: 'FUENTES OFICIALES',
     viewOnMap: 'Ver en el mapa',
-    disclaimer: 'Información orientativa basada en fuentes oficiales del Ayuntamiento de Madrid y EMT (actualizada {{date}}). Los cortes pueden cambiar sin previo aviso. Consulta siempre las fuentes oficiales antes de desplazarte.',
+    disclaimer: 'Información orientativa basada en fuentes oficiales (actualizada {{date}}). Los cortes pueden cambiar sin previo aviso. Consulta siempre las fuentes oficiales antes de desplazarte.',
     inEventTitle: 'AFECTACIÓN AL TRÁFICO',
     inTodayTitle: 'CORTES DE TRÁFICO AHORA',
     seeAll: 'Ver todos los cortes',
+    sources: {
+      madridCityCouncil: 'Ayuntamiento de Madrid',
+      emt: 'EMT Madrid (autobuses)',
+      barcelonaCityCouncil: 'Ayuntamiento de Barcelona',
+      tmb: 'TMB (metro y bus de Barcelona)',
+      lpgcCityCouncil: 'Ayuntamiento de Las Palmas de Gran Canaria',
+      guaguas: 'Guaguas Municipales',
+      tenerifeCityCouncil: 'Ayuntamiento de Santa Cruz de Tenerife',
+    },
   },
 
   // About / Información
@@ -128,7 +146,7 @@ export default {
     title: 'Información',
     version: 'Versión {{version}}',
     aboutSection: 'ACERCA DE',
-    aboutText: 'Leo Look Up es un compañero espiritual permanente para fieles católicos. Diseñado con motivo de la histórica visita del Papa León XIV a Madrid (junio 2026), reúne oraciones tradicionales, cancionero litúrgico, agenda papal y una guía cuidada de lugares cultural-religiosos. La app no recoge datos personales y respeta tu privacidad por completo.',
+    aboutText: 'Leo Look Up ayuda a quienes asisten o siguen la visita del Papa León XIV a España (6-12 de junio de 2026). Reúne la agenda oficial de los actos en cada ciudad, los cortes de tráfico y el transporte público en tiempo real, y una guía de lugares de interés. Incluye además oraciones y un cancionero para quien quiera vivirlo de cerca. La app no recoge datos personales y respeta tu privacidad por completo.',
     actionsSection: 'COLABORA',
     shareApp: 'Compartir Leo Look Up',
     contact: 'Contacto y sugerencias',

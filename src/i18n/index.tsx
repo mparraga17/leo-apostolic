@@ -11,17 +11,22 @@ import { I18n } from 'i18n-js';
 import * as Localization from 'expo-localization';
 import es from './es';
 import en from './en';
+import ca from './ca';
 
-export type Locale = 'es' | 'en';
+export type Locale = 'es' | 'en' | 'ca';
 
-const i18n = new I18n({ es, en });
+const i18n = new I18n({ es, en, ca });
 i18n.enableFallback = true;
 i18n.defaultLocale = 'es';
 
-// Detecta el idioma del sistema. Si es español, español. Cualquier otro, inglés.
+// Detecta el idioma del sistema:
+// - Catalán → ca
+// - Español → es
+// - Cualquier otro → en
 function detectInitialLocale(): Locale {
   const tags = Localization.getLocales();
   const primary = tags?.[0]?.languageCode ?? 'es';
+  if (primary === 'ca') return 'ca';
   return primary === 'es' ? 'es' : 'en';
 }
 

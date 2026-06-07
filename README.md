@@ -119,12 +119,25 @@ I don't run analytics inside the app yet (privacy-first MVP). For v1.2 I'll eval
 - Updated Privacy Nutrition Label (App Store) and public privacy policy
 - Social commitment: 100% of proceeds pledged to a soup kitchen in the Chamberí district of Madrid
 
-### Backlog (candidates for v1.2+)
+### Shipped (v1.2 — June 2026)
+Built once the trip turned out to be **multi-city** (Madrid, Barcelona/Montserrat, Gran Canaria, Tenerife), not just Madrid. The data model gained a `city` concept so events, traffic closures and places all belong to a stage of the journey.
+- **Real-time traffic & transport** tab, sourced from official channels per city (Madrid City Council + EMT, Barcelona City Council + TMB, Las Palmas City Council + Guaguas, Mogán). Why: the practical, non-devotional hook that makes the app useful to anyone moving around the city during the visit.
+- **City-aware everything**: agenda, closures and points of interest are grouped by city; screens open by default on the city where the Pope currently is.
+- **Time-zone correctness**: all times are anchored to each city's offset (peninsula UTC+2, Canary Islands UTC+1) and computed as absolute instants. Why: a user abroad (or in the Canaries) was seeing wrong countdowns/"in X min" — now the displayed time is always the event's local time and the math is correct regardless of the device's zone.
+- **Past vs. upcoming events**: past acts fade into a separate section so the timeline always foregrounds what's next.
+- **Catalan (ca) localization** added alongside Spanish and English, for the Barcelona leg.
+- **Today screen refocused**: replaced "saint of the day" and "prayer of the day" with a curated "the visit, up to date" news block, so the home screen serves the event rather than general devotion.
+- **About copy** reworded to describe a practical companion for the visit (schedule, traffic, places), not a permanent devotional app.
+
+### Shipped (v1.2.1 — June 2026)
+- **Interstitial ads temporarily disabled** (banners kept). Why: on some iOS devices the full-screen interstitial could render without an accessible close button (its X fell outside the safe area), trapping the user — a mix of a known SDK issue and a Google-side full-screen-ad regression reported by multiple publishers. Disabling the format is the safe, recommended mitigation while a fix is validated on a real device. A status-bar workaround is also wired up for when interstitials are re-enabled.
+- **Events redesign — vertical timeline** (inspired by Apple Design Award winners like Structured): each act is a node on a connected time rail, with **color as data** (a color + icon per category, which also works for color-blind users), free-time gaps inline, and clearer tappable cards. Why: a flat list didn't read as a "journey through the day" and didn't signal it was tappable.
+
+### Backlog (candidates for v1.3+)
+- Embedded static map preview inside each closure/event card (instead of an external Maps link)
 - Privacy-respecting analytics with explicit consent
 - Sharable prayer cards (image generation for social media)
-- Push notifications backed by a minimal serverless backend (subject to a clear privacy review)
 - Liturgical calendar view with feast days and color codes
-- Audio rosary (with controls, background play, sleep timer)
 - Pope news feed via official RSS sources
 
 ### Decided NOT to ship (and why)
@@ -141,10 +154,11 @@ I don't run analytics inside the app yet (privacy-first MVP). For v1.2 I'll eval
 - React Native + Expo SDK 54
 - TypeScript (strict mode)
 - Functional components with hooks
-- `react-native-google-mobile-ads` (AdMob)
+- `react-native-google-mobile-ads` (AdMob — banners; interstitials temporarily disabled in v1.2.1)
 - `expo-tracking-transparency` (iOS ATT)
-- `expo-localization` + custom i18n provider (es / en)
-- iOS-first design language: BlurView tabs, page-sheet modals, hairline separators, navy + gold palette
+- `expo-localization` + custom i18n provider (es / en / ca)
+- Multi-city data model (Madrid, Barcelona, Gran Canaria, Tenerife) with per-city time zones and official traffic sources
+- iOS-first design language: vertical event timeline, translucent state-tinted cards, page-sheet modals, hairline separators, navy + gold palette
 
 ---
 

@@ -7,8 +7,9 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { getPapalLocationStatus, formatMinutesUntil, LocationStatus } from '../utils/papalLocation';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
+import { City } from '../models/types';
 
-export default function PapalLocationCard() {
+export default function PapalLocationCard({ city }: { city?: City }) {
   const [status, setStatus] = useState<LocationStatus>(() => getPapalLocationStatus());
 
   useEffect(() => {
@@ -17,6 +18,10 @@ export default function PapalLocationCard() {
   }, []);
 
   if (status.phase === 'before' || status.phase === 'finished') return null;
+
+  // Si se ha fijado una ciudad (pestaña de ciudad en Eventos), solo
+  // mostramos la tarjeta cuando el acto actual/próximo es de esa ciudad.
+  if (city && status.event.city !== city) return null;
 
   if (status.phase === 'now') {
     return (
@@ -64,16 +69,17 @@ const styles = StyleSheet.create({
     marginHorizontal: spacing.base,
     marginVertical: spacing.sm,
     padding: spacing.base + 2,
-    borderRadius: radius.lg,
+    borderRadius: radius.xl,
     ...shadows.card,
   },
   cardLive: {
     backgroundColor: colors.liveRed,
   },
   cardNext: {
-    backgroundColor: colors.backgroundElevated,
-    borderLeftWidth: 3,
-    borderLeftColor: colors.primary,
+    backgroundColor: 'rgba(201,165,90,0.05)',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(201,165,90,0.18)',
+    ...shadows.none,
   },
 
   row: {

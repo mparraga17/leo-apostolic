@@ -14,7 +14,8 @@ import {
   AdEventType,
   TestIds,
 } from 'react-native-google-mobile-ads';
-import { adIds, INTERSTITIAL_FREQUENCY, INTERSTITIAL_GRACE_CLOSES } from '../config/ads';
+import { Platform, StatusBar } from 'react-native';
+import { adIds, INTERSTITIAL_FREQUENCY, INTERSTITIAL_GRACE_CLOSES, INTERSTITIALS_ENABLED } from '../config/ads';
 
 let interstitial: InterstitialAd | null = null;
 let counter = 0;
@@ -23,6 +24,31 @@ let totalCloses = 0;
 function log(...args: any[]) {
   if (__DEV__) {
     console.log('[adManager]', ...args);
+  }
+}
+
+// ============================================================
+// Workaround (iOS): ocultar la barra de estado mientras se
+// muestra el intersticial.
+// ------------------------------------------------------------
+// El SDK de Google Mobile Ads intenta ocultar la status bar al
+// presentar un anuncio a pantalla completa para que su botón de
+// cerrar (X), dibujado arriba a la derecha, quede visible. En
+// algunas configuraciones de view controller (y especialmente en
+// iPhones con Dynamic Island) el SDK NO consigue ocultarla y la X
+// queda tapada e inaccesible -> el usuario no puede cerrar el
+// anuncio. Error nativo: "Status bar could not be hidden for full
+// screen ad".
+// Solución oficial recomendada por los mantenedores: ocultar
+// nosotros la status bar justo antes de mostrar el anuncio y
+// restaurarla al cerrarse.
+// ============================================================
+function setStatusBarHiddenForAd(hidden: boolean): void {
+  if (Platform.OS !== 'ios') return;
+  try {
+    StatusBar.setHidden(hidden, 'fade');
+  } catch {
+    /* noop */
   }
 }
 
@@ -39,16 +65,22 @@ function ensureInterstitial(): InterstitialAd {
 
   ad.addAdEventListener(AdEventType.OPENED, () => {
     log('Interstitial OPENED');
+    // Ocultar la status bar para garantizar que la X de cerrar quede visible
+    setStatusBarHiddenForAd(true);
   });
 
   ad.addAdEventListener(AdEventType.CLOSED, () => {
     log('Interstitial CLOSED — preloading next');
+    // Restaurar la status bar de la app
+    setStatusBarHiddenForAd(false);
     // Recargar para la próxima vez
     try { ad.load(); } catch { /* noop */ }
   });
 
   ad.addAdEventListener(AdEventType.ERROR, (error) => {
     log('Interstitial ERROR:', error);
+    // Por seguridad, asegurar que la status bar vuelve a su sitio
+    setStatusBarHiddenForAd(false);
   });
 
   interstitial = ad;
@@ -59,6 +91,10 @@ function ensureInterstitial(): InterstitialAd {
  * Inicializa el intersticial. Llamar una vez al arrancar la app.
  */
 export function initAds(): void {
+  if (!INTERSTITIALS_ENABLED) {
+    log('Interstitials disabled — skipping init');
+    return;
+  }
   const ad = ensureInterstitial();
   log('Starting initial load...');
   try { ad.load(); } catch (err) { log('initial load error', err); }
@@ -70,6 +106,9 @@ export function initAds(): void {
  * después de un período de gracia inicial.
  */
 export function onModalClosed(): void {
+  // Intersticiales desactivados temporalmente (ver config/ads.ts).
+  if (!INTERSTITIALS_ENABLED) return;
+
   totalCloses += 1;
   log(`Modal closed (total=${totalCloses}, counter=${counter})`);
 
@@ -109,6 +148,8 @@ export function onModalClosed(): void {
     ad.show();
   } catch (err) {
     log('Show error', err);
+    // Si el show falla, asegurar que la status bar no quede oculta
+    setStatusBarHiddenForAd(false);
   }
 }
 

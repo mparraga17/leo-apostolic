@@ -46,6 +46,20 @@ export const adIds = {
   interstitial: getAdId('interstitial'),
 };
 
+// ===========================================================
+// INTERSTICIALES DESACTIVADOS TEMPORALMENTE (v1.2.1)
+// -----------------------------------------------------------
+// Desactivados por un fallo en el que el anuncio a pantalla
+// completa podía quedarse sin botón de cerrar (X fuera del área
+// visible / safe-area), dejando al usuario atrapado. Es un
+// problema del formato a pantalla completa (regresión de Google
+// + integración del SDK en iOS). Mantenemos SOLO los banners,
+// que no tienen este problema. Reactivar (poner true) cuando se
+// haya verificado en dispositivo real que el intersticial vuelve
+// a cerrarse correctamente.
+// ===========================================================
+export const INTERSTITIALS_ENABLED = false;
+
 // Frecuencia: cada cuántos cierres de modal mostrar intersticial.
 // Cada 2 cierres da un buen equilibrio entre ingresos y UX.
 export const INTERSTITIAL_FREQUENCY = 2;

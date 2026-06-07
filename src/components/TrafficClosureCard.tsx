@@ -19,12 +19,20 @@ interface Props {
   compact?: boolean;   // versión reducida (para Hoy y detalle de evento)
 }
 
-function severityColor(sev: TrafficSeverity): string {
+// Paleta translúcida por severidad (estilo iOS: superficies tintadas
+// muy sutiles + badge tipo "pill" con color suave, en vez de barras
+// de color sólido). Cada severidad define: tinte de fondo de la tarjeta,
+// fondo del badge y color de texto/acento.
+function severityPalette(sev: TrafficSeverity): { surface: string; badgeBg: string; border: string; accent: string } {
   switch (sev) {
-    case TrafficSeverity.Total: return colors.liveRed;
-    case TrafficSeverity.Parcial: return '#C77A33';   // ámbar
-    case TrafficSeverity.Afectado: return colors.primary;
-    default: return colors.textSecondary;
+    case TrafficSeverity.Total:
+      return { surface: 'rgba(184,51,51,0.035)', badgeBg: 'rgba(184,51,51,0.11)', border: 'rgba(184,51,51,0.14)', accent: colors.liveRed };
+    case TrafficSeverity.Parcial:
+      return { surface: 'rgba(199,122,51,0.035)', badgeBg: 'rgba(199,122,51,0.11)', border: 'rgba(199,122,51,0.14)', accent: '#B06A28' };
+    case TrafficSeverity.Afectado:
+      return { surface: 'rgba(201,165,90,0.04)', badgeBg: 'rgba(201,165,90,0.14)', border: 'rgba(201,165,90,0.18)', accent: '#9A7B33' };
+    default:
+      return { surface: colors.backgroundElevated, badgeBg: colors.backgroundSecondary, border: colors.separator, accent: colors.textSecondary };
   }
 }
 
@@ -38,10 +46,11 @@ function severityLabel(sev: TrafficSeverity, t: (k: string) => string): string {
 }
 
 // Formatea la vigencia de un corte en texto legible.
-function formatRange(closure: TrafficClosure, locale: 'es' | 'en'): string {
+function formatRange(closure: TrafficClosure, locale: 'es' | 'en' | 'ca'): string {
   const dayFmt = (iso: string) => {
     const d = new Date(`${iso}T00:00:00`);
-    return d.toLocaleDateString(locale === 'en' ? 'en-GB' : 'es-ES', {
+    const tag = locale === 'en' ? 'en-GB' : locale === 'ca' ? 'ca-ES' : 'es-ES';
+    return d.toLocaleDateString(tag, {
       day: 'numeric',
       month: 'short',
     });
@@ -60,17 +69,26 @@ function formatRange(closure: TrafficClosure, locale: 'es' | 'en'): string {
 
 export default function TrafficClosureCard({ closure, compact }: Props) {
   const { t, locale } = useI18n();
-  const color = severityColor(closure.severity);
+  const pal = severityPalette(closure.severity);
 
   const zone = locale === 'en' ? (closure.zoneEn ?? closure.zone) : closure.zone;
   const streets = locale === 'en' ? (closure.streetsEn ?? closure.streets) : closure.streets;
   const note = locale === 'en' ? (closure.noteEn ?? closure.note) : closure.note;
 
   return (
-    <View style={[styles.card, { borderLeftColor: color }, compact && styles.cardCompact]}>
+    <View
+      style={[
+        styles.card,
+        { backgroundColor: pal.surface, borderColor: pal.border },
+        compact && styles.cardCompact,
+      ]}
+    >
       <View style={styles.headerRow}>
-        <View style={[styles.severityBadge, { backgroundColor: color }]}>
-          <Text style={styles.severityText}>{severityLabel(closure.severity, t)}</Text>
+        <View style={[styles.severityBadge, { backgroundColor: pal.badgeBg }]}>
+          <View style={[styles.severityDot, { backgroundColor: pal.accent }]} />
+          <Text style={[styles.severityText, { color: pal.accent }]}>
+            {severityLabel(closure.severity, t)}
+          </Text>
         </View>
         <Text style={styles.range}>{formatRange(closure, locale)}</Text>
       </View>
@@ -99,31 +117,39 @@ export default function TrafficClosureCard({ closure, compact }: Props) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.backgroundElevated,
-    borderRadius: radius.md,
-    borderLeftWidth: 4,
-    padding: spacing.md,
+    borderRadius: radius.xl,
+    borderWidth: StyleSheet.hairlineWidth,
+    padding: spacing.base,
     marginBottom: spacing.sm,
   },
   cardCompact: {
-    padding: spacing.sm + 2,
+    padding: spacing.md,
+    borderRadius: radius.lg,
   },
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: spacing.xs,
+    marginBottom: spacing.sm,
     gap: spacing.sm,
   },
   severityBadge: {
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 2,
-    borderRadius: radius.sm,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: spacing.sm + 2,
+    paddingVertical: 4,
+    borderRadius: radius.pill,
+  },
+  severityDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
   },
   severityText: {
     ...typography.caption,
-    color: '#fff',
     fontWeight: '700',
+    letterSpacing: 0.3,
   },
   range: {
     ...typography.caption,

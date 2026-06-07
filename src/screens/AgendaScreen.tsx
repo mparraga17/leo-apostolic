@@ -8,7 +8,8 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { papalEvents, localizeEvent } from '../data/agenda';
-import { PapalEvent } from '../models/types';
+import { PapalEvent, City, EventCategory } from '../models/types';
+import { CITIES_ORDERED, getCityInfo, getCityName, deviceDiffersFromCity, cityDateTime, getActiveCity } from '../data/cities';
 import PapalLocationCard from '../components/PapalLocationCard';
 import AdBanner from '../components/AdBanner';
 import TrafficClosureCard from '../components/TrafficClosureCard';
@@ -20,13 +21,55 @@ import { useI18n } from '../i18n';
 import { shareText } from '../utils/share';
 import { onEventModalClosed } from '../services/adManager';
 
+// Color por categoría de acto (el COLOR es un DATO: indica de un
+// vistazo el tipo de acto). Acompañado siempre de icono, así también
+// funciona para personas con daltonismo (accesibilidad).
+function categoryColor(cat: EventCategory): string {
+  switch (cat) {
+    case EventCategory.Misa: return '#7C4DA0';        // morado litúrgico
+    case EventCategory.Vigilia: return '#2E6DB4';     // azul noche
+    case EventCategory.Encuentro: return '#C9A55A';   // dorado
+    case EventCategory.Visita: return '#3D8B5A';      // verde
+    case EventCategory.Audiencia: return '#B06A28';   // ámbar
+    case EventCategory.Traslado: return '#6B6760';    // gris (logística)
+    case EventCategory.Privado: return '#A09B91';     // gris claro
+    default: return '#6B6760';
+  }
+}
+
+function categoryIcon(cat: EventCategory): keyof typeof Ionicons.glyphMap {
+  switch (cat) {
+    case EventCategory.Misa: return 'flower-outline';
+    case EventCategory.Vigilia: return 'moon-outline';
+    case EventCategory.Encuentro: return 'people-outline';
+    case EventCategory.Visita: return 'walk-outline';
+    case EventCategory.Audiencia: return 'mic-outline';
+    case EventCategory.Traslado: return 'airplane-outline';
+    case EventCategory.Privado: return 'lock-closed-outline';
+    default: return 'ellipse-outline';
+  }
+}
+
 function groupEventsByDate(events: PapalEvent[]) {
   const groups: Record<string, PapalEvent[]> = {};
   events.forEach(event => {
     if (!groups[event.date]) groups[event.date] = [];
     groups[event.date].push(event);
   });
-  return Object.entries(groups);
+  return Object.entries(groups).sort((a, b) => a[0].localeCompare(b[0]));
+}
+
+// Instante absoluto de fin de un evento (con la zona de su ciudad).
+// Si no tiene endTime, asumimos 1h de duración.
+function eventEndInstant(event: PapalEvent): Date {
+  if (event.endTime) return cityDateTime(event.date, event.endTime, event.city);
+  const start = cityDateTime(event.date, event.startTime, event.city);
+  return new Date(start.getTime() + 60 * 60 * 1000);
+}
+
+// Un día se considera "pasado" cuando TODOS sus eventos ya terminaron.
+function dayIsPast(events: PapalEvent[], now: Date): boolean {
+  return events.every(e => eventEndInstant(e).getTime() < now.getTime());
 }
 
 // Fila expandible para "Para visitar cerca". Al tocar muestra el texto completo
@@ -48,11 +91,11 @@ function NearbyRow({
 
   return (
     <TouchableOpacity
-      style={[styles.row, !isLast && styles.rowBorder]}
+      style={[styles.nearbyRow, !isLast && styles.nearbyRowBorder]}
       onPress={() => setExpanded(prev => !prev)}
       activeOpacity={0.6}
     >
-      <View style={styles.eventContent}>
+      <View style={styles.nearbyContent}>
         <Text style={styles.rowTitle}>{place.name}</Text>
         <Text
           style={styles.rowMeta}
@@ -93,19 +136,29 @@ export default function AgendaScreen({ initialEventId }: { initialEventId?: stri
   const { t, locale } = useI18n();
   const [selectedEvent, setSelectedEvent] = useState<PapalEvent | null>(null);
   const [currentEventId, setCurrentEventId] = useState<string | null>(null);
-  const grouped = groupEventsByDate(papalEvents);
+  const [selectedCity, setSelectedCity] = useState<City>(() => getActiveCity());
+  const [now, setNow] = useState<Date>(() => new Date());
+  const grouped = groupEventsByDate(papalEvents.filter(e => e.city === selectedCity));
+  // Separar días en próximos/hoy y pasados (según instante real)
+  const upcomingDays = grouped.filter(([, evs]) => !dayIsPast(evs, now));
+  const pastDays = grouped.filter(([, evs]) => dayIsPast(evs, now));
 
   // Si nos llega un eventId desde fuera (notificación, deep link), abrimos el modal
+  // y nos posicionamos en la ciudad de ese evento.
   useEffect(() => {
     if (!initialEventId) return;
     const event = papalEvents.find(e => e.id === initialEventId);
-    if (event) setSelectedEvent(event);
+    if (event) {
+      setSelectedCity(event.city);
+      setSelectedEvent(event);
+    }
   }, [initialEventId]);
 
   useEffect(() => {
     const update = () => {
       const status = getPapalLocationStatus();
       setCurrentEventId(status.phase === 'now' ? status.event.id : null);
+      setNow(new Date());
     };
     update();
     const interval = setInterval(update, 60_000);
@@ -124,6 +177,85 @@ export default function AgendaScreen({ initialEventId }: { initialEventId?: stri
     onEventModalClosed();
   };
 
+  // Render de un día de eventos. `isPast` atenúa visualmente los días ya pasados.
+  const renderDay = (date: string, events: PapalEvent[], isPast = false) => (
+    <View key={date} style={[styles.section, isPast && styles.sectionPast]}>
+      <Text style={styles.sectionLabel}>{formatDate(date).toUpperCase()}</Text>
+      <View style={styles.timeline}>
+        {events.map((event, i) => {
+          const isCurrent = event.id === currentEventId;
+          const isLast = i === events.length - 1;
+          const cat = event.category;
+          const accent = categoryColor(cat);
+          // Tiempo libre hasta el siguiente acto (solo en días no pasados)
+          const window = !isPast ? getTimeWindowAfter(event) : { hasFreeTime: false };
+          return (
+            <View key={event.id}>
+              <View style={styles.tlRow}>
+                {/* Columna hora */}
+                <Text style={[styles.tlTime, isCurrent && styles.tlTimeLive]}>
+                  {event.startTime}
+                </Text>
+
+                {/* Columna raíl: línea + nodo */}
+                <View style={styles.tlRail}>
+                  {!isLast && <View style={styles.tlLine} />}
+                  <View style={[styles.tlNode, { backgroundColor: accent }]}>
+                    {isCurrent
+                      ? <View style={styles.tlNodeLiveDot} />
+                      : <Ionicons name={categoryIcon(cat)} size={15} color="#fff" />}
+                  </View>
+                </View>
+
+                {/* Tarjeta clicable */}
+                <TouchableOpacity
+                  style={[styles.tlCard, isCurrent && styles.tlCardLive]}
+                  onPress={() => setSelectedEvent(event)}
+                  activeOpacity={0.6}
+                  accessibilityRole="button"
+                  accessibilityLabel={localizeEvent(event, locale).title}
+                >
+                  <View style={styles.tlCardBody}>
+                    {isCurrent && <Text style={styles.tlLiveLabel}>{t('agenda.liveBadge')}</Text>}
+                    <Text style={styles.tlTitle} numberOfLines={2}>
+                      {localizeEvent(event, locale).title}
+                    </Text>
+                    <Text style={styles.tlLoc} numberOfLines={1}>
+                      {localizeEvent(event, locale).location}
+                    </Text>
+                    <View style={styles.tlBadges}>
+                      {event.isPublic && (
+                        <View style={styles.tlBadgePublic}>
+                          <View style={styles.tlBadgeDot} />
+                          <Text style={styles.tlBadgePublicText}>{t('agenda.publicBadge')}</Text>
+                        </View>
+                      )}
+                      <Text style={[styles.tlBadgeCat, { color: accent }]}>{cat}</Text>
+                    </View>
+                  </View>
+                  <Ionicons name="chevron-forward" size={18} color={colors.textTertiary} />
+                </TouchableOpacity>
+              </View>
+
+              {/* Hueco de tiempo libre, integrado en la línea */}
+              {window.hasFreeTime && (
+                <View style={styles.tlFreeRow}>
+                  <View style={styles.tlFreeRailCol}><View style={styles.tlFreeDashes} /></View>
+                  <View style={styles.tlFreeContent}>
+                    <Ionicons name="time-outline" size={13} color={colors.primary} />
+                    <Text style={styles.tlFreeText}>
+                      {t('agenda.timeFreeValue', { time: window.freeText })}
+                    </Text>
+                  </View>
+                </View>
+              )}
+            </View>
+          );
+        })}
+      </View>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
@@ -132,60 +264,49 @@ export default function AgendaScreen({ initialEventId }: { initialEventId?: stri
           <Text style={styles.headerTitle}>{t('agenda.headerTitle')}</Text>
         </View>
 
-        <PapalLocationCard />
+        {/* Selector de ciudad */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.cityTabs}
+        >
+          {CITIES_ORDERED.map(city => {
+            const selected = city.id === selectedCity;
+            return (
+              <TouchableOpacity
+                key={city.id}
+                style={[styles.cityTab, selected && styles.cityTabActive]}
+                onPress={() => setSelectedCity(city.id)}
+                activeOpacity={0.7}
+              >
+                <Text style={[styles.cityTabText, selected && styles.cityTabTextActive]}>
+                  {locale === 'en' ? city.nameEn : city.name}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
 
-        {grouped.map(([date, events]) => (
-          <View key={date} style={styles.section}>
-            <Text style={styles.sectionLabel}>{formatDate(date).toUpperCase()}</Text>
-            <View style={styles.list}>
-              {events.map((event, i) => {
-                const isCurrent = event.id === currentEventId;
-                return (
-                  <TouchableOpacity
-                    key={event.id}
-                    style={[
-                      styles.row,
-                      i < events.length - 1 && styles.rowBorder,
-                      isCurrent && styles.rowCurrent,
-                    ]}
-                    onPress={() => setSelectedEvent(event)}
-                    activeOpacity={0.5}
-                  >
-                    <View style={styles.timeColumn}>
-                      <Text style={[styles.eventTime, isCurrent && styles.textLight]}>
-                        {event.startTime}
-                      </Text>
-                    </View>
-                    <View style={styles.eventContent}>
-                      <View style={styles.eventTitleRow}>
-                        {isCurrent && <View style={styles.liveDot} />}
-                        <Text style={[styles.eventTitle, isCurrent && styles.textLight]} numberOfLines={1}>
-                          {localizeEvent(event, locale).title}
-                        </Text>
-                      </View>
-                      <Text style={[styles.eventLocation, isCurrent && styles.textLightOpaque]} numberOfLines={1}>
-                        {localizeEvent(event, locale).location}
-                      </Text>
-                      {event.isPublic && !isCurrent && (
-                        <View style={styles.publicBadge}>
-                          <Text style={styles.publicBadgeText}>{t('agenda.publicBadge')}</Text>
-                        </View>
-                      )}
-                      {isCurrent && (
-                        <Text style={styles.liveBadge}>{t('agenda.liveBadge')}</Text>
-                      )}
-                    </View>
-                    <Ionicons
-                      name="chevron-forward"
-                      size={18}
-                      color={isCurrent ? 'rgba(255,255,255,0.85)' : colors.textTertiary}
-                    />
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
+        {/* Aviso de zona horaria: el dispositivo está en otro huso */}
+        {deviceDiffersFromCity(selectedCity) && (
+          <View style={styles.tzNotice}>
+            <Ionicons name="time-outline" size={15} color={colors.primary} />
+            <Text style={styles.tzNoticeText}>
+              {t('agenda.deviceTimeDiff', { city: getCityName(selectedCity, locale) })}
+            </Text>
           </View>
-        ))}
+        )}
+
+        <PapalLocationCard city={selectedCity} />
+
+        {upcomingDays.map(([date, events]) => renderDay(date, events))}
+
+        {pastDays.length > 0 && (
+          <>
+            <Text style={[styles.sectionLabel, styles.pastHeader]}>{t('agenda.pastSection')}</Text>
+            {pastDays.map(([date, events]) => renderDay(date, events, true))}
+          </>
+        )}
       </ScrollView>
 
       {/* Modal detalle de evento */}
@@ -212,6 +333,12 @@ export default function AgendaScreen({ initialEventId }: { initialEventId?: stri
               <Text style={styles.modalTime}>
                 {formatDate(selectedEvent.date).toUpperCase()} · {selectedEvent.startTime}
                 {selectedEvent.endTime ? ` — ${selectedEvent.endTime}` : ''}
+              </Text>
+              <Text style={styles.modalTzNote}>
+                {t('agenda.localTimeNote', {
+                  city: getCityName(selectedEvent.city, locale),
+                  utc: getCityInfo(selectedEvent.city).utcLabel,
+                })}
               </Text>
               <Text style={styles.modalTitle}>{localizeEvent(selectedEvent, locale).title}</Text>
 
@@ -333,7 +460,7 @@ export default function AgendaScreen({ initialEventId }: { initialEventId?: stri
                     {nearby.length > 0 && (
                       <>
                         <Text style={styles.suggestionsTitle}>{t('agenda.nearbyTitle')}</Text>
-                        <View style={styles.list}>
+                        <View style={styles.nearbyList}>
                           {nearby.map((place, i) => (
                             <NearbyRow
                               key={place.id}
@@ -368,71 +495,182 @@ const styles = StyleSheet.create({
   headerSubtitle: { ...typography.subhead, color: colors.textSecondary, marginBottom: 4 },
   headerTitle: { ...typography.display, color: colors.text },
 
+  cityTabs: {
+    paddingHorizontal: spacing.base,
+    gap: spacing.sm,
+    paddingTop: spacing.xs,
+    paddingBottom: spacing.sm,
+  },
+  cityTab: {
+    paddingHorizontal: spacing.base,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.pill,
+    backgroundColor: colors.backgroundElevated,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.separator,
+  },
+  cityTabActive: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+  },
+  cityTabText: { ...typography.subhead, color: colors.textSecondary, fontWeight: '600' },
+  cityTabTextActive: { color: colors.textInverse },
+
+  tzNotice: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: colors.primaryMuted,
+    marginHorizontal: spacing.base,
+    marginBottom: spacing.sm,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: radius.md,
+  },
+  tzNoticeText: {
+    ...typography.footnote,
+    color: colors.text,
+    flex: 1,
+    lineHeight: 17,
+  },
+
   section: { marginTop: spacing.lg },
+  sectionPast: { opacity: 0.55 },
+  pastHeader: {
+    marginTop: spacing.xl,
+    color: colors.textTertiary,
+  },
   sectionLabel: {
     ...typography.sectionHeader,
     color: colors.textSecondary,
     paddingHorizontal: spacing.lg,
     marginBottom: spacing.sm,
   },
-  list: {
+  // ===== Timeline =====
+  timeline: {
+    paddingHorizontal: spacing.base,
+    paddingTop: spacing.xs,
+  },
+  tlRow: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+  },
+  tlTime: {
+    width: 44,
+    ...typography.footnote,
+    fontWeight: '600',
+    color: colors.textSecondary,
+    fontVariant: ['tabular-nums'],
+    textAlign: 'right',
+    paddingTop: 16,
+  },
+  tlTimeLive: { color: colors.liveRed, fontWeight: '700' },
+
+  // raíl: línea vertical + nodo
+  tlRail: {
+    width: 34,
+    alignItems: 'center',
+    position: 'relative',
+  },
+  tlLine: {
+    position: 'absolute',
+    top: 14,
+    bottom: -6,
+    width: 2,
+    backgroundColor: colors.separator,
+  },
+  tlNode: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginTop: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 3,
+    borderColor: colors.background,
+    zIndex: 1,
+  },
+  tlNodeLiveDot: { width: 9, height: 9, borderRadius: 5, backgroundColor: '#fff' },
+
+  // tarjeta clicable
+  tlCard: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
     backgroundColor: colors.backgroundElevated,
-    marginHorizontal: spacing.base,
+    borderRadius: radius.lg,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.separator,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.base,
+    marginTop: 8,
+    marginBottom: spacing.sm,
+    marginLeft: 6,
+    ...shadows.card,
+  },
+  tlCardLive: {
+    backgroundColor: 'rgba(184,51,51,0.06)',
+    borderColor: 'rgba(184,51,51,0.18)',
+  },
+  tlCardBody: { flex: 1 },
+  tlLiveLabel: {
+    ...typography.caption,
+    color: colors.liveRed,
+    fontWeight: '700',
+    letterSpacing: 1,
+    marginBottom: 2,
+  },
+  tlTitle: { ...typography.headline, color: colors.text, letterSpacing: -0.2 },
+  tlLoc: { ...typography.subhead, color: colors.textSecondary, marginTop: 2 },
+  tlBadges: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 8, flexWrap: 'wrap' },
+  tlBadgePublic: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    backgroundColor: 'rgba(61,139,90,0.12)',
+    paddingHorizontal: 9,
+    paddingVertical: 3,
+    borderRadius: radius.pill,
+  },
+  tlBadgeDot: { width: 5, height: 5, borderRadius: 3, backgroundColor: colors.success },
+  tlBadgePublicText: { ...typography.caption, color: colors.success, fontWeight: '700', letterSpacing: 0.3 },
+  tlBadgeCat: { ...typography.caption, fontWeight: '700', letterSpacing: 0.3 },
+
+  // hueco de tiempo libre
+  tlFreeRow: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.sm },
+  tlFreeRailCol: { width: 44 + 34, alignItems: 'center' },
+  tlFreeDashes: {
+    width: 2,
+    height: 22,
+    backgroundColor: 'transparent',
+    borderLeftWidth: 2,
+    borderColor: colors.textTertiary,
+    borderStyle: 'dashed',
+    opacity: 0.5,
+  },
+  tlFreeContent: { flexDirection: 'row', alignItems: 'center', gap: 6, marginLeft: 6 },
+  tlFreeText: { ...typography.footnote, color: colors.primary, fontWeight: '600' },
+
+  rowTitle: { ...typography.bodyEmphasized, color: colors.text },
+  nearbyList: {
+    backgroundColor: colors.backgroundElevated,
     borderRadius: radius.lg,
     overflow: 'hidden',
     ...shadows.card,
   },
-
-  row: {
+  nearbyRow: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: spacing.md + 2,
     paddingHorizontal: spacing.base,
     gap: spacing.sm,
   },
-  rowBorder: {
+  nearbyRowBorder: {
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.separator,
   },
-  rowCurrent: { backgroundColor: colors.liveRed },
-
-  timeColumn: { width: 50 },
-  eventTime: {
-    ...typography.bodyEmphasized,
-    color: colors.primary,
-    fontVariant: ['tabular-nums'],
-  },
-  eventContent: { flex: 1 },
-  eventTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  eventTitle: { ...typography.bodyEmphasized, color: colors.text },
-  eventLocation: { ...typography.subhead, color: colors.textSecondary, marginTop: 4 },
-  textLight: { color: '#fff' },
-  textLightOpaque: { color: 'rgba(255,255,255,0.85)' },
-  liveDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff' },
-
-  publicBadge: {
-    backgroundColor: colors.success,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 4,
-    alignSelf: 'flex-start',
-    marginTop: 6,
-  },
-  publicBadgeText: {
-    ...typography.caption,
-    color: '#fff',
-    fontWeight: '700',
-    letterSpacing: 0.8,
-    fontSize: 10,
-  },
-  liveBadge: {
-    ...typography.caption,
-    color: '#fff',
-    letterSpacing: 1.5,
-    marginTop: 4,
-  },
-
-  rowTitle: { ...typography.bodyEmphasized, color: colors.text },
+  nearbyContent: { flex: 1 },
   rowMeta: { ...typography.footnote, color: colors.textSecondary, marginTop: 4, lineHeight: 18 },
   chevron: { marginLeft: spacing.sm },
   nearbyDirections: {
@@ -461,6 +699,11 @@ const styles = StyleSheet.create({
     ...typography.sectionHeader,
     color: colors.primary,
     marginBottom: 4,
+  },
+  modalTzNote: {
+    ...typography.caption,
+    color: colors.textTertiary,
+    marginBottom: spacing.sm,
   },
   modalTitle: {
     ...typography.title1,
@@ -507,12 +750,12 @@ const styles = StyleSheet.create({
   publicNoticeText: { ...typography.subhead, color: colors.success, flex: 1 },
 
   registrationCard: {
-    backgroundColor: colors.backgroundElevated,
-    borderRadius: radius.md,
-    padding: spacing.md,
+    backgroundColor: 'rgba(201,165,90,0.05)',
+    borderRadius: radius.lg,
+    padding: spacing.base,
     marginBottom: spacing.base,
-    borderLeftWidth: 3,
-    borderLeftColor: colors.primary,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(201,165,90,0.18)',
   },
   registrationHeader: {
     flexDirection: 'row',
