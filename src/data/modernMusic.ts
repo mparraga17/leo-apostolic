@@ -26,16 +26,24 @@ export interface ArtistPlaylist {
   spotifyUrl: string;
 }
 
+// ---- HIMNO OFICIAL DE LA VISITA ----
+// "Alza la mirada" (VIVAFE, © 2026). Obra moderna con copyright:
+// solo enlazamos a Spotify, no reproducimos letra ni audio.
+// Verificado en Spotify (junio 2026): single publicado 17/04/2026,
+// gran coro de las archidiócesis de Madrid y Barcelona y diócesis
+// de Canarias. Existe versión en inglés ("I'll Lift Up My Eyes").
+export const anthem: ModernSong & { subtitle?: string; spotifyUrlEn?: string } = {
+  id: 'mod_anthem',
+  title: 'Alza la mirada',
+  artist: 'VIVAFE · Himno oficial de la visita',
+  subtitle: 'León XIV en España · 2026',
+  spotifyUrl: 'https://open.spotify.com/track/03QgYgZ0JZ5usst2UxT3oy',
+  spotifyUrlEn: 'https://open.spotify.com/track/2RbcK8JM7fMxWz7P9egqSu',
+  category: 'alabanza',
+};
+
 // ---- CANCIONES INDIVIDUALES (Hakuna Group Music y otros) ----
 export const modernSongs: ModernSong[] = [
-  // Himno oficial de la visita del Papa a España (mayo 2026)
-  {
-    id: 'mod_000',
-    title: 'Alza la mirada',
-    artist: 'Himno oficial — Visita del Papa León XIV',
-    spotifyUrl: 'https://open.spotify.com/track/03QgYgZ0JZ5usst2UxT3oy',
-    category: 'alabanza',
-  },
   // tuyo (banda católica española)
   {
     id: 'mod_010',

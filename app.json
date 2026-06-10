@@ -2,7 +2,7 @@
   "expo": {
     "name": "Leo Look Up",
     "slug": "leo-apostolic",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "icon": "./assets/icon.png",

@@ -9,7 +9,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { songs } from '../data/songs';
 import { Song, SongCategory } from '../models/types';
-import { modernSongs, playlists, musicSearches } from '../data/modernMusic';
+import { anthem, modernSongs, playlists, musicSearches } from '../data/modernMusic';
 import { colors, typography, spacing, radius, shadows } from '../theme/theme';
 import { useI18n } from '../i18n';
 
@@ -90,6 +90,38 @@ export default function SongsScreen() {
 
         {tab === 'modern' && (
           <>
+            {/* Himno oficial destacado */}
+            <View style={styles.section}>
+              <Text style={styles.sectionLabel}>HIMNO OFICIAL</Text>
+              <TouchableOpacity
+                style={styles.anthemCard}
+                onPress={() => Linking.openURL(anthem.spotifyUrl)}
+                activeOpacity={0.85}
+              >
+                <View style={styles.anthemIcon}>
+                  <Ionicons name="musical-notes" size={22} color="#fff" />
+                </View>
+                <View style={styles.rowContent}>
+                  <Text style={styles.anthemTitle}>{anthem.title}</Text>
+                  <Text style={styles.anthemArtist}>{anthem.artist}</Text>
+                  {anthem.subtitle && (
+                    <Text style={styles.anthemSubtitle}>{anthem.subtitle}</Text>
+                  )}
+                </View>
+                <Ionicons name="open-outline" size={18} color="#fff" />
+              </TouchableOpacity>
+              {anthem.spotifyUrlEn && (
+                <TouchableOpacity
+                  style={styles.anthemEnLink}
+                  onPress={() => Linking.openURL(anthem.spotifyUrlEn!)}
+                  activeOpacity={0.6}
+                >
+                  <Ionicons name="globe-outline" size={14} color={colors.textSecondary} />
+                  <Text style={styles.anthemEnText}>English version · "I'll Lift Up My Eyes"</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
             <View style={styles.section}>
               <Text style={styles.sectionLabel}>HAKUNA GROUP MUSIC</Text>
               <View style={styles.list}>
@@ -286,6 +318,38 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
+  anthemCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: spacing.base,
+    paddingVertical: spacing.md + 4,
+    paddingHorizontal: spacing.base,
+    borderRadius: radius.lg,
+    backgroundColor: colors.primary,
+    gap: spacing.sm,
+    ...shadows.card,
+  },
+  anthemIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.22)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  anthemTitle: { ...typography.bodyEmphasized, color: '#fff', fontSize: 17 },
+  anthemArtist: { ...typography.footnote, color: 'rgba(255,255,255,0.9)', marginTop: 2 },
+  anthemSubtitle: { ...typography.caption, color: 'rgba(255,255,255,0.7)', marginTop: 1 },
+  anthemEnLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginHorizontal: spacing.base,
+    marginTop: spacing.sm,
+    paddingLeft: 2,
+  },
+  anthemEnText: { ...typography.footnote, color: colors.textSecondary },
 
   disclaimer: {
     ...typography.footnote,
