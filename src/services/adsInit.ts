@@ -1,8 +1,13 @@
 // ============================================================
 // adsInit.ts — INICIALIZACIÓN DE ADMOB
 // ============================================================
-// Pide permiso de App Tracking Transparency (iOS) y arranca
-// el SDK de Google Mobile Ads. Llamar una vez al inicio.
+// Flujo de arranque de anuncios, en el orden que exige Google:
+//   1) Consentimiento GDPR (UMP / User Messaging Platform) para
+//      usuarios del EEE/UK/Suiza. Sin esto, Google restringe la
+//      personalización ("Consent requirement: No CMP") y el relleno
+//      de anuncios se desploma.
+//   2) App Tracking Transparency (ATT) en iOS.
+//   3) Inicializar el SDK de Google Mobile Ads.
 //
 // IMPORTANTE (App Review): el diálogo de ATT SOLO se muestra
 // cuando la app está en estado "active" (foreground). Si se
@@ -13,7 +18,11 @@
 // ============================================================
 
 import { Platform, AppState, AppStateStatus } from 'react-native';
-import mobileAds, { MaxAdContentRating } from 'react-native-google-mobile-ads';
+import mobileAds, {
+  MaxAdContentRating,
+  AdsConsent,
+  AdsConsentStatus,
+} from 'react-native-google-mobile-ads';
 import { initAds } from './adManager';
 
 let initialized = false;
@@ -44,29 +53,60 @@ function delay(ms: number): Promise<void> {
 }
 
 /**
- * Pide ATT al usuario en iOS, configura SDK y precarga el
- * primer intersticial. Idempotente: solo hace algo la primera vez.
+ * Solicita y, si procede, muestra el formulario de consentimiento
+ * GDPR (UMP). Solo aparece para usuarios del EEE/UK/Suiza y solo si
+ * Google determina que hace falta. Para el resto de usuarios no se
+ * muestra nada. Si algo falla, la app continúa (servirá anuncios no
+ * personalizados, que es lo correcto sin consentimiento).
+ */
+async function requestConsentIfNeeded(): Promise<void> {
+  try {
+    // Esperar a primer plano para poder presentar el formulario.
+    await waitUntilActive();
+
+    // Pide a Google el estado de consentimiento del usuario.
+    // (La app NO está dirigida a menores.)
+    const info = await AdsConsent.requestInfoUpdate({
+      tagForUnderAgeOfConsent: false,
+    });
+
+    // Muestra el formulario solo si Google indica que es necesario.
+    if (
+      info.status === AdsConsentStatus.REQUIRED &&
+      info.isConsentFormAvailable
+    ) {
+      await AdsConsent.loadAndShowConsentFormIfRequired();
+    }
+  } catch {
+    // Sin consentimiento -> anuncios no personalizados. La app sigue.
+  }
+}
+
+/**
+ * Pide consentimiento GDPR, luego ATT (iOS), configura el SDK e
+ * inicializa AdMob. Idempotente: solo hace algo la primera vez.
  */
 export async function initializeAds(): Promise<void> {
   if (initialized) return;
   initialized = true;
 
-  // En iOS hay que pedir ATT (App Tracking Transparency)
-  // antes de inicializar el SDK para anuncios personalizados.
+  // 1) Consentimiento GDPR (UMP) — antes que nada.
+  await requestConsentIfNeeded();
+
+  // 2) En iOS, pedir ATT (App Tracking Transparency).
   // Importamos dinámicamente para evitar errores en Android/web.
   if (Platform.OS === 'ios') {
     try {
       const tt = await import('expo-tracking-transparency');
 
-      // 1) Esperar a que la app esté realmente en primer plano.
-      //    Sin esto, iOS descarta el prompt y nunca aparece.
+      // Esperar a que la app esté realmente en primer plano.
       await waitUntilActive();
 
-      // 2) Margen extra para que el splash/transición acabe y la
-      //    ventana esté lista para presentar el diálogo del sistema.
+      // Margen extra para que el splash/transición acabe y la
+      // ventana esté lista para presentar el diálogo del sistema.
       await delay(600);
 
-      // 3) Solo pedimos si el estado aún es "no determinado".
+      // Solo pedimos si el estado aún es "no determinado".
       const current = await tt.getTrackingPermissionsAsync();
       if (current.status === 'undetermined') {
         await tt.requestTrackingPermissionsAsync();
@@ -76,6 +116,7 @@ export async function initializeAds(): Promise<void> {
     }
   }
 
+  // 3) Configurar e inicializar el SDK de anuncios.
   try {
     await mobileAds()
       .setRequestConfiguration({
