@@ -9,6 +9,29 @@ Each entry explains not just *what* changed but *why*, as a product log.
 
 ---
 
+## [1.2.2] — 2026-06-10
+
+Banner fill for European users had collapsed under a Google "No CMP" restriction,
+and the official visit anthem was released — both addressed here.
+
+### Added
+- **Official visit anthem.** "Alza la mirada" (VIVAFE, © 2026) featured in the
+  Hymnal in its own section, with a direct Spotify link and its English version
+  ("I'll Lift Up My Eyes"). Link only — no lyrics or audio reproduced (copyright).
+- **GDPR consent (UMP).** The Google User Messaging Platform consent form is now
+  requested at startup for users in the EEA, UK and Switzerland, before the AdMob
+  SDK initializes (then ATT on iOS). Shown once; the user's choice is remembered.
+
+### Fixed
+- **Banner ad serving in the EEA.** Google had applied a "Consent requirement:
+  No CMP" restriction because no GDPR consent message existed, which collapsed
+  banner fill for European users. Resolved by publishing a European-regulations
+  consent message in AdMob and integrating the UMP SDK in the app. AdMob lifts the
+  restriction automatically once consent signals start arriving. Full write-up in
+  [LEARNINGS](LEARNINGS.md).
+
+---
+
 ## [1.2.1] — 2026-06-07
 
 Trip turned out to be **multi-city** (Madrid, Barcelona/Montserrat, Gran Canaria,

@@ -5,7 +5,7 @@ Devotional companion app for Catholic faithful, built around the visit of Pope L
 [![App Store](https://img.shields.io/badge/App%20Store-Live-161B33?style=flat-square&logo=appstore)](https://apps.apple.com/es/app/leo-look-up/id6773494248)
 [![Privacy Policy](https://img.shields.io/badge/Privacy-Policy-161B33?style=flat-square)](https://mparraga17.github.io/leo-apostolic/)
 [![Terms of Use](https://img.shields.io/badge/Terms-of%20Use-C9A55A?style=flat-square)](https://mparraga17.github.io/leo-apostolic/terms-es.html)
-[![Changelog](https://img.shields.io/badge/Changelog-v1.2.1-C9A55A?style=flat-square)](CHANGELOG.md)
+[![Changelog](https://img.shields.io/badge/Changelog-v1.2.2-C9A55A?style=flat-square)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
 > **Live on the App Store** · Built end-to-end as a product portfolio piece: from market research and feature prioritization to engineering, monetization design and post-launch growth. See the full version history in the [Changelog](CHANGELOG.md).
@@ -26,11 +26,12 @@ A free mobile app that helps Spanish-speaking Catholics follow Pope Leo XIV's po
 
 | Tab | What it solves | Key UX decision |
 |-----|---------------|-----------------|
-| **Today** | First-screen anchor: countdown to the visit, saint of the day, daily Pope quote, rotating prayer. | Pull-to-refresh + dynamic widget that adapts after the event ends, so the app stays useful long-term. |
-| **Events** | 17 papal events from the official Vatican source, with a real-time "Where the Pope is now" widget and contextual suggestions for nearby cultural sites during free time. | Suggestions only fire during papal free time, not during events — protects the devotional experience. |
-| **Places** | 15 hand-picked cultural-religious sites in Madrid and its region (Almudena, El Prado, El Escorial, Cartuja del Paular and more). | Hand-curation > directory: every place is editorially justified to fit the user's spiritual context. |
+| **Today** | First-screen anchor: countdown to the visit, a curated "the visit, up to date" news block and the daily Pope quote. | Dynamic widget that adapts after the event ends, so the app stays useful long-term. |
+| **Events** | Papal events across the multi-city trip (Madrid, Barcelona, Gran Canaria, Tenerife) from the official Vatican source, shown as a vertical timeline with a real-time "Where the Pope is now" widget and contextual suggestions for nearby cultural sites during free time. | A connected time rail with color-as-data per category; suggestions only fire during papal free time, not during events. |
+| **Traffic** | Real-time road closures and public-transport changes per city, from official sources (city councils + EMT/TMB/Guaguas). | The practical, non-devotional hook that makes the app useful to anyone moving around during the visit. |
+| **Places** | Hand-picked cultural-religious sites near each leg of the trip (Almudena, El Prado, El Escorial, Montserrat, and more). | Hand-curation > directory: every place is editorially justified to fit the user's spiritual context. |
 | **Prayers** | 11 traditional Catholic prayers in Spanish and Latin (public domain), including the rosary, Magnificat, Salve Regina and more. | Bilingual toggle (Latin/Spanish) — designed for traditional and modern audiences alike. **Ad-free** (deliberate). |
-| **Hymnal** | 7 traditional liturgical chants with full lyrics (public domain) plus curated Spotify links to contemporary religious music. | Spotify links only — no audio reproduction inside the app, keeping copyright surface area at zero. **Ad-free** (deliberate). |
+| **Hymnal** | 7 traditional liturgical chants with full lyrics (public domain), the **official visit anthem** ("Alza la mirada") and curated Spotify links to contemporary religious music. | Spotify links only — no audio reproduction inside the app, keeping copyright surface area at zero. **Ad-free** (deliberate). |
 | **Shop** | Curated selection of books, encyclicals, religious souvenirs, kids' content and event flags via Amazon affiliate links. | "Featured" carousel rotates categories so no two consecutive items belong to the same category — feels editorial, not list-y. |
 | **Local notifications** | 15-minute reminders before each public papal event. | All on-device. No servers, no push tokens, no privacy footprint. |
 
@@ -42,21 +43,18 @@ This app deliberately ships as a **free, ad-supported product with affiliate rev
 
 ### Two revenue streams
 
-#### 1. Google AdMob — banner + interstitial
+#### 1. Google AdMob — banners
 
 | Where | Why |
 |-------|-----|
 | Banner on **Today**, **Events**, **Places**, **Shop** | High-traffic, non-devotional surfaces. Banner is adaptive size, fails silently if no fill. |
-| Interstitial when closing **Event detail** or **Place detail** modals | Triggers on natural session pauses (the user just finished consuming content), not interruptive pop-ups. |
 | **No ads** on **Prayers** or **Hymnal** | Devotional content stays sacred. Trust > short-term ARPU. |
 
-**Frequency design** (`src/services/adManager.ts`):
-- 2 modal closes of grace period for new users (first session never sees an interstitial)
-- After grace, interstitial every 2 modal closes
-- Shared counter across Events and Places, so opening 1 event + 1 place still triggers correctly
-- Only shows if SDK reports `loaded === true`, otherwise re-loads silently for next attempt
+> **Interstitials temporarily disabled (v1.2.1).** The full-screen format could render without an accessible close button on some iOS devices, trapping the user. Only banners are live while a fix is validated. See the changelog for details.
 
-**ATT compliance**: App Tracking Transparency prompt is shown after a soft delay so the user has context before consenting.
+**Privacy & consent**:
+- **GDPR (UMP)**: for users in the EEA, UK and Switzerland the app shows Google's User Messaging Platform consent form before initializing ads, as required by Google's EU user consent policy. Shown once; the choice is remembered.
+- **ATT**: on iOS, the App Tracking Transparency prompt is shown after consent and once the app is in the foreground, so the user has context before deciding.
 
 #### 2. Amazon Associates EU — `pizcodeploy-21`
 
@@ -134,6 +132,10 @@ Built once the trip turned out to be **multi-city** (Madrid, Barcelona/Montserra
 - **Interstitial ads temporarily disabled** (banners kept). Why: on some iOS devices the full-screen interstitial could render without an accessible close button (its X fell outside the safe area), trapping the user — a mix of a known SDK issue and a Google-side full-screen-ad regression reported by multiple publishers. Disabling the format is the safe, recommended mitigation while a fix is validated on a real device. A status-bar workaround is also wired up for when interstitials are re-enabled.
 - **Events redesign — vertical timeline** (inspired by Apple Design Award winners like Structured): each act is a node on a connected time rail, with **color as data** (a color + icon per category, which also works for color-blind users), free-time gaps inline, and clearer tappable cards. Why: a flat list didn't read as a "journey through the day" and didn't signal it was tappable.
 
+### Shipped (v1.2.2 — June 2026)
+- **Official visit anthem** "Alza la mirada" (VIVAFE) featured in the Hymnal, with a direct Spotify link and its English version. Link only — no lyrics or audio reproduced, keeping copyright surface area at zero.
+- **GDPR consent (UMP)** wired into the ad startup flow: the Google User Messaging Platform form is shown to EEA/UK/Switzerland users before AdMob initializes, then ATT on iOS. Why: a "No CMP" restriction had collapsed banner fill for European users; a published consent message + the UMP SDK is the required, durable fix. See [LEARNINGS](LEARNINGS.md) for the full write-up.
+
 ### Backlog (candidates for v1.3+)
 - Embedded static map preview inside each closure/event card (instead of an external Maps link)
 - Privacy-respecting analytics with explicit consent
@@ -155,7 +157,7 @@ Built once the trip turned out to be **multi-city** (Madrid, Barcelona/Montserra
 - React Native + Expo SDK 54
 - TypeScript (strict mode)
 - Functional components with hooks
-- `react-native-google-mobile-ads` (AdMob — banners; interstitials temporarily disabled in v1.2.1)
+- `react-native-google-mobile-ads` (AdMob — banners; interstitials temporarily disabled in v1.2.1) with the **UMP SDK** for GDPR consent
 - `expo-tracking-transparency` (iOS ATT)
 - `expo-localization` + custom i18n provider (es / en / ca)
 - Multi-city data model (Madrid, Barcelona, Gran Canaria, Tenerife) with per-city time zones and official traffic sources
@@ -167,7 +169,7 @@ Built once the trip turned out to be **multi-city** (Madrid, Barcelona/Montserra
 
 ```
 LeonApostolico/
-├── App.tsx                    # Splash + 6 tabs + ad init wiring
+├── App.tsx                    # Splash + tabs + ad init wiring
 ├── app.json                   # Expo config: AdMob IDs, ATT message, plugins
 ├── eas.json                   # EAS build profiles + auto-increment build number
 ├── docs/                      # Privacy policy & terms (served via GitHub Pages)
@@ -175,7 +177,7 @@ LeonApostolico/
     ├── theme/                 # Design system (colors, typography, spacing)
     ├── i18n/                  # Spanish + English copy
     ├── components/            # Reusable UI (TabBar, AdBanner, AboutModal, etc.)
-    ├── screens/               # Today, Events, Places, Prayers, Hymnal, Shop
+    ├── screens/               # Today, Events, Traffic, Places, Prayers, Hymnal, Shop
     ├── data/                  # Static content (prayers, events, places, products)
     ├── models/                # TypeScript types
     ├── services/              # Notifications, ads init, ad frequency manager
