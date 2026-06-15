@@ -55,9 +55,11 @@ function delay(ms: number): Promise<void> {
 /**
  * Solicita y, si procede, muestra el formulario de consentimiento
  * GDPR (UMP). Solo aparece para usuarios del EEE/UK/Suiza y solo si
- * Google determina que hace falta. Para el resto de usuarios no se
- * muestra nada. Si algo falla, la app continúa (servirá anuncios no
- * personalizados, que es lo correcto sin consentimiento).
+ * Google determina que hace falta, y SOLO la primera vez (Google
+ * recuerda la decisión del usuario en los siguientes arranques).
+ * Para el resto de usuarios no se muestra nada. Si algo falla, la app
+ * continúa (servirá anuncios no personalizados, lo correcto sin
+ * consentimiento).
  */
 async function requestConsentIfNeeded(): Promise<void> {
   try {
